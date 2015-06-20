@@ -11,14 +11,19 @@ package com.app.database;
  */
 public enum DatabaseType {
 
-    MYSQL("com.mysql.jdbc.Driver"), H2("org.h2.Driver");
-    private final String DriverPath;
-
-    private DatabaseType(String link) {
-        DriverPath = link;
+    MYSQL("com.mysql.jdbc.Driver","jdbc:mysql://"), H2("org.h2.Driver","jdbc:h2:~/test");
+    private final String Driver;
+    private final String Address;
+    private DatabaseType(String driver,String address) {
+        Driver = driver;
+        Address = address;
     }
 
-    public String getPath() {
-        return DriverPath;
+    public String getDriver() {
+        return Driver;
+    }
+    
+    public String getAddress(){
+        return Address;
     }
 }

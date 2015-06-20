@@ -11,68 +11,69 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.LinkedList;
+
 /**
  *
  * @author VJ
  */
 public class DatabaseModel {
+
     private DatabaseType selected;
     private Connection database_con;
     private String Path, Username, Password, TableName;
-    private final String UserList_SQL_QUERY, RegisterUser_SQL_QUERY, LoginUser_SQL_QUERY;
-    private PreparedStatement UserListPS, RegisterUserPS, LoginUserPS;
+    private final String UserList_SQL_QUERY;
 
-    public DatabaseModel(DatabaseType dt,String path, String username, String password, String tablename) throws DatabaseException {
-        selected = dt;
-        Path = path;
-        Username = username;
-        Password = password;
-        TableName = tablename;
-        UserList_SQL_QUERY = "Select Username from " + TableName;
-        RegisterUser_SQL_QUERY = "Insert into " + TableName + "(Username,P1Password,P2Password) values(?,?,?)";
-        LoginUser_SQL_QUERY = "Select P2Password from " + TableName + " where Username = ? and P1Password = ?";
-        createConnection();
+    public DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
+        try {
+            selected = dt;
+            Path = path;
+            Username = username;
+            Password = password;
+            TableName = tablename;
+            Class.forName(selected.getDriver()).newInstance();
+            UserList_SQL_QUERY = "Select Username from " + TableName;
+            createConnection();
+        } catch (ClassNotFoundException ex) {
+            throw new DatabaseException("ClassNotFoundException : Could not find Instance of Driver " + selected.name() + " interface implementation.", ex);
+        } catch (InstantiationException ex) {
+            throw new DatabaseException("InstantiationException : Could not create Instance of specified Driver " + selected.name() + " Interface implementation. : ", ex);
+        } catch (IllegalAccessException ex) {
+            throw new DatabaseException("IllegalAccessException : Could Not Access the method/constructor of a " + selected.name() + " class", ex);
+        }
     }
 
     public static void execute() throws DatabaseException {
-        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL,"" ,"root", "", "CCP_User_Table");
+        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL, "localhost/db", "root", "", "CCP_User_Table");
         db.getUserList();
-        db.closeConnection();
         db.initConnection();
-        System.out.println(db.registerUser("ddjd", "dd", ""));
+        System.out.println(db.registerUser("ddsjd", "dd", ""));
     }
 
-    private void createConnection() throws DatabaseException {
+    public void createConnection() throws DatabaseException {
         try {
-            Class.forName(selected.getPath()).newInstance();
-            database_con = DriverManager.getConnection(Path, Username, Password);
-            UserListPS = database_con.prepareStatement(UserList_SQL_QUERY);
-            RegisterUserPS = database_con.prepareStatement(RegisterUser_SQL_QUERY);
-            LoginUserPS = database_con.prepareStatement(LoginUser_SQL_QUERY);
+            database_con = DriverManager.getConnection(selected.getAddress() + Path, Username, Password);
         } catch (SQLException ex) {
-            throw new DatabaseException("SQLException", ex);
-        } catch (ClassNotFoundException ex) {
-            throw new DatabaseException("ClassNotFoundException : Could not find Instance of Driver interface implementation.", ex);
-        } catch (InstantiationException ex) {
-            throw new DatabaseException("InstantiationException : Could not create Instance of specified Driver Interface implementation. : ", ex);
-        } catch (IllegalAccessException ex) {
-            throw new DatabaseException("IllegalAccessException : Could Not Access the method/constructor of a class", ex);
+            throw new DatabaseException("SQLException occured while creating Connection Object in createConnection Method", ex);
         }
     }
 
     public List<String> getUserList() throws DatabaseException {
         List<String> usernames = new LinkedList<>();
-        try {
-            ResultSet QueryResult = UserListPS.executeQuery();
-            if (QueryResult.isBeforeFirst()) {
-                while (QueryResult.next()) {
-                    usernames.add(QueryResult.getString(1));
+        try (Statement UserListStmt = database_con.createStatement()) {
+            try (ResultSet QueryResult = UserListStmt.executeQuery(UserList_SQL_QUERY)) {
+                if (QueryResult.isBeforeFirst()) {
+                    while (QueryResult.next()) {
+                        usernames.add(QueryResult.getString(1));
+                    }
                 }
+            } catch (SQLException ex) {
+                throw new DatabaseException("SQLException occured while using ResultSet in getUserList Method.", ex);
             }
-        } catch (SQLException ex) { 
-            throw new DatabaseException("SQLException", ex);
+        } catch (SQLException ex) {
+            throw new DatabaseException("SQLException occured while fetching UserList in getUserList Method.", ex);
         }
         return usernames;
     }
@@ -80,19 +81,16 @@ public class DatabaseModel {
     public boolean registerUser(String Username, String P1Password, String P2Password) throws DatabaseException {
 
         boolean isRegistered = false;
-        try {
-            RegisterUserPS.setString(1, Username);
-            RegisterUserPS.setString(2, P1Password);
-            RegisterUserPS.setString(3, P2Password);
-            if (RegisterUserPS.executeUpdate() == 1) { //executeUpdate() returns 1 if a row is added/updated.
-                isRegistered = true;  
+        try (Statement RegisterUserStmt = database_con.createStatement()) {
+            String Register_SQL_QUERY = "Insert into " + TableName + "(Username,P1Password,P2Password) values(Username,P1Password,P2Password)";
+            if (RegisterUserStmt.executeUpdate(Register_SQL_QUERY) == 1) { //executeUpdate() returns 1 if a row is added/updated.
+                isRegistered = true;
             }
-            RegisterUserPS.clearParameters();
         } catch (SQLException ex) {
             if (ex.getErrorCode() == 1062) {
                 throw new DatabaseException("Sorry, The Username " + Username + " already exists! ", ex);
             } else {
-                throw new DatabaseException("SQLException", ex);
+                throw new DatabaseException("SQLException occured while inserting user record in registerUser Method", ex);
             }
         }
         return isRegistered;
@@ -100,43 +98,35 @@ public class DatabaseModel {
 
     public String loginUser(String Username, String P1Password) throws DatabaseException {
         String P2Password = null;
-        try {
-            LoginUserPS.setString(1, Username);
-            LoginUserPS.setString(2, P1Password);
-            ResultSet QueryResult = LoginUserPS.executeQuery();
-            if (QueryResult.isBeforeFirst() && QueryResult.next()) {
-                P2Password = QueryResult.getString(1);
+        try (Statement LoginUserStmt = database_con.createStatement()) {
+            String Login_SQL_QUERY = "Select P2Password from " + TableName + " where Username = " + Username + " and P1Password = " + P1Password + ";";
+            try (ResultSet QueryResult = LoginUserStmt.executeQuery(Login_SQL_QUERY)) {
+                if (QueryResult.isBeforeFirst() && QueryResult.next()) {
+                    P2Password = QueryResult.getString(1);
+                }
+            } catch (SQLException ex) {
+                throw new DatabaseException("SQLException occured in ResultSet of LoginUser method", ex);
             }
-            LoginUserPS.clearParameters();
         } catch (SQLException ex) {
             throw new DatabaseException("SQLException", ex);
         }
         return P2Password;
-
     }
 
     public void initConnection() throws DatabaseException {
-
         if (database_con == null) {
             createConnection();
         }
-
     }
 
     public void closeConnection() throws DatabaseException {
-
         try {
-            if (!database_con.isClosed()) {
-                RegisterUserPS.close();
-                UserListPS.close();
+            if (database_con != null) {
                 database_con.close();
+                database_con = null;
             }
-            LoginUserPS = null;
-            RegisterUserPS = null;
-            UserListPS = null;
-            database_con = null;
         } catch (SQLException ex) {
-            throw new DatabaseException("SQLException", ex);
+            throw new DatabaseException("SQLException occured while closing Connection Object in closeConnection Method", ex);
         }
     }
 }
