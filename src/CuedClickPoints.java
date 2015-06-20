@@ -5,6 +5,7 @@
  */
 
 import com.app.database.DatabaseModel;
+import com.app.exceptions.DatabaseException;
 import java.sql.SQLException;
 /**
  *
@@ -15,7 +16,7 @@ public class CuedClickPoints {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public static void main(String[] args) throws DatabaseException {
        DatabaseModel.execute();
     }
     

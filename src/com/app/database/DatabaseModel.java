@@ -18,12 +18,14 @@ import java.util.LinkedList;
  * @author VJ
  */
 public class DatabaseModel {
+    private DatabaseType selected;
     private Connection database_con;
     private String Path, Username, Password, TableName;
     private final String UserList_SQL_QUERY, RegisterUser_SQL_QUERY, LoginUser_SQL_QUERY;
     private PreparedStatement UserListPS, RegisterUserPS, LoginUserPS;
 
-    public DatabaseModel(String path, String username, String password, String tablename) throws DatabaseException {
+    public DatabaseModel(DatabaseType dt,String path, String username, String password, String tablename) throws DatabaseException {
+        selected = dt;
         Path = path;
         Username = username;
         Password = password;
@@ -35,7 +37,7 @@ public class DatabaseModel {
     }
 
     public static void execute() throws DatabaseException {
-        DatabaseModel db = new DatabaseModel("jdbc:mysql://localhost/db" ,"root", "", "CCP_User_Table");
+        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL,"" ,"root", "", "CCP_User_Table");
         db.getUserList();
         db.closeConnection();
         db.initConnection();
@@ -44,7 +46,7 @@ public class DatabaseModel {
 
     private void createConnection() throws DatabaseException {
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName(selected.getPath()).newInstance();
             database_con = DriverManager.getConnection(Path, Username, Password);
             UserListPS = database_con.prepareStatement(UserList_SQL_QUERY);
             RegisterUserPS = database_con.prepareStatement(RegisterUser_SQL_QUERY);

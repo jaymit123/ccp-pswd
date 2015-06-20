@@ -14,6 +14,7 @@ package com.app.exceptions;
  * 1062 : cant register user, username already exist
  * 1146 : Could not find table in database
  * 1064  :Parse Error : Tablename might be null
+ *  0 : possible  path provided null
  * @author VJ
  */
 public class DatabaseException extends Exception {
