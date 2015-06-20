@@ -26,7 +26,7 @@ public class DatabaseModel {
     private String Path, Username, Password, TableName;
     private final String UserList_SQL_QUERY;
 
-    public DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
+    public  DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
         try {
             selected = dt;
             Path = path;
@@ -46,10 +46,9 @@ public class DatabaseModel {
     }
 
     public static void execute() throws DatabaseException {
-        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL, "localhost/db", "root", "", "CCP_User_Table");
-        db.getUserList();
+        DatabaseModel db = new DatabaseModel(DatabaseType.H2, "", "sa", "09d213", "CCP_User_Table");
         db.initConnection();
-        System.out.println(db.registerUser("ddsjd", "dd", ""));
+        System.out.println(db.registerUser("ddssjd", "dd","fff"));
     }
 
     public void createConnection() throws DatabaseException {
@@ -82,7 +81,7 @@ public class DatabaseModel {
 
         boolean isRegistered = false;
         try (Statement RegisterUserStmt = database_con.createStatement()) {
-            String Register_SQL_QUERY = "Insert into " + TableName + "(Username,P1Password,P2Password) values(Username,P1Password,P2Password)";
+            String Register_SQL_QUERY = "Insert into " + TableName + " (Username,P1Password,P2Password) values('"+Username+"','"+P1Password+"','"+P2Password+"')";
             if (RegisterUserStmt.executeUpdate(Register_SQL_QUERY) == 1) { //executeUpdate() returns 1 if a row is added/updated.
                 isRegistered = true;
             }
@@ -99,7 +98,7 @@ public class DatabaseModel {
     public String loginUser(String Username, String P1Password) throws DatabaseException {
         String P2Password = null;
         try (Statement LoginUserStmt = database_con.createStatement()) {
-            String Login_SQL_QUERY = "Select P2Password from " + TableName + " where Username = " + Username + " and P1Password = " + P1Password + ";";
+            String Login_SQL_QUERY = "Select P2Password from " + TableName + " where Username = '" + Username + "' and P1Password = '" + P1Password + "';";
             try (ResultSet QueryResult = LoginUserStmt.executeQuery(Login_SQL_QUERY)) {
                 if (QueryResult.isBeforeFirst() && QueryResult.next()) {
                     P2Password = QueryResult.getString(1);

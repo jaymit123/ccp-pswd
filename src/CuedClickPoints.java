@@ -6,7 +6,6 @@
 
 import com.app.database.DatabaseModel;
 import com.app.exceptions.DatabaseException;
-import java.sql.SQLException;
 /**
  *
  * @author VJ

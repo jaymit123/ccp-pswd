@@ -21,6 +21,7 @@ public class DatabaseException extends Exception {
 
     public DatabaseException(String string) {
         super(string);
+
     }
 
     public DatabaseException(String string, Throwable thrwbl) {
