@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.app.database.DatabaseModel;
 import com.app.exceptions.DatabaseException;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author VJ
@@ -16,7 +16,12 @@ public class CuedClickPoints {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws DatabaseException {
-       DatabaseModel.execute();
-    }
+  SwingUtilities.invokeLater(new Runnable(){
+  public void run(){
+ 
+  }
+  
+ 
+    });
     
-}
+}}
