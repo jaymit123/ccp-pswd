@@ -34,7 +34,7 @@ public class DatabaseModel {
             Password = password;
             TableName = tablename;
             Class.forName(selected.getDriver()).newInstance();
-            UserList_SQL_QUERY = "Select Uscername from " + TableName+";";
+            UserList_SQL_QUERY = "Select Username from " + TableName+";";
             createConnection();
         } catch (ClassNotFoundException ex) {
             throw new DatabaseException("ClassNotFoundException : Could not find Instance of Driver " + selected.name() + " interface implementation.", ex);
