@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 import java.util.LinkedList;
@@ -26,7 +25,7 @@ public class DatabaseModel {
     private final String Path, Username, Password, TableName;
     private final String UserList_SQL_QUERY;
 
-    public  DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
+    public DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
         try {
             selected = dt;
             Path = path;
@@ -34,7 +33,7 @@ public class DatabaseModel {
             Password = password;
             TableName = tablename;
             Class.forName(selected.getDriver()).newInstance();
-            UserList_SQL_QUERY = "Select Username from " + TableName+";";
+            UserList_SQL_QUERY = "Select Username from " + TableName + ";";
             createConnection();
         } catch (ClassNotFoundException ex) {
             throw new DatabaseException("ClassNotFoundException : Could not find Instance of Driver " + selected.name() + " interface implementation.", ex);
@@ -46,16 +45,16 @@ public class DatabaseModel {
     }
 
     public static void execute() throws DatabaseException {
-        DatabaseModel db = new DatabaseModel(DatabaseType.H2, "", "sa", "","");
+        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "JDvb04!@#", "CCP_User_Table");
         db.initConnection();
-        
+
         System.out.print(db.registerUser("d", "dd", "fff"));
     }
 
     public void createConnection() throws DatabaseException {
         try {
             database_con = DriverManager.getConnection(selected.getAddress() + Path, Username, Password);
-        } catch (SQLException ex) { 
+        } catch (SQLException ex) {
             throw new DatabaseException("SQLException occured while creating Connection Object in createConnection Method", ex);
         }
     }
@@ -69,7 +68,7 @@ public class DatabaseModel {
                         usernames.add(QueryResult.getString(1));
                     }
                 }
-            } catch (SQLException ex) { 
+            } catch (SQLException ex) {
                 throw new DatabaseException("SQLException occured while using ResultSet in getUserList Method.", ex);
             }
         } catch (SQLException ex) {
@@ -82,11 +81,11 @@ public class DatabaseModel {
 
         boolean isRegistered = false;
         try (Statement RegisterUserStmt = database_con.createStatement()) {
-            String Register_SQL_QUERY = "Insert into " + TableName + " (Username,P1Password,P2Password) values('"+Username+"','"+P1Password+"','"+P2Password+"');";
+            String Register_SQL_QUERY = "Insert into " + TableName + " (Username,P1Password,P2Password) values('" + Username + "','" + P1Password + "','" + P2Password + "');";
             if (RegisterUserStmt.executeUpdate(Register_SQL_QUERY) == 1) { //executeUpdate() returns 1 if a row is added/updated.
                 isRegistered = true;
             }
-        } catch (SQLException ex) { System.out.println(ex.getErrorCode());
+        } catch (SQLException ex) {
             if (ex.getErrorCode() == 1062 || ex.getErrorCode() == 23505) {
                 throw new DatabaseException("Sorry, The Username " + Username + " already exists! ", ex);
             } else {
