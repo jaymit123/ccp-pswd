@@ -11,9 +11,10 @@ package com.app.database;
  */
 public enum DatabaseType {
 
-    MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://"), H2("org.h2.Driver", "jdbc:h2:file:C:/Users/VJ/Desktop;INIT=runscript from '" + DatabaseType.class.getResource("/init.sql").getPath().substring(1) + "';"); // the init property executes the init.sql file to create the table
+    MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql:"), H2("org.h2.Driver", "jdbc:h2:~/h2_ccp_db;INIT=runscript from '" + DatabaseType.class.getResource("/init.sql").getPath().substring(1) + "';"); // the init property executes the init.sql file to create the table
     private final String Driver;
-    private final String Address;
+    private String Address;
+    private final String h2_init_file = "INIT=runscript from '"+DatabaseType.class.getResource("/init.sql").getPath().substring(1) + "';";
 
     private DatabaseType(String driver, String address) {
         Driver = driver;
@@ -24,7 +25,14 @@ public enum DatabaseType {
         return Driver;
     }
 
-    public String getAddress() {
+    public void setAddress(String address) {
+        if (this == DatabaseType.H2) {
+          Address = "jdbc:h2:"+address+";"+h2_init_file;
+        }else{
+           Address+= address; 
+    }
+}
+public String getAddress() {
         return Address;
     }
 }
