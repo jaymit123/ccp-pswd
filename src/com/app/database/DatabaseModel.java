@@ -107,7 +107,7 @@ public class DatabaseModel {
                 throw new DatabaseException("SQLException occured in ResultSet of LoginUser method", ex);
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("SQLException", ex);
+            throw new DatabaseException("SQLException in LoginUser Method", ex);
         }
         return P2Password;
     }

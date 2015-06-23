@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 import com.app.database.DatabaseModel;
+import com.app.database.DatabaseType;
 import com.app.exceptions.DatabaseException;
 import javax.swing.SwingUtilities;
 /**
@@ -15,13 +16,12 @@ public class CuedClickPoints {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws DatabaseException {
-  SwingUtilities.invokeLater(new Runnable(){
-  public void run(){
- 
-  }
-  
- 
-    });
+   public static void main(String[] args)  {
+  try{  DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL,"//localhost/db","root","","CCP_User_Table");  
+     
+
+System.out.print(dbmodel.registerUser("ssddddddds", "s", ""));
+}catch(DatabaseException e){
     
+}
 }}
