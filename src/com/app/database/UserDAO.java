@@ -18,6 +18,7 @@ import java.util.List;
 public class UserDAO{
 
     private DatabaseModel dbmodel = null;
+<<<<<<< HEAD
 
 
     public UserDAO(DatabaseModel dbm){
@@ -32,6 +33,27 @@ public class UserDAO{
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.GET_USER_LIST_ERROR,"Error while synchronizing User Information", ex);
         }
+=======
+    private List<String> UserList = null;
+
+    public UserDAO() throws DAOException {
+        try {
+            dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
+        } catch (DatabaseException ex) {
+            throw new DAOException(DAOExReason.INIT_COM_ERROR,"Error while establishing Connection with Database", ex);
+        }
+    }
+
+    public void syncUserList() throws DAOException {
+        try {
+            UserList = dbmodel.getUserList();
+        } catch (DatabaseException ex) {
+            throw new DAOException(DAOExReason.SYNC_USER_ERROR,"Error while synchronizing User Information", ex);
+        }
+    }
+
+    public List<String> getUserList() {
+>>>>>>> origin/master
         return UserList;
     }
 

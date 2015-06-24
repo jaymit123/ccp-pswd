@@ -5,6 +5,7 @@
  */
 package com.app.security;
 
+<<<<<<< HEAD
 import com.app.security.login.ExistingUser;
 import com.app.security.register.RegisterUser;
 import com.app.database.UserDAO;
@@ -13,11 +14,14 @@ import com.app.exceptions.DAOExReason;
 import java.util.List;
 import java.util.ArrayList;
 
+=======
+>>>>>>> origin/master
 /**
  *
  * @author VJ
  */
 public class AuthenticationModel {
+<<<<<<< HEAD
 
     private UserDAO userdao;
     private List<String> ImageList, UserList;
@@ -65,4 +69,7 @@ public class AuthenticationModel {
         return user;
     }
 
+=======
+    
+>>>>>>> origin/master
 }

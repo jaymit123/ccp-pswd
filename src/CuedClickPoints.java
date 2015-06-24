@@ -6,8 +6,11 @@
 
 import com.app.database.DatabaseModel;
 import com.app.database.DatabaseType;
+<<<<<<< HEAD
 import com.app.database.UserDAO;
 import com.app.exceptions.DAOException;
+=======
+>>>>>>> origin/master
 import com.app.exceptions.DatabaseException;
 import com.app.security.register.EntryStatus;
 import com.app.security.login.ExistingUser;
@@ -26,6 +29,7 @@ public class CuedClickPoints {
     /**
      * @param args the command line arguments
      */
+<<<<<<< HEAD
     public static void main(String[] args) throws DatabaseException, DAOException {
 
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
@@ -76,3 +80,14 @@ public class CuedClickPoints {
 
 
 }
+=======
+   public static void main(String[] args)  {
+  try{  DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL,"//localhost/db","root","","CCP_User_Table");  
+     
+
+System.out.print(dbmodel.registerUser("ssddddddds", "s", ""));
+}catch(DatabaseException e){
+    
+}
+}}
+>>>>>>> origin/master
