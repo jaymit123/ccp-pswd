@@ -44,13 +44,6 @@ public class DatabaseModel {
         }
     }
 
-    public static void execute() throws DatabaseException {
-        DatabaseModel db = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "JDvb04!@#", "CCP_User_Table");
-        db.initConnection();
-
-        System.out.print(db.registerUser("d", "dd", "fff"));
-    }
-
     public void createConnection() throws DatabaseException {
         try {
             database_con = DriverManager.getConnection(selected.getAddress() + Path, Username, Password);
@@ -107,7 +100,7 @@ public class DatabaseModel {
                 throw new DatabaseException("SQLException occured in ResultSet of LoginUser method", ex);
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("SQLException", ex);
+            throw new DatabaseException("SQLException in LoginUser Method", ex);
         }
         return P2Password;
     }
