@@ -78,13 +78,14 @@ public class FormView {
     }
 
     private void addComponents() {
+        MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase1", TitledBorder.LEFT, TitledBorder.TOP));
         MainPanel.add(UsernameLabel);
         MainPanel.add(UsernameField, "wrap");
         MainPanel.add(PasswordLabel);
         MainPanel.add(PasswordField, "span");
         MainPanel.add(Submit, "span, split, center");
         FormLayer = new JLayer<JPanel>(MainPanel, layerui);
-        MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase1", TitledBorder.LEFT, TitledBorder.TOP));
+
     }
 
     public JLayer<JPanel> getComponent() {

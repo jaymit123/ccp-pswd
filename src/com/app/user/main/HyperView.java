@@ -29,7 +29,7 @@ public class HyperView {
     private RegisterView RegView;
     private double appwidth, appheight;
 
-    public HyperView(RegisterController regcntrl,List<String> ImgList) {
+    public HyperView(RegisterController regcntrl, List<String> ImgList) {
         RegControl = regcntrl;
         initFrame();
         initCardPanel();
@@ -44,7 +44,7 @@ public class HyperView {
         Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
         appwidth = ScreenSize.getWidth();
         appheight = ScreenSize.getHeight();
-        MainFrame.setSize((int) (1.0 / 8.0 * appwidth), (int) (1.0 / 6.0 * appheight));
+        MainFrame.setSize((int)(2.0 / 3.0 * appwidth), (int) (2.0 / 3.0 * appheight));
         MainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         MainFrame.setResizable(false);
     }
@@ -63,15 +63,12 @@ public class HyperView {
 
     private void initRegisterView(List<String> ImageList) {
         MainMenu.addRegisterAction((ActionEvent evt) -> {
-            RegView = new RegisterView(RegControl,ImageList);        //Init RegisterView
+            RegView = new RegisterView(RegControl, ImageList);        //Init RegisterView
             CardPanel.add(RegView.getPanel(), "Register");
             Cards.show(CardPanel, "Register");
-            MainFrame.setSize((int) (1.0 / 2.0 * appwidth), (int) (2.0 / 3.0 * appheight));
-            MainFrame.setLocationRelativeTo(null);
+            RegView.loadList();
             MainMenu.addLoginAction((ActionEvent ae) -> {  // Next Time Register Btn is pressed following code will be executed.
                 Cards.show(CardPanel, "Register");
-                MainFrame.setSize((int) (1.0 / 2.0 * appwidth), (int) (2.0 / 3.0 * appheight));
-                MainFrame.setLocationRelativeTo(null);
             });
         });
 

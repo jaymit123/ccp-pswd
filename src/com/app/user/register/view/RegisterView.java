@@ -12,6 +12,7 @@ import com.app.ui.DisableUI;
 import com.app.ui.listui.ImageListModel;
 import com.app.ui.listui.ListView;
 import com.app.user.register.RegisterController;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -21,11 +22,13 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
 /**
@@ -39,10 +42,10 @@ public class RegisterView implements Viewable {
     private FormView P1FormView;                           //Gives the Phase 1 Form.       
     private JPanel P2MainPanel;                            // The Panel that holds all Phase2 Components
     private JPanel SharedBtnPanel;                            // Holds Buttons
+    private JPanel P2SharedBtns;
+    private JPanel GlobalSharedBtns;
     private GridView P2Grid;                           //Gives the Panel holding the grid.
-    private JPanel P2GridPanel;                            // Holds Additional Buttons + Above Mentioned Grid from GridView
-    private JButton j1, j2, j3;
-    private JButton P2Next, P2Finish;
+    private JButton P2Next, P2Finish,P2Reset,FullReset,Close;
     private ListView P2ListView;
     private List<String> DefaultImageList;
     private DisableUI P2layerui;
@@ -55,6 +58,7 @@ public class RegisterView implements Viewable {
         RegControl.addView(this);
         DefaultImageList = list;
         initMainPanel();
+        initSharedBtns();
         initPhase1();
         initPhase2();
         addMainComponents();
@@ -64,17 +68,32 @@ public class RegisterView implements Viewable {
     private void initMainPanel() {
         MainPanel = new JPanel();
         MainPanel.setLayout(new MigLayout("fill"));
-        SharedBtnPanel = new JPanel(new MigLayout());
-        //   SharedBtnPanel.setBackground(Color.GREEN);
     }
 
     private void addMainComponents() {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = (1.0 / 2.0 * d.getWidth());
+        double width = (2.0 / 3.0 * d.getWidth());
         double height = (2.0 / 3.0 * d.getHeight());
-        MainPanel.add(P1FormView.getComponent(), "width " + ((2.0 / 5.0 * width)));
-        MainPanel.add(SharedBtnPanel, " newline , width " + ((2.0 / 5.0 * width) + ",height " + (2.0 / 3.0 * height)));
-        MainPanel.add(P2MainPanel, "east,width " + ((3.0 / 5.0 * width)) + ",height " + height);
+        MainPanel.add(P1FormView.getComponent(), "width " + ((1.0 / 4.0 * width)));
+        MainPanel.add(SharedBtnPanel, " newline , width " + ((1.0 / 4.0 * width) + ",height " + (2.0 / 3.0 * height)));
+        MainPanel.add(P2MainPanel, "east,width " + ((3.0 / 4.0 * width)) + ",height " + height);
+    }
+
+    private void initSharedBtns() {
+        SharedBtnPanel = new JPanel(new MigLayout());
+        SharedBtnPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Control Panel", TitledBorder.LEFT, TitledBorder.TOP));
+        P2SharedBtns = new JPanel(new MigLayout());
+        P2Next = new JButton("Next");
+        P2Next.setEnabled(false);
+        P2Finish = new JButton("Finish");
+        P2Finish.setEnabled(false);
+        P2Reset = new JButton("Reset Phase2");
+        P2SharedBtns.add(P2Next,"wrap");
+        P2SharedBtns.add(P2Finish,"wrap");
+        P2SharedBtns.add(P2Reset,"");
+        P2SharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase 2", TitledBorder.LEFT, TitledBorder.TOP));
+        SharedBtnPanel.add(P2SharedBtns);
+
     }
 
     private void initPhase1() {
@@ -94,19 +113,15 @@ public class RegisterView implements Viewable {
 
     private void initPhase2Panel() {
         P2MainPanel = new JPanel();
-        P2MainPanel.setLayout(new MigLayout("fill"));
-    P2MainPanel.setBackground(Color.red);
+        P2MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
+        P2MainPanel.setLayout(new BorderLayout());
     }
 
     private void initP2Components() {
-        P2GridPanel = new JPanel(new MigLayout("fill"));
         P2ListView = new ListView();
+        P2ListView.installList(DefaultImageList);
         P2Grid = new GridView();
         P2Grid.setGridBorder(true);
-        P2Next = new JButton("Next");
-        P2Next.setEnabled(false);
-        P2Finish = new JButton("Finish");
-        P2Finish.setEnabled(false);
     }
 
     private void initP2Actions() {
@@ -144,12 +159,8 @@ public class RegisterView implements Viewable {
     }
 
     private void addP2Components() {
-        P2GridPanel.add(P2Grid.getComponent(), "center , grow");
-       // P2GridPanel.add(P2Next, "east , wrap");
-       // P2GridPanel.add(P2Finish, "east");
-        P2MainPanel.add(P2ListView.getLayer(),"grow 200");
-        P2MainPanel.add(P2GridPanel, "newline");
-
+        P2MainPanel.add(P2ListView.getLayer(), BorderLayout.EAST);
+        P2MainPanel.add(P2Grid.getComponent(), BorderLayout.CENTER);
     }
 
     public void loadList() {

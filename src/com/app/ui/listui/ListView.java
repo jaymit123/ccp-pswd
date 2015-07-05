@@ -9,6 +9,7 @@ import com.app.ui.DisableUI;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JLayer;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPanel;
@@ -38,25 +39,20 @@ public class ListView {
     }
 
     private void initMainPanel() {
-        MainPanel = new JPanel(new MigLayout("fill"));
-        MainPanel.setBackground(Color.red);
+        MainPanel = new JPanel();
     }
 
     private void initImageList() {
         ImageModel = new ImageListModel<>();
         ImageList = new JList<>(ImageModel);
         ImageLabels = new JLabelListRenderer();
-        ImageList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        ImageList.setVisibleRowCount(6);
+        ImageList.setCellRenderer(ImageLabels); 
         ImageList.setDoubleBuffered(true);
         ImageList.setFixedCellHeight(75);
         ImageList.setFixedCellWidth(75);
+        ImageList.setVisibleRowCount(6);
         ImageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ImageList.setCellRenderer(ImageLabels);
-
-        ListScroll = new JScrollPane(ImageList);
-        ListScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-
+        ListScroll = new JScrollPane(ImageList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     private void initLayer() {

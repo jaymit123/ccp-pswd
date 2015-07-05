@@ -38,6 +38,7 @@ public class ImageModel {
             throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
         }
     }
+    
 
     private void initImageList() {
         ImageList = new LinkedList<String>();

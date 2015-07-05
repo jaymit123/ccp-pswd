@@ -21,7 +21,7 @@ import javax.swing.ListCellRenderer;
  *
  * @author VJ
  */
-public class JLabelListRenderer extends JLabel implements ListCellRenderer {
+public class JLabelListRenderer extends JLabel implements ListCellRenderer<String> {
 
     private Image paintImage = null;
 
@@ -33,11 +33,17 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer {
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+        g.drawImage(paintImage, 0, 0, this.getWidth() - 1, this.getHeight() - 1, null);
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         ImageIcon a = null;
         try {
             // a = new ImageIcon(ImageIO.read(this.getClass().getResource(value.toString())).getScaledInstance(50,50, Image.SCALE_FAST));
-            paintImage = ImageIO.read(this.getClass().getResource(value.toString()));
+            paintImage = ImageIO.read(this.getClass().getResource("/Images/"+value.toString()));
         } catch (IOException ex) {
             Logger.getLogger(JLabelListRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,11 +64,4 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer {
 
         return this;
     }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        g.drawImage(paintImage, 0, 0, this.getWidth() - 1, this.getHeight() - 1, null);
-    }
-
 }

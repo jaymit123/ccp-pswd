@@ -49,6 +49,10 @@ public class RegisterController extends AbstractController {
     public void resetProcess(String Type){
         RegModel.reset(Type);
     }
+    
+    public void Close(){
+ 
+    }
 
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
