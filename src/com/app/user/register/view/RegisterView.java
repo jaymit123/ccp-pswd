@@ -15,6 +15,7 @@ import com.app.user.register.RegisterController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -23,6 +24,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.event.ListSelectionEvent;
 
@@ -38,21 +40,23 @@ public class RegisterView implements Viewable {
     private JPanel Phase2Panel;                            // The Panel that holds all Phase2 Components
     private JPanel P2ListPanel;                            // Holds the JList in Phase2 & Some Buttons
     private GridView Phase2Grid;                           //Gives the Panel holding the grid.
-        private JPanel P2GridPanel;                            // Holds Additional Buttons + Above Mentioned Grid from GridView
+    private JPanel P2GridPanel;                            // Holds Additional Buttons + Above Mentioned Grid from GridView
     private JButton j1, j2, j3;
-    private JButton P2Next,P2Finish;
+    private JButton P2Next, P2Finish;
     private ListView ListV;
     private List<String> DefaultImageList;
     private DisableUI P2layerui;
     private JLayer<JPanel> Phase2Layer;
-
+    private int GridSelected = -1;               // Determin which grid is selected.
+    private String ImageSelected = null;
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
         RegControl = regcontrol;
         RegControl.addView(this);
         DefaultImageList = list;
         initMainPanel();
-
+        initPhase1();
+        initPhase2();
         MainPanel.add(Phase2Panel, "west,grow");
         MainPanel.add(j3, "center ,grow");
 
@@ -64,10 +68,20 @@ public class RegisterView implements Viewable {
         MainPanel.setLayout(new MigLayout("fill"));
     }
     
-    private void initPhase2(){
+    private  void initPhase1(){
+        Phase1View = new FormView("Register");
+        Phase1View.addButtonAction((ActionEvent evt) -> {
+            String Details[] = Phase1View.getAllFields();
+        RegControl.registerUser(Details[0], Details[1]);
+        });
+        
+    }
+
+    private void initPhase2() {
         initPhase2Panel();
-        initListView();
-        initP2GridPanel();
+        initP2Components();
+        initP2Actions();
+        addP2Components();
     }
 
     private void initPhase2Panel() {
@@ -80,31 +94,58 @@ public class RegisterView implements Viewable {
         Phase2Panel.add(j2, " , height " + ((int) (1.0 / 5.0 * height)) + " , grow");
     }
 
-    private void initListView() {
+    private void initP2Components() {
+        P2GridPanel = new JPanel(new MigLayout());
         ListV = new ListView();
+        Phase2Grid = new GridView();
+        Phase2Grid.setGridBorder(true);
+        P2Next = new JButton("Next");
+        P2Next.setEnabled(false);
+        P2Finish.setEnabled(false);
+        P2Finish = new JButton("Finish");
+        P2Finish.setEnabled(false);
+    }
+
+    private void initP2Actions() {
+
         ListV.setListSelectionListener((ListSelectionEvent evt) -> {
             if (!ListV.isSelectionEmpty()) {
-                RegControl.requestImage(ListV.getSelectionValue());
+                ImageSelected = ListV.getSelectionValue();
+                RegControl.requestImage(ImageSelected);
+                P2Next.setEnabled(false);
             }
         });
-    }
-    
-    private void initP2GridPanel(){
-        P2GridPanel = new JPanel(new MigLayout());
-        Phase2Grid = new GridView();
-        P2Next = new JButton("Next");
-        P2Finish = new JButton("Finish");
-        Phase2Grid.setGridBorder(true);
-        Phase2Grid.setGridActions(new MouseAdapter(){
 
+        P2Next.addActionListener((ActionEvent evt) -> {
+            P2Next.setEnabled(false);
+            RegControl.addUserEntry(ImageSelected, GridSelected);
+            ListV.removeImage(ImageSelected);
+            ImageSelected = null;
+            GridSelected = -1;
+        });
+
+        P2Finish.addActionListener((ActionEvent evt) -> {
+            RegControl.completeRegisteration();
+        });
+
+        Phase2Grid.setGridActions(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
-               
+                if (me.getSource() instanceof JLabel) {
+                    P2Next.setEnabled(true);
+                    GridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                }
             }
-        
+
         });
-        
-        
+    }
+
+    private void addP2Components() {
+        P2GridPanel.add(Phase2Grid.getComponent(), "center , grow");
+        P2GridPanel.add(P2Next, "east , wrap");
+        P2GridPanel.add(P2Finish, "east");
+        Phase2Panel.add(P2GridPanel, "center , grow");
+        Phase2Panel.add(ListV.getLayer(), "north");
     }
 
     public void loadList() {
