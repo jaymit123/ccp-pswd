@@ -4,15 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/CuedClickPoints.java</file>
-            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/main/MainMenuView.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/main/HyperView.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/listui/ListView.java</file>
-            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/FormView.java</file>
-            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/DisableUI.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/register/view/RegisterView.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/GridView.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/listui/JLabelListRenderer.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/listui/ImageListModel.java</file>
-            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/ImagePanel.java</file>
         </group>
     </open-files>
 </project-private>

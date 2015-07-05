@@ -6,7 +6,9 @@
 package com.app.ui.listui;
 
 import com.app.ui.DisableUI;
+import java.awt.Color;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.JLayer;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPanel;
@@ -36,14 +38,16 @@ public class ListView {
     }
 
     private void initMainPanel() {
-        MainPanel = new JPanel(new MigLayout());
+        MainPanel = new JPanel(new MigLayout("fill"));
+        MainPanel.setBackground(Color.red);
     }
 
     private void initImageList() {
         ImageModel = new ImageListModel<>();
         ImageList = new JList<>(ImageModel);
         ImageLabels = new JLabelListRenderer();
-
+        ImageList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        ImageList.setVisibleRowCount(6);
         ImageList.setDoubleBuffered(true);
         ImageList.setFixedCellHeight(75);
         ImageList.setFixedCellWidth(75);
@@ -68,8 +72,8 @@ public class ListView {
     public void installList(List<String> list) {
         ImageModel.addAll(list);
     }
-    
-    public boolean isSelectionEmpty(){
+
+    public boolean isSelectionEmpty() {
         return ImageList.isSelectionEmpty();
     }
 

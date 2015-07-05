@@ -30,6 +30,7 @@ public class GridView {
         initPanel();
         initGrids();
     }
+    
 
     private void initPanel() {
         MainPanel = new ImagePanel();

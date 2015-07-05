@@ -44,6 +44,6 @@ public class CuedClickPoints {
         RegisterModel rm = new RegisterModel(aum, im);
         rg.setRegisterModel(rm);
 
-        HyperView hp = new HyperView(rg);
+        HyperView hp = new HyperView(rg,im.getImageList());
     }
 }

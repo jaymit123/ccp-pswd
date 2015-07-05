@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
+import java.util.List;
 
 /**
  *
@@ -28,11 +29,11 @@ public class HyperView {
     private RegisterView RegView;
     private double appwidth, appheight;
 
-    public HyperView(RegisterController regcntrl) {
+    public HyperView(RegisterController regcntrl,List<String> ImgList) {
         RegControl = regcntrl;
         initFrame();
         initCardPanel();
-        initMainMenu();
+        initMainMenu(ImgList);
         addComponents();
         MainFrame.setLocationRelativeTo(null);
         MainFrame.setVisible(true);
@@ -55,14 +56,14 @@ public class HyperView {
 
     }
 
-    private void initMainMenu() {
+    private void initMainMenu(List<String> ImgList) {
         MainMenu = new MainMenuView();
-        initRegisterView();
+        initRegisterView(ImgList);
     }
 
-    private void initRegisterView() {
+    private void initRegisterView(List<String> ImageList) {
         MainMenu.addRegisterAction((ActionEvent evt) -> {
-            RegView = new RegisterView(RegControl);        //Init RegisterView
+            RegView = new RegisterView(RegControl,ImageList);        //Init RegisterView
             CardPanel.add(RegView.getPanel(), "Register");
             Cards.show(CardPanel, "Register");
             MainFrame.setSize((int) (1.0 / 2.0 * appwidth), (int) (2.0 / 3.0 * appheight));
