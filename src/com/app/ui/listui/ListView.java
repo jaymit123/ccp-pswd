@@ -32,7 +32,6 @@ public class ListView {
     public ListView() {
         initMainPanel();
         initImageList();
-        addComponents();
         initLayer();
     }
 
@@ -57,12 +56,9 @@ public class ListView {
     }
 
     private void initLayer() {
+        MainPanel.add(ListScroll);
         layerui = new DisableUI();
         ListLayer = new JLayer<>(MainPanel, layerui);
-    }
-
-    private void addComponents() {
-        MainPanel.add(ListScroll);
     }
 
     public void setListSelectionListener(ListSelectionListener lsl) {
@@ -71,6 +67,10 @@ public class ListView {
 
     public void installList(List<String> list) {
         ImageModel.addAll(list);
+    }
+    
+    public boolean isSelectionEmpty(){
+        return ImageList.isSelectionEmpty();
     }
 
     public void uninstallList() {
