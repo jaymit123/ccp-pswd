@@ -8,18 +8,22 @@ package com.app.user.register.view;
 import com.app.ui.GridView;
 import com.app.ui.FormView;
 import com.app.beans.Viewable;
+import com.app.ui.DisableUI;
 import com.app.ui.listui.ImageListModel;
 import com.app.ui.listui.ListView;
 import com.app.user.register.RegisterController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+import javax.swing.JLayer;
 import javax.swing.event.ListSelectionEvent;
 
 /**
@@ -30,25 +34,26 @@ public class RegisterView implements Viewable {
 
     private final RegisterController RegControl;
     private JPanel MainPanel;                               //The Main Panel holding the entire Registration View
-    private JPanel RightSidePanel;
     private FormView Phase1View;                           //Gives the Phase 1 Form.       
     private JPanel Phase2Panel;                            // The Panel that holds all Phase2 Components
     private JPanel P2ListPanel;                            // Holds the JList in Phase2 & Some Buttons
     private GridView Phase2Grid;                           //Gives the Panel holding the grid.
-    private JPanel P2GridPanel;                            // Holds Additional Buttons + Above Mentioned Grid from GridView
+        private JPanel P2GridPanel;                            // Holds Additional Buttons + Above Mentioned Grid from GridView
     private JButton j1, j2, j3;
+    private JButton P2Next,P2Finish;
     private ListView ListV;
     private List<String> DefaultImageList;
+    private DisableUI P2layerui;
+    private JLayer<JPanel> Phase2Layer;
+
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
         RegControl = regcontrol;
         RegControl.addView(this);
         DefaultImageList = list;
         initMainPanel();
-        j1 = new JButton("j1");
-        j2 = new JButton("j2");
-        j3 = new JButton("j3");
-        MainPanel.add(RightSidePanel, "west,grow");
+
+        MainPanel.add(Phase2Panel, "west,grow");
         MainPanel.add(j3, "center ,grow");
 
     }
@@ -57,17 +62,22 @@ public class RegisterView implements Viewable {
         MainPanel = new JPanel();
         MainPanel.setBackground(Color.red);
         MainPanel.setLayout(new MigLayout("fill"));
-
+    }
+    
+    private void initPhase2(){
+        initPhase2Panel();
+        initListView();
+        initP2GridPanel();
     }
 
-    private void initRigtSidePanel() {
-        RightSidePanel = new JPanel();
-        RightSidePanel.setLayout(new MigLayout("fill"));
+    private void initPhase2Panel() {
+        Phase2Panel = new JPanel();
+        Phase2Panel.setLayout(new MigLayout("fill"));
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         double width = (1.0 / 2.0 * d.getWidth());
         double height = (2.0 / 3.0 * d.getHeight());
-        RightSidePanel.add(j1, "width " + ((int) (1.0 / 3.0 * width)) + " , grow , wrap");
-        RightSidePanel.add(j2, " , height " + ((int) (1.0 / 5.0 * height)) + " , grow");
+        Phase2Panel.add(j1, "width " + ((int) (1.0 / 3.0 * width)) + " , grow , wrap");
+        Phase2Panel.add(j2, " , height " + ((int) (1.0 / 5.0 * height)) + " , grow");
     }
 
     private void initListView() {
@@ -77,6 +87,24 @@ public class RegisterView implements Viewable {
                 RegControl.requestImage(ListV.getSelectionValue());
             }
         });
+    }
+    
+    private void initP2GridPanel(){
+        P2GridPanel = new JPanel(new MigLayout());
+        Phase2Grid = new GridView();
+        P2Next = new JButton("Next");
+        P2Finish = new JButton("Finish");
+        Phase2Grid.setGridBorder(true);
+        Phase2Grid.setGridActions(new MouseAdapter(){
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+               
+            }
+        
+        });
+        
+        
     }
 
     public void loadList() {
