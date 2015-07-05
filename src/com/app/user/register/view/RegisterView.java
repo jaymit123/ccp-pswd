@@ -9,12 +9,10 @@ import com.app.ui.GridView;
 import com.app.ui.FormView;
 import com.app.beans.Viewable;
 import com.app.user.register.RegisterController;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
@@ -42,11 +40,6 @@ public class RegisterView implements Viewable {
         j1 = new JButton("j1");
         j2 = new JButton("j2");
         j3 = new JButton("j3");
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = (1.0 / 2.0 * d.getWidth());
-        double height = (2.0 / 3.0 * d.getHeight());
-        RightSidePanel.add(j1, "width " + ((int) (1.0 / 3.0 * width)) + " , grow , wrap");
-        RightSidePanel.add(j2, " , height " + ((int) (1.0 / 5.0 * height)) + " , grow");
         MainPanel.add(RightSidePanel, "west,grow");
         MainPanel.add(j3, "center ,grow");
 
@@ -56,10 +49,17 @@ public class RegisterView implements Viewable {
         MainPanel = new JPanel();
         MainPanel.setBackground(Color.red);
         MainPanel.setLayout(new MigLayout("fill"));
-        RightSidePanel = new JPanel();
-        //      RightSidePanel.setBackground(Color.blue);
-        RightSidePanel.setLayout(new MigLayout("fill"));
 
+    }
+
+    private void initRigtSidePanel() {
+        RightSidePanel = new JPanel();
+        RightSidePanel.setLayout(new MigLayout("fill"));
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = (1.0 / 2.0 * d.getWidth());
+        double height = (2.0 / 3.0 * d.getHeight());
+        RightSidePanel.add(j1, "width " + ((int) (1.0 / 3.0 * width)) + " , grow , wrap");
+        RightSidePanel.add(j2, " , height " + ((int) (1.0 / 5.0 * height)) + " , grow");
     }
 
     public JPanel getPanel() {
