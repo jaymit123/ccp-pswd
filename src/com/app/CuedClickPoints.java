@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 public class CuedClickPoints {
 
     public static void main(String[] args) throws SecurityException, DatabaseException, ImageAccessException {
+          
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
         UserDAO udao = new UserDAO(dbmodel);
         ImageModel im = new ImageModel("/Images/");

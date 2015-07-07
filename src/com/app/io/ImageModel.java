@@ -63,9 +63,6 @@ public class ImageModel {
         return CurrentImage;
     }
     
-  public static String getImagePath(){
-      return Path;
-  }
     //Not Used
     public Image resizeImage(Image image) {
         image = image.getScaledInstance(ImageWidth, ImageHeight, Image.SCALE_DEFAULT);

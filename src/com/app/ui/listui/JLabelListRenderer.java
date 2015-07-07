@@ -32,7 +32,6 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
 
         setSize(75, 75);
         setDoubleBuffered(true);
-        
 
     }
 
@@ -44,17 +43,13 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
 
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-        ImageIcon a = null;
         try {
-            // a = new ImageIcon(ImageIO.read(this.getClass().getResource(value.toString())).getScaledInstance(50,50, Image.SCALE_FAST));
-            paintImage = ImageIO.read(this.getClass().getResource(ImageModel.getImagePath()+value.toString()));
+            paintImage = ImageIO.read(this.getClass().getResource("/Thumbnails/" + value));
         } catch (IOException ex) {
             System.out.print("Exception in JLabelListRenderer");
             Logger.getLogger(JLabelListRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         repaint();
-        //  setIcon(a);
-
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
