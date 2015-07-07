@@ -23,25 +23,26 @@ public class GridView {
 
     private DisableUI layerui = null;
     private JLayer<JPanel> gridlayer = null;
-    private JLabel GridLabel[] = new JLabel[81];
     private ImagePanel MainPanel = null;
+    private int GridNos = 9;
+    private JLabel GridLabel[] = new JLabel[GridNos * GridNos];
 
     public GridView() {
         initPanel();
         initGrids();
+ 
     }
-    
 
     private void initPanel() {
         MainPanel = new ImagePanel();
-        MainPanel.setLayout(new GridLayout(9, 9, 0, 0));                 //creates layout to place labels in grid form
+        MainPanel.setLayout(new GridLayout(GridNos, GridNos, 0, 0));                 //creates layout to place labels in grid form
         MainPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         layerui = new DisableUI();
         gridlayer = new JLayer<>(MainPanel, layerui);
     }
 
     private void initGrids() {
-        for (int i = 0; i < 81; i++) {
+        for (int i = 0; i < GridNos * GridNos; i++) {
             GridLabel[i] = new JLabel();
             GridLabel[i].setOpaque(false);
             GridLabel[i].setName("" + (i + 1));         // Since for loop index is 0 to 80, we add 1 to the name to make it 1 to 81
@@ -76,11 +77,11 @@ public class GridView {
         MainPanel.paintImage(img);
     }
 
-    public void disableUI() {                    
-        layerui.startDisableUI();
+    public void disableUI() {
+        layerui.startDisableUI();    
     }
 
-    public void enableUI() {                   
+    public void enableUI() {
         layerui.stopDisableUI();
     }
 

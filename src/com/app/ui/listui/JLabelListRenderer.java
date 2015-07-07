@@ -5,6 +5,8 @@
  */
 package com.app.ui.listui;
 
+import com.app.io.ImageModel;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -29,13 +32,14 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
 
         setSize(75, 75);
         setDoubleBuffered(true);
+        
 
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        g.drawImage(paintImage, 0, 0, this.getWidth() - 1, this.getHeight() - 1, null);
+        g.drawImage(paintImage, 4, 4, this.getWidth() - 8, this.getHeight() - 8, null);
     }
 
     @Override
@@ -43,8 +47,9 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
         ImageIcon a = null;
         try {
             // a = new ImageIcon(ImageIO.read(this.getClass().getResource(value.toString())).getScaledInstance(50,50, Image.SCALE_FAST));
-            paintImage = ImageIO.read(this.getClass().getResource("/Images/"+value.toString()));
+            paintImage = ImageIO.read(this.getClass().getResource(ImageModel.getImagePath()+value.toString()));
         } catch (IOException ex) {
+            System.out.print("Exception in JLabelListRenderer");
             Logger.getLogger(JLabelListRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         repaint();
@@ -53,13 +58,14 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
+            setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         } else {
+            setBorder(BorderFactory.createEmptyBorder());
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
         setEnabled(list.isEnabled());
-        setFont(list.getFont());
         setOpaque(true);
 
         return this;

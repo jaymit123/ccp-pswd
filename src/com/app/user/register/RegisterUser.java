@@ -5,7 +5,6 @@
  */
 package com.app.user.register;
 
-import com.app.user.register.RegisterStatus;
 import java.util.Map;
 import java.util.LinkedHashMap;
 

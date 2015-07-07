@@ -13,9 +13,7 @@ import com.app.user.security.ValidationStatus;
 import com.app.user.status.ProcessStatus;
 import com.app.beans.AbstractModel;
 import com.app.io.ImageModel;
-import com.app.user.register.RegisterStatus;
 import com.app.user.status.ExceptionStatus;
-import java.beans.PropertyChangeListener;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
@@ -34,7 +32,7 @@ public class RegisterModel extends AbstractModel {
         ImageModel = im;
     }
 
-    public void createAccount(String Username, String P1Password) {              
+    public void createAccount(String Username, String P1Password) {
         SwingWorker<Object, Void> CreateAccount = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
@@ -162,14 +160,17 @@ public class RegisterModel extends AbstractModel {
             protected Object doInBackground() throws Exception {
                 CurrentProcess = ProcessStatus.RegisterStatus;
                 switch (type) {
-                    case "RESET_FULL":
+                    case "FULL_RESET":
                         RegUser = null;
                         return RegisterStatus.RESET_FULL;
 
-                    case "RESET_P2":
+                    case "P2_RESET":
                         RegUser.resetPhase2();
                         return RegisterStatus.RESET_P2;
 
+                    case "CLOSE":
+                        RegUser = null;
+                        return RegisterStatus.CLOSE;
                     default:
                         CurrentProcess = ProcessStatus.NoProperty;
                         return null;

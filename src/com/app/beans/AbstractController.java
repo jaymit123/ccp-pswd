@@ -18,18 +18,11 @@ public abstract class AbstractController implements PropertyChangeListener {
 
     protected ArrayList<AbstractModel> modelList;
     protected ArrayList<Viewable> viewList;
-    protected Viewable mainMenuView;
-
-    public AbstractController(Viewable mainMenu) {
-        mainMenuView = mainMenu;
+    public AbstractController() {
         modelList = new ArrayList<>();
         viewList = new ArrayList<>();
     }
-
-    public void contactMainMenuView(PropertyChangeEvent evt) {
-        mainMenuView.modelPropertyChange(evt);
-    }
-
+    
     public void addModel(AbstractModel inputModel) {
         modelList.add(inputModel);
         inputModel.addPropertyChangeListener(this);

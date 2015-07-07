@@ -6,12 +6,8 @@
 package com.app.ui.listui;
 
 import com.app.ui.DisableUI;
-import java.awt.Color;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JLayer;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -46,7 +42,7 @@ public class ListView {
         ImageModel = new ImageListModel<>();
         ImageList = new JList<>(ImageModel);
         ImageLabels = new JLabelListRenderer();
-        ImageList.setCellRenderer(ImageLabels); 
+        ImageList.setCellRenderer(ImageLabels);
         ImageList.setDoubleBuffered(true);
         ImageList.setFixedCellHeight(75);
         ImageList.setFixedCellWidth(75);
@@ -69,8 +65,17 @@ public class ListView {
         ImageModel.addAll(list);
     }
 
+    public void repaintList() {
+        ImageList.revalidate();
+        ImageList.repaint();
+    }
+
     public boolean isSelectionEmpty() {
         return ImageList.isSelectionEmpty();
+    }
+
+    public boolean getValueIsAdjusting() {
+        return ImageList.getValueIsAdjusting();
     }
 
     public void uninstallList() {
@@ -91,7 +96,10 @@ public class ListView {
     }
 
     public boolean removeImage(String img) {
-        return ImageModel.remove(img);
+        ImageList.clearSelection();
+        boolean result = ImageModel.remove(img);
+        repaintList();
+        return result;
     }
 
     public String getSelectionValue() {

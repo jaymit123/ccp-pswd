@@ -60,10 +60,15 @@ public class FormView {
     public void disableUI() {
         layerui.startDisableUI();
         Submit.setEnabled(false);
+        UsernameField.setEditable(false);
+        PasswordField.setEditable(false);
     }
 
     public void enableUI() {
         layerui.stopDisableUI();
+        resetUI();
+        UsernameField.setEditable(true);
+        PasswordField.setEditable(true);
         Submit.setEnabled(true);
     }
 
@@ -74,7 +79,7 @@ public class FormView {
     }
 
     public String[] getAllFields() {
-        return new String[]{UsernameField.getText(), PasswordField.getPassword().toString()};
+        return new String[]{UsernameField.getText(), String.valueOf(PasswordField.getPassword())};
     }
 
     private void addComponents() {

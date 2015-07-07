@@ -15,16 +15,17 @@ import java.awt.Image;
  */
 public class ImagePanel extends JPanel {
 
-    private Image DisplayImage = null;                
+    private Image DisplayImage = null;
 
-    public void paintImage(Image bi) {              
+    public void paintImage(Image bi) {
         DisplayImage = bi;
         repaint();                                                // repaint calls paintComponent method internally
     }
-    
+
     @Override
-    public void paintComponent(Graphics g){
-      super.paintComponent(g); 
-        g.drawImage(DisplayImage, 0, 0, this.getWidth(), this.getHeight(), this);   // To Paint the image on the panel
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(DisplayImage, 2, 0, this.getWidth() - 5, this.getHeight() - 2, this);   // To Paint the image on the panel
+
     }
 }

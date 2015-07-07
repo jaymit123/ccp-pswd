@@ -23,22 +23,23 @@ import javax.imageio.ImageIO;
  */
 public class ImageModel {
 
-    private String Path;
+    private static String Path;
     private List<String> ImageList;
-    private URL ImageDirURL;
     private File ImgFolder;
+    private String ImagePath;
+    private int ImageWidth = 500,ImageHeight = 600;  //Default Values
 
     public ImageModel(String path) throws ImageAccessException {
         Path = path;
-        ImageDirURL = ImageModel.class.getResource(Path);
+        URL DirURL = ImageModel.class.getResource(Path);
+        ImagePath = DirURL.getPath().substring(1);
         try {
-            ImgFolder = new File(ImageDirURL.toURI());
+            ImgFolder = new File(DirURL.toURI());
             initImageList();
         } catch (URISyntaxException ex) {
             throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
         }
     }
-    
 
     private void initImageList() {
         ImageList = new LinkedList<String>();
@@ -52,8 +53,8 @@ public class ImageModel {
 
     public Image getImage(String img) throws ImageAccessException {
         Image CurrentImage = null;
-        try (FileInputStream fis = new FileInputStream(Path + img)) {
-            CurrentImage = resizeImage(ImageIO.read(fis));
+        try (FileInputStream fis = new FileInputStream(ImagePath+ img)) {
+            CurrentImage = ImageIO.read(fis);
         } catch (FileNotFoundException ex) {
             throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
         } catch (IOException ex) {
@@ -61,9 +62,13 @@ public class ImageModel {
         }
         return CurrentImage;
     }
-
+    
+  public static String getImagePath(){
+      return Path;
+  }
+    //Not Used
     public Image resizeImage(Image image) {
-        image = image.getScaledInstance(600, 500, Image.SCALE_DEFAULT);
+        image = image.getScaledInstance(ImageWidth, ImageHeight, Image.SCALE_DEFAULT);
         image.flush();
         return image;
     }

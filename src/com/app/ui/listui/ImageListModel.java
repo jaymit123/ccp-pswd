@@ -26,8 +26,6 @@ public class ImageListModel<E> extends AbstractListModel<E> {
     }
 
     public boolean remove(E e) {
-        System.out.print(input.contains(e));
-  
         return input.remove(e);
     }
 
@@ -36,7 +34,7 @@ public class ImageListModel<E> extends AbstractListModel<E> {
     }
 
     public boolean addAll(List<E> inputList) {
-        return input.addAll(inputList);
+       return input.addAll(inputList);
     }
 
     @Override
