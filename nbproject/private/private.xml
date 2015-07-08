@@ -3,14 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/CuedClickPoints.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/io/ImageModel.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/database/DatabaseType.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/io/ImageAccessException.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/ui/listui/JLabelListRenderer.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterController.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterModel.java</file>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterView.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/CuedClickPoints.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/ValidationStatus.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/ValidationModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/io/ImageModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/AuthenticationModel.java</file>
         </group>
     </open-files>
 </project-private>

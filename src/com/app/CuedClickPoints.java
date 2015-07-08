@@ -34,7 +34,7 @@ public class CuedClickPoints {
     public static void main(String[] args) throws SecurityException, DatabaseException, ImageAccessException {
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
         UserDAO udao = new UserDAO(dbmodel);
-        ImageModel im = new ImageModel(System.getProperty("user.home")+"/Desktop/resources/Images/");
+        ImageModel im = new ImageModel(System.getProperty("user.home")+"/Desktop/resources/");
         AuthenticationModel aum = new AuthenticationModel(udao, im.getImageList());
         RegisterController rg = new RegisterController();
 
