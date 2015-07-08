@@ -8,7 +8,6 @@ package com.app.user.register;
 import com.app.beans.AbstractModel;
 import com.app.beans.AbstractController;
 import com.app.beans.Viewable;
-import com.app.user.register.view.RegisterView;
 import com.app.user.status.ProcessStatus;
 import java.beans.PropertyChangeEvent;
 
@@ -59,8 +58,8 @@ public class RegisterController extends AbstractController {
         RegModel.reset("P2_RESET");
     }
 
-    public void close() {
-       RegModel.reset("CLOSE");
+    public void goBack() {
+        RegModel.reset("MAINMENU");
 
     }
 
@@ -68,17 +67,14 @@ public class RegisterController extends AbstractController {
         System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
         switch (evt.getPropertyName()) {
             case "DisplayImage":
+            case "RegisterStatus":
+            case "ValidationStatus":
                 RegView.modelPropertyChange(evt);
                 break;
-                
-            case "RegisterStatus":
-                if (evt.getNewValue().equals(RegisterStatus.CLOSE)) {
-                    MainView.modelPropertyChange(evt);
-                } else {
-                    RegView.modelPropertyChange(evt);
-                }
-                break;
 
+            case "GoToMainMenu":
+                MainView.modelPropertyChange(evt);
+                break;
         }
 
     }

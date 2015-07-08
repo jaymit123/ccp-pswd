@@ -8,11 +8,12 @@ package com.app.user.main;
 import com.app.beans.Viewable;
 import com.app.user.register.RegisterController;
 import com.app.user.register.RegisterStatus;
-import com.app.user.register.view.RegisterView;
+import com.app.user.register.RegisterView;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class HyperView implements Viewable {
 
     private void initRegisterView(List<String> ImageList) {
         MainMenu.addRegisterAction((ActionEvent evt) -> {
-
+            
             RegView = new RegisterView(RegControl, ImageList);        //First Time following code will be next time
             MainFrame.getContentPane().removeAll();
             MainFrame.add(RegView.getPanel());
@@ -87,7 +88,7 @@ public class HyperView implements Viewable {
     @Override
     public void modelPropertyChange(PropertyChangeEvent pce) {
        
-        if (pce.getNewValue().equals(RegisterStatus.CLOSE)) {
+        if (pce.getPropertyName().equals("GoToMainMenu")) {
             showMainPanel();
         }
     }

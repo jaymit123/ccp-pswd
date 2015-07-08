@@ -36,7 +36,6 @@ public class GridView {
     private void initPanel() {
         MainPanel = new ImagePanel();
         MainPanel.setLayout(new GridLayout(GridNos, GridNos, 0, 0));                 //creates layout to place labels in grid form
-        MainPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         layerui = new DisableUI();
         gridlayer = new JLayer<>(MainPanel, layerui);
     }

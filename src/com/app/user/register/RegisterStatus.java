@@ -11,7 +11,7 @@ package com.app.user.register;
  */
 public enum RegisterStatus {
 
-    INIT("Registration Started"), ADDED("Sucessfully updated password."), ALERT("Contine Registration ?\n Note : You can select 2 more images. "), REGISTER_SUCCESS("Registeration Completed Sucessfully!"), REGISTER_FAILED("Sorry an error has occured!\n Please mail me at jaymit_123@gmail.com"), RESET_P2("Phase 2 has been reset successfully!"), RESET_FULL("Full Reset Success!"),CLOSE("Close ReigsterView");
+  ADDED("Sucessfully updated password."), ALERT("Complete Registration ?\n Note : You can select 2 more images. "), REGISTER_SUCCESS("Registeration Completed Sucessfully!"), REGISTER_FAILED("Sorry an error has occured!\n Please mail me at jaymit_123@gmail.com"), P2_RESET("Phase 2 has been reset successfully!"), FULL_RESET("Registration has been sucessfully reset");
 
     private String message;
 

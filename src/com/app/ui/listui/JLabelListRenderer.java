@@ -45,11 +45,11 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         try {
             paintImage = ImageIO.read(this.getClass().getResource("/Thumbnails/" + value));
+            repaint();
         } catch (IOException ex) {
             System.out.print("Exception in JLabelListRenderer");
             Logger.getLogger(JLabelListRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        repaint();
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());

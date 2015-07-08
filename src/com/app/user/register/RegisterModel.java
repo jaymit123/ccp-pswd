@@ -50,9 +50,8 @@ public class RegisterModel extends AbstractModel {
                 //Validate User End//
 
                 //Registration Process Start//
-                CurrentProcess = ProcessStatus.RegisterStatus;
                 RegUser = new RegisterUser(Username, P1Password);
-                return RegisterStatus.INIT;
+                return ValidationStatus.BOTH_OK;
                 // Registration Process End//
             }
 
@@ -158,19 +157,21 @@ public class RegisterModel extends AbstractModel {
 
             @Override
             protected Object doInBackground() throws Exception {
-                CurrentProcess = ProcessStatus.RegisterStatus;
                 switch (type) {
                     case "FULL_RESET":
+                        CurrentProcess = ProcessStatus.RegisterStatus;
                         RegUser = null;
-                        return RegisterStatus.RESET_FULL;
+                        return RegisterStatus.FULL_RESET;
 
                     case "P2_RESET":
+                        CurrentProcess = ProcessStatus.RegisterStatus;
                         RegUser.resetPhase2();
-                        return RegisterStatus.RESET_P2;
+                        return RegisterStatus.P2_RESET;
 
-                    case "CLOSE":
+                    case "MAINMENU":
+                        CurrentProcess = ProcessStatus.GoToMainMenu;
                         RegUser = null;
-                        return RegisterStatus.CLOSE;
+                        return null;
                     default:
                         CurrentProcess = ProcessStatus.NoProperty;
                         return null;

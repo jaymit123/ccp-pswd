@@ -11,7 +11,7 @@ package com.app.user.status;
  */
 public enum ExceptionStatus {
 
-    USER_EXIST(""), FATAL_ERROR("Oh no! Something went wrong!\nPlease restart the software or email me at jaymit_123@hotmail.com!");
+    USER_EXIST("Sorry! Your Username was already taken. Please restart the registration process."), FATAL_ERROR("Oh no! Something went wrong!\nPlease restart the software or email me at jaymit_123@hotmail.com!");
     private String Message;
 
     private ExceptionStatus(String msg) {

@@ -11,8 +11,8 @@ package com.app.user.status;
  */
 public enum ProcessStatus {
 
-    ValidationStatus("ValidationStatus"), RegisterStatus("RegisterStatus"), ExceptionStatus("Exception"), NoProperty("NoProperty"), DisplayImage("Display Image");
-
+    ValidationStatus("ValidationStatus"), RegisterStatus("RegisterStatus"), ExceptionStatus("Exception"), NoProperty("NoProperty"), DisplayImage("Display Image"),
+    GoToMainMenu("Go To MainMenu");
     private String Property;
 
     private ProcessStatus(String property) {
@@ -22,7 +22,5 @@ public enum ProcessStatus {
     public String getProperty() {
         return Property;
     }
-
-
 
 }

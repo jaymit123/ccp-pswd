@@ -29,7 +29,7 @@ public class LoginUser {
     private List<String> OtherImages;                            //List of Images other than those that are present in Users P2Password.
     private Iterator<Map.Entry<String, Integer>> P2Iterator;     // Iterate through users p2password.
     private Iterator<String> OtherImgIterator;                   // Iterate Through other image list
-    private InnerResult Status;                                 // Maintains Inner State of LoginUser , Not Displayed to User
+    private InnerStatus Status;                                 // Maintains Inner State of LoginUser , Not Displayed to User
     private Map.Entry<String, Integer> CurrentEntry;           //Current Image + Grid Combination from P2Password that is being authenticated.
     private int imageindex = 0;                               //Helps in determining position of P2Iteraotr.
 
@@ -39,7 +39,7 @@ public class LoginUser {
         initPhase2(p2password);
         initOtherImages(imglist);
         P2Iterator = P2Password.entrySet().iterator();
-        Status = InnerResult.ENTER;
+        Status = InnerStatus.ENTER;
     }
 
     private void initPhase2(String password) throws SecurityException {
@@ -72,12 +72,12 @@ public class LoginUser {
             case ENTER:
                 //Retrieving 1st Image , ignore input param.
                 if (P2Iterator.hasNext()) {
-                    Status = InnerResult.VALID;
+                    Status = InnerStatus.VALID;
                     result = LoginStatus.CONTINUE;
                     CurrentEntry = P2Iterator.next();        //Make 1st Image + Grid No Combn as CurrentEntry to be Authenticated.
                     result.setMessage(CurrentEntry.getKey());
                 } else {
-                    Status = InnerResult.EXIT;
+                    Status = InnerStatus.EXIT;
                     result = LoginStatus.ERROR;
                 }
                 break;
@@ -93,11 +93,11 @@ public class LoginUser {
                         result.setMessage(CurrentEntry.getKey());
                     } else {
                         result = LoginStatus.SUCCESS;
-                        Status = InnerResult.EXIT;
+                        Status = InnerStatus.EXIT;
                     }
                     break;
                 }
-                Status = InnerResult.INVALID;
+                Status = InnerStatus.INVALID;
 
              //If grid no input != current entry grid numbers , change inner state to INVALID send continue message to user with next Image from OtherImageIteator to display wrong images.    
              //limit of 5 images set 
@@ -107,7 +107,7 @@ public class LoginUser {
                     result.setMessage(OtherImgIterator.next());
                     imageindex++;
                 } else {
-                    Status = InnerResult.EXIT;
+                    Status = InnerStatus.EXIT;
                     result = LoginStatus.FAILURE;
                 }
                 break;

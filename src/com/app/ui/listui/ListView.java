@@ -45,7 +45,7 @@ public class ListView {
         ImageList.setCellRenderer(ImageLabels);
         ImageList.setDoubleBuffered(true);
         ImageList.setFixedCellHeight(75);
-        ImageList.setFixedCellWidth(75);
+        ImageList.setFixedCellWidth(75);        
         ImageList.setVisibleRowCount(6);
         ImageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListScroll = new JScrollPane(ImageList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -74,7 +74,7 @@ public class ListView {
         return ImageList.isSelectionEmpty();
     }
 
-    public boolean getValueIsAdjusting() {
+    public boolean getValueIsAdjusting() { 
         return ImageList.getValueIsAdjusting();
     }
 
@@ -98,6 +98,8 @@ public class ListView {
     public boolean removeImage(String img) {
         ImageList.clearSelection();
         boolean result = ImageModel.remove(img);
+        ImageLabels.revalidate();
+        ImageLabels.repaint();
         repaintList();
         return result;
     }

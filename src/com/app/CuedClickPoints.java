@@ -23,6 +23,7 @@ import com.app.user.main.HyperView;
 import com.app.user.register.RegisterModel;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -31,7 +32,7 @@ import javax.swing.JOptionPane;
 public class CuedClickPoints {
 
     public static void main(String[] args) throws SecurityException, DatabaseException, ImageAccessException {
-          
+
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
         UserDAO udao = new UserDAO(dbmodel);
         ImageModel im = new ImageModel("/Images/");
@@ -40,7 +41,12 @@ public class CuedClickPoints {
 
         RegisterModel rm = new RegisterModel(aum, im);
         rg.setRegisterModel(rm);
+        SwingUtilities.invokeLater(new Runnable() {
 
-        HyperView hp = new HyperView(rg, im.getImageList());
+            public void run() {
+                HyperView hp = new HyperView(rg, im.getImageList());
+            }
+        });
+
     }
 }

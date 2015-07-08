@@ -9,7 +9,7 @@ package com.app.user.login;
  *
  * @author VJ
  */
-public enum InnerResult {
+public enum InnerStatus {
 
    ENTER,           //When LoginUser Object is created first time it is in ENTER State.
    
