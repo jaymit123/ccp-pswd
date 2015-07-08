@@ -10,6 +10,7 @@ import com.app.user.register.RegisterUser;
 import com.app.user.dao.UserDAO;
 import com.app.user.dao.DAOException;
 import com.app.user.dao.DAOExReason;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,7 +26,20 @@ public class AuthenticationModel {
         try {
             userdao = dao;
             ImageList = imagelist;
-            UserList = userdao.getUserList();
+            UserList = new LinkedList<String>(userdao.getUserList()) {
+                /*Ensures that username is checked irrespective of case*/
+                @Override
+                public boolean contains(Object o) {
+                    String paramStr = (String) o;
+                    for (String s : this) {
+                        if (paramStr.equalsIgnoreCase(s)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+            };
             userdao.stopCommunication();
         } catch (DAOException ex) {
             throw new SecurityException(SecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);

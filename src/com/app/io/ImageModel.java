@@ -29,7 +29,7 @@ public class ImageModel {
 
     public ImageModel(String path) throws ImageAccessException {
         ImagesPath = path + "/Images/";
-        ThumbnailsPath = path + "/Thumbnailsd/";
+        ThumbnailsPath = path + "/Thumbnails/";
         initImagesList(new File(ImagesPath));
         initThumbnailsList(new File(ThumbnailsPath));
         compareImageList();
@@ -52,6 +52,8 @@ public class ImageModel {
     private void compareImageList() throws ImageAccessException {
         if (ImagesList.retainAll(ThumbnailsList)) {
             throw new ImageAccessException("No Images Found.\n Please check both folders.");
+        }else if(ImagesList.size() < 10){
+            throw new ImageAccessException("Minimum 10 images required.\n Please check both folders.");
         }
     }
 

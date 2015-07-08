@@ -27,7 +27,7 @@ import javax.swing.ListCellRenderer;
 public class JLabelListRenderer extends JLabel implements ListCellRenderer<String> {
 
     private Image paintImage = null;
-
+    
     JLabelListRenderer() {
 
         setSize(75, 75);
@@ -44,7 +44,7 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         try {
-            paintImage = ImageIO.read(new File(System.getProperty("user.home")+"/Desktop/resources/Thumbnails/"+ value));
+            paintImage = ImageIO.read(new File(System.getProperty("user.home")+"/Desktop/resources/Thumbnails/"+value));
             repaint();
         } catch (IOException ex) {
             System.out.print("Exception in JLabelListRenderer");
