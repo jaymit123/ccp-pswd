@@ -23,22 +23,16 @@ import javax.imageio.ImageIO;
  */
 public class ImageModel {
 
-    private static String Path;
     private List<String> ImageList;
     private File ImgFolder;
     private String ImagePath;
-    private int ImageWidth = 500,ImageHeight = 600;  //Default Values
+    private int ImageWidth = 500, ImageHeight = 600;  //Default Values
 
-    public ImageModel(String path) throws ImageAccessException {
-        Path = path;
-        URL DirURL = ImageModel.class.getResource(Path);
-        ImagePath = DirURL.getPath().substring(1);
-        try {
-            ImgFolder = new File(DirURL.toURI());
-            initImageList();
-        } catch (URISyntaxException ex) {
-            throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
-        }
+    public ImageModel(String path) {
+        ImagePath = path;
+        ImgFolder = new File(path);
+        initImageList();
+
     }
 
     private void initImageList() {
@@ -46,6 +40,7 @@ public class ImageModel {
         String Images[] = ImgFolder.list();
         ImageList.addAll(Arrays.asList(Images));
     }
+    
 
     public List<String> getImageList() {
         return ImageList;
@@ -53,7 +48,7 @@ public class ImageModel {
 
     public Image getImage(String img) throws ImageAccessException {
         Image CurrentImage = null;
-        try (FileInputStream fis = new FileInputStream(ImagePath+ img)) {
+        try (FileInputStream fis = new FileInputStream(ImagePath + img)) {
             CurrentImage = ImageIO.read(fis);
         } catch (FileNotFoundException ex) {
             throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
@@ -62,7 +57,7 @@ public class ImageModel {
         }
         return CurrentImage;
     }
-    
+
     //Not Used
     public Image resizeImage(Image image) {
         image = image.getScaledInstance(ImageWidth, ImageHeight, Image.SCALE_DEFAULT);

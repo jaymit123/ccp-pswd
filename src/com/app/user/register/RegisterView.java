@@ -268,9 +268,11 @@ public class RegisterView implements Viewable {
 
             case "ValidationStatus":
                 handleValidationStatus((ValidationStatus) pce.getNewValue());
+                break;
 
             case "ExceptionStatus":
                 handleExceptionMessage((ExceptionStatus) pce.getNewValue());
+                break;
         }
     }
 

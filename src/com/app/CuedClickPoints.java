@@ -32,10 +32,9 @@ import javax.swing.SwingUtilities;
 public class CuedClickPoints {
 
     public static void main(String[] args) throws SecurityException, DatabaseException, ImageAccessException {
-
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
         UserDAO udao = new UserDAO(dbmodel);
-        ImageModel im = new ImageModel("/Images/");
+        ImageModel im = new ImageModel(System.getProperty("user.home")+"/Desktop/resources/Images/");
         AuthenticationModel aum = new AuthenticationModel(udao, im.getImageList());
         RegisterController rg = new RegisterController();
 

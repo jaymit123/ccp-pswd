@@ -69,6 +69,7 @@ public class RegisterController extends AbstractController {
             case "DisplayImage":
             case "RegisterStatus":
             case "ValidationStatus":
+            case "ExceptionStatus":
                 RegView.modelPropertyChange(evt);
                 break;
 

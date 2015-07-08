@@ -10,12 +10,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -44,7 +44,7 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         try {
-            paintImage = ImageIO.read(this.getClass().getResource("/Thumbnails/" + value));
+            paintImage = ImageIO.read(new File(System.getProperty("user.home")+"/Desktop/resources/Thumbnails/"+ value));
             repaint();
         } catch (IOException ex) {
             System.out.print("Exception in JLabelListRenderer");
