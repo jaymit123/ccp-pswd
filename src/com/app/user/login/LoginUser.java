@@ -9,13 +9,13 @@ import com.app.user.security.SecurityExReason;
 import com.app.user.security.SecurityException;
 import com.app.user.security.ValidationModel;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  *
@@ -57,9 +57,13 @@ public class LoginUser {
     }
 
     //Takes the Image List having all Images i.e OtherImages , remove all Images that are present in P2Password List.
-    private void initOtherImages(List<String> ImageList) {
+    private void initOtherImages(List<String> ImageList) throws SecurityException {
+        Set<String> P2Set = P2Password.keySet();
         OtherImages = new ArrayList<>(ImageList);
-        OtherImages.removeAll(P2Password.keySet());
+        if (!OtherImages.containsAll(P2Set)) {
+            throw new SecurityException(SecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
+        }
+        OtherImages.removeAll(P2Set);
         Collections.shuffle(OtherImages);
         OtherImgIterator = OtherImages.iterator();
 
@@ -73,7 +77,7 @@ public class LoginUser {
                 //Retrieving 1st Image , ignore input param.
                 if (P2Iterator.hasNext()) {
                     Status = InnerStatus.VALID;
-                    result = LoginStatus.CONTINUE;
+                    result = LoginStatus.INIT;
                     CurrentEntry = P2Iterator.next();        //Make 1st Image + Grid No Combn as CurrentEntry to be Authenticated.
                     result.setMessage(CurrentEntry.getKey());
                 } else {
@@ -83,7 +87,7 @@ public class LoginUser {
                 break;
 
              //For 1st Image , Input is checked , if match is found continue with next entry in P2Iterator and send CONTINUE Status including next image name.
-             // if there is no next entry in P2Iterator send SUCCESS Status.
+            // if there is no next entry in P2Iterator send SUCCESS Status.
             case VALID:
                 if (gridno == CurrentEntry.getValue()) {
                     if (P2Iterator.hasNext()) {
@@ -100,7 +104,7 @@ public class LoginUser {
                 Status = InnerStatus.INVALID;
 
              //If grid no input != current entry grid numbers , change inner state to INVALID send continue message to user with next Image from OtherImageIteator to display wrong images.    
-             //limit of 5 images set 
+            //limit of 5 images set 
             case INVALID:
                 if (imageindex < 4 && OtherImgIterator.hasNext()) {
                     result = LoginStatus.CONTINUE;
@@ -114,7 +118,7 @@ public class LoginUser {
 
             case EXIT:
                 result = LoginStatus.ERROR;
-                         destroy();
+                destroy();
                 break;
 
         }

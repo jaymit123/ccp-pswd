@@ -19,7 +19,10 @@ import com.app.user.security.AuthenticationModel;
 import java.util.ArrayList;
 import java.util.List;
 import com.app.io.ImageModel;
+import com.app.user.login.LoginController;
+import com.app.user.login.LoginModel;
 import com.app.user.main.HyperView;
+import com.app.user.main.SwingUncaughtException;
 import com.app.user.register.RegisterModel;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
@@ -32,19 +35,22 @@ import javax.swing.SwingUtilities;
 public class CuedClickPoints {
 
     public static void main(String[] args) throws SecurityException, DatabaseException, ImageAccessException {
+       SwingUncaughtException.registerExceptionHandler();
         DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
+        //  DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "ss", "CCP_User_Table");
         UserDAO udao = new UserDAO(dbmodel);
-        ImageModel im = new ImageModel(System.getProperty("user.home")+"/Desktop/resources/");
+        ImageModel im = new ImageModel(System.getProperty("user.home") + "/Desktop/resources/");
         AuthenticationModel aum = new AuthenticationModel(udao, im.getImageList());
         RegisterController rg = new RegisterController();
-
+        LoginController lg = new LoginController();
         RegisterModel rm = new RegisterModel(aum, im);
+        LoginModel lm = new LoginModel(aum, im);
         rg.setRegisterModel(rm);
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                HyperView hp = new HyperView(rg, im.getImageList());
-            }
+        lg.setLoginModel(lm);
+        //Runs program in EDT
+        SwingUtilities.invokeLater(() -> {
+            SwingUncaughtException.registerExceptionHandler();
+            HyperView hp = new HyperView(lg,rg, im.getImageList());
         });
 
     }

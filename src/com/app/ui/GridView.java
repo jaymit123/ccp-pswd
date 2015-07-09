@@ -6,7 +6,6 @@
 package com.app.ui;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseListener;
@@ -63,6 +62,14 @@ public class GridView {
                     BorderLabel.setBorder(BorderFactory.createEmptyBorder());
                 }
             }
+        }
+    }
+    
+    public void setPanelBorder(boolean visible){
+        if(visible){
+            MainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }else{
+            MainPanel.setBorder(BorderFactory.createEmptyBorder());
         }
     }
 

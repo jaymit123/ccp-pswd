@@ -365,6 +365,8 @@ public class RegisterView implements Viewable {
 
             case USER_EXIST:
                 JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                Restart();
+                P1FormView.enableUI();
                 break;
         }
     }

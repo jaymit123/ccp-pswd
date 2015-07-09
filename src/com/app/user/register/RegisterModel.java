@@ -6,12 +6,12 @@
 package com.app.user.register;
 
 import com.app.user.security.AuthenticationModel;
-import com.app.user.security.SecurityExReason;
 import com.app.user.security.ValidationModel;
 import com.app.user.security.SecurityException;
 import com.app.user.security.ValidationStatus;
 import com.app.user.status.ProcessStatus;
 import com.app.beans.AbstractModel;
+import com.app.io.ImageAccessException;
 import com.app.io.ImageModel;
 import com.app.user.status.ExceptionStatus;
 import java.util.concurrent.ExecutionException;
@@ -33,7 +33,7 @@ public class RegisterModel extends AbstractModel {
     }
 
     public void createAccount(String Username, String P1Password) {
-        SwingWorker<Object, Void> CreateAccount = new SwingWorker<Object, Void>() {
+        SwingWorker<Object, Void> CreateAccountSW = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
             @Override
@@ -66,11 +66,11 @@ public class RegisterModel extends AbstractModel {
             }
 
         };
-        CreateAccount.execute();
+        CreateAccountSW.execute();
     }
 
     public void addEntry(String ImageName, int GridNumber) {
-        SwingWorker<Object, Void> AddEntry = new SwingWorker<Object, Void>() {
+        SwingWorker<Object, Void> AddEntrySW = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
             @Override
@@ -115,12 +115,12 @@ public class RegisterModel extends AbstractModel {
             }
 
         };
-        AddEntry.execute();
+        AddEntrySW.execute();
 
     }
 
     public void finalizeRegistration() {
-        SwingWorker<Object, Void> FinReg = new SwingWorker<Object, Void>() {
+        SwingWorker<Object, Void> FinRegSW = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
             @Override
@@ -147,12 +147,12 @@ public class RegisterModel extends AbstractModel {
             }
 
         };
-        FinReg.execute();
+        FinRegSW.execute();
 
     }
 
     public void reset(String type) {
-        SwingWorker<Object, Void> Reset = new SwingWorker<Object, Void>() {
+        SwingWorker<Object, Void> ResetSW = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
             @Override
@@ -190,11 +190,11 @@ public class RegisterModel extends AbstractModel {
             }
 
         };
-        Reset.execute();
+        ResetSW.execute();
     }
 
     public void getImage(String ImageName) {
-        SwingWorker<Object, Void> getIMAGE = new SwingWorker<Object, Void>() {
+        SwingWorker<Object, Void> GetImageSW = new SwingWorker<Object, Void>() {
             private ProcessStatus CurrentProcess;
 
             @Override
@@ -210,13 +210,11 @@ public class RegisterModel extends AbstractModel {
                 } catch (InterruptedException ex) {
                     RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
                 } catch (ExecutionException ex) {
-                    ExceptionStatus es = ExceptionStatus.FATAL_ERROR;
-                    es.setMessage(ex.getMessage());
-                    RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, es);
+                    handleExecutionException(ex);
                 }
             }
         };
-        getIMAGE.execute();
+        GetImageSW.execute();
     }
 
     private RegisterStatus completeRegistration() throws SecurityException {
@@ -232,13 +230,23 @@ public class RegisterModel extends AbstractModel {
     private void handleExecutionException(ExecutionException ex) {
         if (ex.getCause() instanceof SecurityException) {
             SecurityException se = ((SecurityException) ex.getCause());
-            if (se.getErroReason().equals(SecurityExReason.FIN_REG_USER_EXIST)) {
-                ExceptionStatus es = ExceptionStatus.USER_EXIST;
-                es.setMessage(se.getMessage());
-                RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.USER_EXIST);
-            } else {
-                RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
+            switch (se.getErroReason()) {
+                case FIN_REG_USER_EXIST:
+                    ExceptionStatus es = ExceptionStatus.USER_EXIST;
+                    es.setMessage(se.getMessage());
+                    RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.USER_EXIST);
+                    break;
+
+                default:
+                    RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
+                    break;
             }
+        } else if (ex.getCause() instanceof ImageAccessException) {
+
+            ExceptionStatus es = ExceptionStatus.FATAL_ERROR;
+            es.setMessage(ex.getMessage());
+            RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, es);
+
         } else {
             RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
         }

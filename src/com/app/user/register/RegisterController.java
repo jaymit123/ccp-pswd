@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 package com.app.user.register;
-
-import com.app.beans.AbstractModel;
 import com.app.beans.AbstractController;
 import com.app.beans.Viewable;
-import com.app.user.status.ProcessStatus;
 import java.beans.PropertyChangeEvent;
 
 /**
