@@ -151,7 +151,6 @@ public class LoginModel extends AbstractModel {
             switch (se.getErroReason()) {
                 case PASS_REGEX_CHECK_ERROR:
                 case ACC_IMG_NOT_FOUND:
-                    System.out.print(ex.getMessage());
                     ExceptionStatus eso = ExceptionStatus.OTHER_ERROR;
                     eso.setMessage(se.getErroReason().getMessage());
                     LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, eso);

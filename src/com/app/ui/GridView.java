@@ -29,7 +29,7 @@ public class GridView {
     public GridView() {
         initPanel();
         initGrids();
- 
+
     }
 
     private void initPanel() {
@@ -64,11 +64,11 @@ public class GridView {
             }
         }
     }
-    
-    public void setPanelBorder(boolean visible){
-        if(visible){
+
+    public void setPanelBorder(boolean visible) {
+        if (visible) {
             MainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        }else{
+        } else {
             MainPanel.setBorder(BorderFactory.createEmptyBorder());
         }
     }
@@ -80,11 +80,14 @@ public class GridView {
     }
 
     public void setImage(Image img) {
+        if (MainPanel.isValuesEmpty()) {
+            MainPanel.setValues(GridLabel[0].getX(), GridLabel[0].getY(), GridLabel[0].getWidth() * (GridNos), GridLabel[0].getHeight() * (GridNos));
+        }
         MainPanel.paintImage(img);
     }
 
     public void disableUI() {
-        layerui.startDisableUI();    
+        layerui.startDisableUI();
     }
 
     public void enableUI() {
