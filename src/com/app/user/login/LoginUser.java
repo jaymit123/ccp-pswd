@@ -6,7 +6,7 @@
 package com.app.user.login;
 
 import com.app.user.security.SecurityExReason;
-import com.app.user.security.SecurityException;
+import com.app.user.security.AppSecurityException;
 import com.app.user.security.ValidationModel;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class LoginUser {
     private Map.Entry<String, Integer> CurrentEntry;           //Current Image + Grid Combination from P2Password that is being authenticated.
     private int imageindex = 0;                               //Helps in determining position of P2Iteraotr.
 
-    public LoginUser(String username, String p2password, List<String> imglist) throws SecurityException {
+    public LoginUser(String username, String p2password, List<String> imglist) throws AppSecurityException {
         Username = username;
         P2Password = new LinkedHashMap<>();
         initPhase2(p2password);
@@ -42,7 +42,7 @@ public class LoginUser {
         Status = InnerStatus.ENTER;
     }
 
-    private void initPhase2(String password) throws SecurityException {
+    private void initPhase2(String password) throws AppSecurityException {
         if (ValidationModel.validateP2Passowrd(password)) {       // checks if P2Passowrd retrieved from DB is valid or not else throw exception
             Scanner sc = new Scanner(password);
             sc.useDelimiter(split_password_regex);               // Use to Split the Password into Images and GridNumbers.
@@ -52,16 +52,16 @@ public class LoginUser {
                 P2Password.put(ImageName, GridNo);             // Add Entry into p2password
             }
         } else {
-            throw new SecurityException(SecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
+            throw new AppSecurityException(SecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
         }
     }
 
     //Takes the Image List having all Images i.e OtherImages , remove all Images that are present in P2Password List.
-    private void initOtherImages(List<String> ImageList) throws SecurityException {
+    private void initOtherImages(List<String> ImageList) throws AppSecurityException {
         Set<String> P2Set = P2Password.keySet();
         OtherImages = new ArrayList<>(ImageList);
         if (!OtherImages.containsAll(P2Set)) {
-            throw new SecurityException(SecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
+            throw new AppSecurityException(SecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
         }
         OtherImages.removeAll(P2Set);
         Collections.shuffle(OtherImages);

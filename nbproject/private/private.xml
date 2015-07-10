@@ -8,6 +8,11 @@
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/login/LoginView.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/login/LoginModel.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/main/SwingUncaughtException.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/SecurityExReason.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/DisableUI.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/io/ImageModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/SecurityException.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/ui/listui/JLabelListRenderer.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/status/ProcessStatus.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/login/LoginController.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/CuedClickPoints.java</file>
@@ -17,7 +22,10 @@
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/register/RegisterUser.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/ValidationStatus.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/login/LoginStatus.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/ValidationModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/login/LoginUser.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/security/AuthenticationModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/io/ImageAccessException.java</file>
             <file>file:/C:/Users/VJ/Documents/NetBeansProjects/CuedClickPoints/src/com/app/user/register/RegisterView.java</file>
         </group>
     </open-files>

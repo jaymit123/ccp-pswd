@@ -7,14 +7,19 @@ package com.app.user.register;
 
 import com.app.user.security.AuthenticationModel;
 import com.app.user.security.ValidationModel;
-import com.app.user.security.SecurityException;
+import com.app.user.security.AppSecurityException;
 import com.app.user.security.ValidationStatus;
 import com.app.user.status.ProcessStatus;
 import com.app.beans.AbstractModel;
 import com.app.io.ImageAccessException;
 import com.app.io.ImageModel;
 import com.app.user.status.ExceptionStatus;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 /**
@@ -74,7 +79,7 @@ public class RegisterModel extends AbstractModel {
             private ProcessStatus CurrentProcess;
 
             @Override
-            protected Object doInBackground() throws SecurityException, Exception {
+            protected Object doInBackground() throws AppSecurityException, Exception {
 
                 if (RegUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
@@ -124,7 +129,7 @@ public class RegisterModel extends AbstractModel {
             private ProcessStatus CurrentProcess;
 
             @Override
-            protected Object doInBackground() throws SecurityException, Exception {
+            protected Object doInBackground() throws AppSecurityException, Exception {
 
                 if (RegUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
@@ -209,7 +214,7 @@ public class RegisterModel extends AbstractModel {
                     RegisterModel.this.firePropertyChange(CurrentProcess.toString(), null, get());
                 } catch (InterruptedException ex) {
                     RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
-                } catch (ExecutionException ex) {
+                } catch (ExecutionException ex) { 
                     handleExecutionException(ex);
                 }
             }
@@ -217,7 +222,7 @@ public class RegisterModel extends AbstractModel {
         GetImageSW.execute();
     }
 
-    private RegisterStatus completeRegistration() throws SecurityException {
+    private RegisterStatus completeRegistration() throws AppSecurityException {
         if (AuthenticateUser.finalizeRegistration(RegUser)) {
             RegUser = null;
             return RegisterStatus.REGISTER_SUCCESS;
@@ -228,8 +233,8 @@ public class RegisterModel extends AbstractModel {
     }
 
     private void handleExecutionException(ExecutionException ex) {
-        if (ex.getCause() instanceof SecurityException) {
-            SecurityException se = ((SecurityException) ex.getCause());
+        if (ex.getCause() instanceof AppSecurityException) {
+            AppSecurityException se = ((AppSecurityException) ex.getCause());
             switch (se.getErroReason()) {
                 case FIN_REG_USER_EXIST:
                     ExceptionStatus es = ExceptionStatus.USER_EXIST;
@@ -244,7 +249,8 @@ public class RegisterModel extends AbstractModel {
         } else if (ex.getCause() instanceof ImageAccessException) {
 
             ExceptionStatus es = ExceptionStatus.FATAL_ERROR;
-            es.setMessage(ex.getMessage());
+            int index = ex.getMessage().indexOf(":");
+            es.setMessage(ex.getMessage().substring(index + 1));
             RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, es);
 
         } else {

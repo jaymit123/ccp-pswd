@@ -22,7 +22,7 @@ public class AuthenticationModel {
     private UserDAO userdao;
     private List<String> ImageList, UserList;
 
-    public AuthenticationModel(UserDAO dao, List<String> imagelist) throws SecurityException {
+    public AuthenticationModel(UserDAO dao, List<String> imagelist) throws AppSecurityException {
         try {
             userdao = dao;
             ImageList = imagelist;
@@ -42,7 +42,7 @@ public class AuthenticationModel {
             };
             userdao.stopCommunication();
         } catch (DAOException ex) {
-            throw new SecurityException(SecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);
+            throw new AppSecurityException(SecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);
         }
     }
 
@@ -50,7 +50,7 @@ public class AuthenticationModel {
         return UserList.contains(username);
     }
 
-    public boolean finalizeRegistration(RegisterUser record) throws SecurityException {
+    public boolean finalizeRegistration(RegisterUser record) throws AppSecurityException {
         boolean result = false;
         try {
             userdao.startCommunication();
@@ -61,15 +61,15 @@ public class AuthenticationModel {
             userdao.stopCommunication();
         } catch (DAOException ex) {
             if (ex.getErrorReason().equals(DAOExReason.REG_ERROR_USER_EXIST)) {
-                throw new SecurityException(SecurityExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
+                throw new AppSecurityException(SecurityExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
             } else {
-                throw new SecurityException(SecurityExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
+                throw new AppSecurityException(SecurityExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
             }
         }
         return result;
     }
 
-    public LoginUser processAccount(String username, String p1password) throws SecurityException {
+    public LoginUser processAccount(String username, String p1password) throws AppSecurityException {
         LoginUser user = null;
         try {
             userdao.startCommunication();
@@ -79,7 +79,7 @@ public class AuthenticationModel {
                 user = new LoginUser(username, p2password, ImageList);
             }
         } catch (DAOException ex) {
-            throw new SecurityException(SecurityExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
+            throw new AppSecurityException(SecurityExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
         }
         return user;
     }

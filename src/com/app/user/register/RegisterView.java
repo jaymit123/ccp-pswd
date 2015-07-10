@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.JOptionPane;
@@ -360,7 +359,7 @@ public class RegisterView implements Viewable {
         switch (es) {
             case FATAL_ERROR:
                 JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                ((JFrame) MainPanel.getParent()).dispose();
+                System.exit(0);
                 break;
 
             case USER_EXIST:

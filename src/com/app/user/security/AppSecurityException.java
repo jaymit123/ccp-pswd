@@ -9,16 +9,16 @@ package com.app.user.security;
  *
  * @author VJ
  */
-public class SecurityException extends Exception {
+public class AppSecurityException extends Exception {
 
     private SecurityExReason Reason;
 
-    public SecurityException(SecurityExReason reason, String string) {
+    public AppSecurityException(SecurityExReason reason, String string) {
         super(string);
         Reason = reason;
     }
 
-    public SecurityException(SecurityExReason reason, String string, Throwable thrwbl) {
+    public AppSecurityException(SecurityExReason reason, String string, Throwable thrwbl) {
         super(string, thrwbl);
         Reason = reason;
 

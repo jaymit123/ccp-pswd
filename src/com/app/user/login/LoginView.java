@@ -176,7 +176,7 @@ public class LoginView implements Viewable {
         switch (es) {
             case FATAL_ERROR:
                 JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                ((JFrame) MainPanel.getParent()).dispose();
+                System.exit(0);
                 break;
 
             case OTHER_ERROR:

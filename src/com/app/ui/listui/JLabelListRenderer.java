@@ -5,7 +5,6 @@
  */
 package com.app.ui.listui;
 
-import com.app.io.ImageModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;

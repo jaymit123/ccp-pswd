@@ -146,11 +146,12 @@ public class LoginModel extends AbstractModel {
     }
 
     private void handleExecutionException(ExecutionException ex) {
-        if (ex.getCause() instanceof com.app.user.security.SecurityException) {
-            com.app.user.security.SecurityException se = ((com.app.user.security.SecurityException) ex.getCause());
+        if (ex.getCause() instanceof com.app.user.security.AppSecurityException) {
+            com.app.user.security.AppSecurityException se = ((com.app.user.security.AppSecurityException) ex.getCause());
             switch (se.getErroReason()) {
                 case PASS_REGEX_CHECK_ERROR:
                 case ACC_IMG_NOT_FOUND:
+                    System.out.print(ex.getMessage());
                     ExceptionStatus eso = ExceptionStatus.OTHER_ERROR;
                     eso.setMessage(se.getErroReason().getMessage());
                     LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, eso);
@@ -161,10 +162,9 @@ public class LoginModel extends AbstractModel {
                     break;
             }
         } else if (ex.getCause() instanceof ImageAccessException) {
-
-            ExceptionStatus es = ExceptionStatus.FATAL_ERROR;
+            ExceptionStatus es = ExceptionStatus.OTHER_ERROR;
             int index = ex.getMessage().indexOf(":");
-            es.setMessage(ex.getMessage().substring(index+1));
+            es.setMessage(ex.getMessage().substring(index + 1));
             LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, es);
 
         } else {
