@@ -20,13 +20,13 @@ import javax.swing.JScrollPane;
  */
 public class ListView {
 
-    private DisableUI layerui;
-    private JLayer<JPanel> ListLayer;
-    private JPanel MainPanel;
-    private JList<String> ImageList;
-    private JScrollPane ListScroll;
-    private ImageListModel<String> ImageModel;
-    private JLabelListRenderer ImageLabels;
+    private DisableUI layerUi;
+    private JLayer<JPanel> listLayer;
+    private JPanel mainPanel;
+    private JList<String> imageList;
+    private JScrollPane listScroll;
+    private ImageListModel<String> imageModel;
+    private JLabelListRenderer imageLabels;
 
     public ListView() {
         initMainPanel();
@@ -35,77 +35,77 @@ public class ListView {
     }
 
     private void initMainPanel() {
-        MainPanel = new JPanel();
+        mainPanel = new JPanel();
     }
 
     private void initImageList() {
-        ImageModel = new ImageListModel<>();
-        ImageList = new JList<>(ImageModel);
-        ImageLabels = new JLabelListRenderer();
-        ImageList.setCellRenderer(ImageLabels);
-        ImageList.setDoubleBuffered(true);
-        ImageList.setFixedCellHeight(75);
-        ImageList.setFixedCellWidth(75);        
-        ImageList.setVisibleRowCount(6);
-        ImageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ListScroll = new JScrollPane(ImageList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        imageModel = new ImageListModel<>();
+        imageList = new JList<>(imageModel);
+        imageLabels = new JLabelListRenderer();
+        imageList.setCellRenderer(imageLabels);
+        imageList.setDoubleBuffered(true);
+        imageList.setFixedCellHeight(75);
+        imageList.setFixedCellWidth(75);        
+        imageList.setVisibleRowCount(6);
+        imageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listScroll = new JScrollPane(imageList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     private void initLayer() {
-        MainPanel.add(ListScroll);
-        layerui = new DisableUI();
-        ListLayer = new JLayer<>(MainPanel, layerui);
+        mainPanel.add(listScroll);
+        layerUi = new DisableUI();
+        listLayer = new JLayer<>(mainPanel, layerUi);
     }
 
     public void setListSelectionListener(ListSelectionListener lsl) {
-        ImageList.addListSelectionListener(lsl);
+        imageList.addListSelectionListener(lsl);
     }
 
     public void installList(List<String> list) {
-        ImageModel.addAll(list);
+        imageModel.addAll(list);
     }
 
     public void repaintList() {
-        ImageList.revalidate();
-        ImageList.repaint();
+        imageList.revalidate();
+        imageList.repaint();
     }
 
     public boolean isSelectionEmpty() {
-        return ImageList.isSelectionEmpty();
+        return imageList.isSelectionEmpty();
     }
 
     public boolean getValueIsAdjusting() { 
-        return ImageList.getValueIsAdjusting();
+        return imageList.getValueIsAdjusting();
     }
 
     public void uninstallList() {
-        ImageModel.removeAll();
+        imageModel.removeAll();
     }
 
     public void disableUI() {
-        layerui.startDisableUI();
+        layerUi.startDisableUI();
     }
 
     public void enableUI() {
-        layerui.stopDisableUI();
+        layerUi.stopDisableUI();
 
     }
 
     public JLayer<JPanel> getLayer() {
-        return ListLayer;
+        return listLayer;
     }
 
     public boolean removeImage(String img) {
-        ImageList.clearSelection();
-        boolean result = ImageModel.remove(img);
-        ImageLabels.revalidate();
-        ImageLabels.repaint();
+        imageList.clearSelection();
+        boolean result = imageModel.remove(img);
+        imageLabels.revalidate();
+        imageLabels.repaint();
         repaintList();
         return result;
     }
 
     public String getSelectionValue() {
-        return ImageList.getSelectedValue();
+        return imageList.getSelectedValue();
     }
 
 }

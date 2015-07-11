@@ -20,19 +20,19 @@ import java.util.LinkedList;
 public class DatabaseModel {
 
     private DatabaseType selected;                            //Select type of database h2 / mysql / any future db.
-    private Connection database_con;                          
-    private final String Path, Username, Password, TableName; 
+    private Connection databaseConnection;                          
+    private final String Path, username, password, tableName; 
     private final String UserList_SQL_QUERY;
 
-    public DatabaseModel(DatabaseType dt, String path, String username, String password, String tablename) throws DatabaseException {
+    public DatabaseModel(DatabaseType dt, String pth, String uname, String pwd, String tablename) throws DatabaseException {
         try {
             selected = dt;
-            Path = path;
-            Username = username;
-            Password = password;
-            TableName = tablename;
+            Path = pth;
+            username = uname;
+            password = pwd;
+            tableName = tablename;
             Class.forName(selected.getDriver()).newInstance();
-            UserList_SQL_QUERY = "Select Username from " + TableName + ";";
+            UserList_SQL_QUERY = "Select Username from " + tableName + ";";
             createConnection();
         } catch (ClassNotFoundException ex) {
             throw new DatabaseException("ClassNotFoundException : Could not find Instance of Driver " + selected.name() + " interface implementation.", ex);
@@ -45,7 +45,7 @@ public class DatabaseModel {
 
     public void createConnection() throws DatabaseException {
         try {
-            database_con = DriverManager.getConnection(selected.getAddress() + Path, Username, Password);
+            databaseConnection = DriverManager.getConnection(selected.getAddress() + Path, username, password);
         } catch (SQLException ex) {
             throw new DatabaseException("SQLException occured while creating Connection Object in createConnection Method", ex);
         }
@@ -53,7 +53,7 @@ public class DatabaseModel {
 
     public List<String> getUserList() throws DatabaseException {
         List<String> usernames = new LinkedList<>();
-        try (Statement UserListStmt = database_con.createStatement()) {
+        try (Statement UserListStmt = databaseConnection.createStatement()) {
             try (ResultSet QueryResult = UserListStmt.executeQuery(UserList_SQL_QUERY)) {
                 if (QueryResult.isBeforeFirst()) {          
                     while (QueryResult.next()) {
@@ -72,8 +72,8 @@ public class DatabaseModel {
     public boolean registerUser(String Username, String P1Password, String P2Password) throws DatabaseException {
 
         boolean isRegistered = false;
-        try (Statement RegisterUserStmt = database_con.createStatement()) {
-            String Register_SQL_QUERY = "Insert into " + TableName + " (Username,P1Password,P2Password) values('" + Username + "','" + P1Password + "','" + P2Password + "');";
+        try (Statement RegisterUserStmt = databaseConnection.createStatement()) {
+            String Register_SQL_QUERY = "Insert into " + tableName + " (Username,P1Password,P2Password) values('" + Username + "','" + P1Password + "','" + P2Password + "');";
             if (RegisterUserStmt.executeUpdate(Register_SQL_QUERY) == 1) { //executeUpdate() returns 1 if a row is added/updated.
                 isRegistered = true;
             }
@@ -89,8 +89,8 @@ public class DatabaseModel {
 
     public String loginUser(String Username, String P1Password) throws DatabaseException {
         String P2Password = null;
-        try (Statement LoginUserStmt = database_con.createStatement()) {
-            String Login_SQL_QUERY = "Select P2Password from " + TableName + " where Username = '" + Username + "' and P1Password = '" + P1Password + "';";
+        try (Statement LoginUserStmt = databaseConnection.createStatement()) {
+            String Login_SQL_QUERY = "Select P2Password from " + tableName + " where Username = '" + Username + "' and P1Password = '" + P1Password + "';";
             try (ResultSet QueryResult = LoginUserStmt.executeQuery(Login_SQL_QUERY)) {
                 if (QueryResult.isBeforeFirst() && QueryResult.next()) {
                     P2Password = QueryResult.getString(1);
@@ -105,16 +105,16 @@ public class DatabaseModel {
     }
 
     public void initConnection() throws DatabaseException {
-        if (database_con == null) {
+        if (databaseConnection == null) {
             createConnection();
         }
     }
 
     public void closeConnection() throws DatabaseException {
         try {
-            if (database_con != null) {
-                database_con.close();
-                database_con = null;
+            if (databaseConnection != null) {
+                databaseConnection.close();
+                databaseConnection = null;
             }
         } catch (SQLException ex) {
             throw new DatabaseException("SQLException occured while closing Connection Object in closeConnection Method", ex);

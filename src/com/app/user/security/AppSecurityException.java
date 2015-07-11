@@ -11,21 +11,21 @@ package com.app.user.security;
  */
 public class AppSecurityException extends Exception {
 
-    private SecurityExReason Reason;
+    private SecurityExReason reason;
 
-    public AppSecurityException(SecurityExReason reason, String string) {
+    public AppSecurityException(SecurityExReason rsn, String string) {
         super(string);
-        Reason = reason;
+        reason = rsn;
     }
 
-    public AppSecurityException(SecurityExReason reason, String string, Throwable thrwbl) {
+    public AppSecurityException(SecurityExReason rsn, String string, Throwable thrwbl) {
         super(string, thrwbl);
-        Reason = reason;
+        reason = rsn;
 
     }
 
     public SecurityExReason getErroReason() {
-        return Reason;
+        return reason;
     }
 
 }

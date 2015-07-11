@@ -46,7 +46,6 @@ public class JLabelListRenderer extends JLabel implements ListCellRenderer<Strin
             paintImage = ImageIO.read(new File(System.getProperty("user.home")+"/Desktop/resources/Thumbnails/"+value));
             repaint();
         } catch (IOException ex) {
-            System.out.print("Exception in JLabelListRenderer");
             Logger.getLogger(JLabelListRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (isSelected) {

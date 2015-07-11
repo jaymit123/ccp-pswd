@@ -23,33 +23,33 @@ import java.util.Set;
  */
 public class LoginUser {
 
-    private String Username;
-    private Map<String, Integer> P2Password;
-    private final String split_password_regex = "[&|]";
-    private List<String> OtherImages;                            //List of Images other than those that are present in Users P2Password.
-    private Iterator<Map.Entry<String, Integer>> P2Iterator;     // Iterate through users p2password.
-    private Iterator<String> OtherImgIterator;                   // Iterate Through other image list
+    private String username;
+    private Map<String, Integer> p2Password;
+    private final String split_Password_Regex = "[&|]";
+    private List<String> otherImages;                            //List of Images other than those that are present in Users P2Password.
+    private Iterator<Map.Entry<String, Integer>> p2Iterator;     // Iterate through users p2password.
+    private Iterator<String> otherImgIterator;                   // Iterate Through other image list
     private InnerStatus Status;                                 // Maintains Inner State of LoginUser , Not Displayed to User
-    private Map.Entry<String, Integer> CurrentEntry;           //Current Image + Grid Combination from P2Password that is being authenticated.
-    private int imageindex = 0;                               //Helps in determining position of P2Iteraotr.
+    private Map.Entry<String, Integer> currentEntry;           //Current Image + Grid Combination from P2Password that is being authenticated.
+    private int imageIndex = 0;                               //Helps in determining position of P2Iteraotr.
 
-    public LoginUser(String username, String p2password, List<String> imglist) throws AppSecurityException {
-        Username = username;
-        P2Password = new LinkedHashMap<>();
+    public LoginUser(String uname, String p2password, List<String> imglist) throws AppSecurityException {
+        username = uname;
+        p2Password = new LinkedHashMap<>();
         initPhase2(p2password);
         initOtherImages(imglist);
-        P2Iterator = P2Password.entrySet().iterator();
+        p2Iterator = p2Password.entrySet().iterator();
         Status = InnerStatus.ENTER;
     }
 
     private void initPhase2(String password) throws AppSecurityException {
         if (ValidationModel.validateP2Passowrd(password)) {       // checks if P2Passowrd retrieved from DB is valid or not else throw exception
             Scanner sc = new Scanner(password);
-            sc.useDelimiter(split_password_regex);               // Use to Split the Password into Images and GridNumbers.
+            sc.useDelimiter(split_Password_Regex);               // Use to Split the Password into Images and GridNumbers.
             while (sc.hasNext()) {
                 String ImageName = sc.next();
                 int GridNo = sc.nextInt();
-                P2Password.put(ImageName, GridNo);             // Add Entry into p2password
+                p2Password.put(ImageName, GridNo);             // Add Entry into p2password
             }
         } else {
             throw new AppSecurityException(SecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
@@ -58,14 +58,14 @@ public class LoginUser {
 
     //Takes the Image List having all Images i.e OtherImages , remove all Images that are present in P2Password List.
     private void initOtherImages(List<String> ImageList) throws AppSecurityException {
-        Set<String> P2Set = P2Password.keySet();
-        OtherImages = new ArrayList<>(ImageList);
-        if (!OtherImages.containsAll(P2Set)) {
+        Set<String> p2Set = p2Password.keySet();
+        otherImages = new ArrayList<>(ImageList);
+        if (!otherImages.containsAll(p2Set)) {
             throw new AppSecurityException(SecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
         }
-        OtherImages.removeAll(P2Set);
-        Collections.shuffle(OtherImages);
-        OtherImgIterator = OtherImages.iterator();
+        otherImages.removeAll(p2Set);
+        Collections.shuffle(otherImages);
+        otherImgIterator = otherImages.iterator();
 
     }
 
@@ -75,26 +75,26 @@ public class LoginUser {
         switch (Status) {
             case ENTER:
                 //Retrieving 1st Image , ignore input param.
-                if (P2Iterator.hasNext()) {
+                if (p2Iterator.hasNext()) {
                     Status = InnerStatus.VALID;
                     result = LoginStatus.INIT;
-                    CurrentEntry = P2Iterator.next();        //Make 1st Image + Grid No Combn as CurrentEntry to be Authenticated.
-                    result.setMessage(CurrentEntry.getKey());
+                    currentEntry = p2Iterator.next();        //Make 1st Image + Grid No Combn as CurrentEntry to be Authenticated.
+                    result.setMessage(currentEntry.getKey());
                 } else {
                     Status = InnerStatus.EXIT;
                     result = LoginStatus.ERROR;
                 }
                 break;
 
-             //For 1st Image , Input is checked , if match is found continue with next entry in P2Iterator and send CONTINUE Status including next image name.
+            //For 1st Image , Input is checked , if match is found continue with next entry in P2Iterator and send CONTINUE Status including next image name.
             // if there is no next entry in P2Iterator send SUCCESS Status.
             case VALID:
-                if (gridno == CurrentEntry.getValue()) {
-                    if (P2Iterator.hasNext()) {
-                        imageindex++;
+                if (gridno == currentEntry.getValue()) {
+                    if (p2Iterator.hasNext()) {
+                        imageIndex++;
                         result = LoginStatus.CONTINUE;
-                        CurrentEntry = P2Iterator.next();
-                        result.setMessage(CurrentEntry.getKey());
+                        currentEntry = p2Iterator.next();
+                        result.setMessage(currentEntry.getKey());
                     } else {
                         result = LoginStatus.SUCCESS;
                         Status = InnerStatus.EXIT;
@@ -103,13 +103,13 @@ public class LoginUser {
                 }
                 Status = InnerStatus.INVALID;
 
-             //If grid no input != current entry grid numbers , change inner state to INVALID send continue message to user with next Image from OtherImageIteator to display wrong images.    
+            //If grid no input != current entry grid numbers , change inner state to INVALID send continue message to user with next Image from OtherImageIteator to display wrong images.    
             //limit of 5 images set 
             case INVALID:
-                if (imageindex < 4 && OtherImgIterator.hasNext()) {
+                if (imageIndex < 4 && otherImgIterator.hasNext()) {
                     result = LoginStatus.CONTINUE;
-                    result.setMessage(OtherImgIterator.next());
-                    imageindex++;
+                    result.setMessage(otherImgIterator.next());
+                    imageIndex++;
                 } else {
                     Status = InnerStatus.EXIT;
                     result = LoginStatus.FAILURE;
@@ -126,12 +126,12 @@ public class LoginUser {
     }
 
     private void destroy() {
-        Username = null;
-        P2Password = null;
-        OtherImages = null;
-        P2Iterator = null;
-        CurrentEntry = null;
-        imageindex = -1;
+        username = null;
+        p2Password = null;
+        otherImages = null;
+        p2Iterator = null;
+        currentEntry = null;
+        imageIndex = -1;
     }
 
 }

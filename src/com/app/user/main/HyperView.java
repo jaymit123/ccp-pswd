@@ -25,93 +25,93 @@ import java.util.List;
  */
 public class HyperView implements Viewable {
 
-    private JFrame MainFrame;
-    private MainMenuView MainMenu;
-    private RegisterController RegControl;
-    private LoginController LogControl;
-    private LoginView LogView;
-    private RegisterView RegView;
-    private double appwidth, appheight;
+    private JFrame mainFrame;
+    private MainMenuView mainMenu;
+    private RegisterController regControl;
+    private LoginController logControl;
+    private LoginView logView;
+    private RegisterView legView;
+    private double appWidth, appHeight;
 
     public HyperView(LoginController logcntrl, RegisterController regcntrl, List<String> ImgList) {
-        LogControl = logcntrl;
-        RegControl = regcntrl;
-        LogControl.setMainView(this);
-        RegControl.setMainView(this);
+        logControl = logcntrl;
+        regControl = regcntrl;
+        logControl.setMainView(this);
+        regControl.setMainView(this);
         initFrame();
         initMainMenu(ImgList);
-        MainFrame.add(MainMenu.getPanel());
-        MainFrame.setLocationRelativeTo(null);
-        MainFrame.setVisible(true);
+        mainFrame.add(mainMenu.getPanel());
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
     }
 
     private void initFrame() {
-        MainFrame = new JFrame("CCP");
+        mainFrame = new JFrame("CCP");
         Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        appwidth = ScreenSize.getWidth();
-        appheight = ScreenSize.getHeight();
-        MainFrame.setSize((int) (1.0 / 8.0 * appwidth), (int) (1.0 / 6.0 * appheight));
-        MainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        MainFrame.dispatchEvent(new WindowEvent(MainFrame, Event.WINDOW_DESTROY));
-        MainFrame.setResizable(false);
+        appWidth = ScreenSize.getWidth();
+        appHeight = ScreenSize.getHeight();
+        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 6.0 * appHeight));
+        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainFrame.dispatchEvent(new WindowEvent(mainFrame, Event.WINDOW_DESTROY));
+        mainFrame.setResizable(false);
     }
 
     private void initMainMenu(List<String> ImgList) {
-        MainMenu = new MainMenuView();
+        mainMenu = new MainMenuView();
         initRegisterView(ImgList);
         initLoginView();
     }
 
     private void initRegisterView(List<String> ImageList) {
-        MainMenu.addRegisterAction((ActionEvent evt) -> {
+        mainMenu.addRegisterAction((ActionEvent evt) -> {
 
-            RegView = new RegisterView(RegControl, ImageList);        //First Time following code will be next time
-            MainFrame.getContentPane().removeAll();
-            MainFrame.add(RegView.getPanel());
-            MainFrame.revalidate();
-            MainFrame.repaint();
-            MainFrame.setSize((int) (2.0 / 3.0 * appwidth), (int) (2.0 / 3.0 * appheight));
-            MainFrame.setLocationRelativeTo(null);
-            MainMenu.addLoginAction((ActionEvent ae) -> {  // Next Time Register Btn is pressed following code will be executed.
-                MainFrame.getContentPane().removeAll();
-                MainFrame.add(RegView.getPanel());
-                MainFrame.revalidate();
-                MainFrame.repaint();
-                MainFrame.setSize((int) (2.0 / 3.0 * appwidth), (int) (2.0 / 3.0 * appheight));
-                MainFrame.setLocationRelativeTo(null);
+            legView = new RegisterView(regControl, ImageList);        //First Time following code will be next time
+            mainFrame.getContentPane().removeAll();
+            mainFrame.add(legView.getPanel());
+            mainFrame.revalidate();
+            mainFrame.repaint();
+            mainFrame.setSize((int) (2.0 / 3.0 * appWidth), (int) (2.0 / 3.0 * appHeight));
+            mainFrame.setLocationRelativeTo(null);
+            mainMenu.addLoginAction((ActionEvent ae) -> {  // Next Time Register Btn is pressed following code will be executed.
+                mainFrame.getContentPane().removeAll();
+                mainFrame.add(legView.getPanel());
+                mainFrame.revalidate();
+                mainFrame.repaint();
+                mainFrame.setSize((int) (2.0 / 3.0 * appWidth), (int) (2.0 / 3.0 * appHeight));
+                mainFrame.setLocationRelativeTo(null);
             });
         });
 
     }
 
     private void initLoginView() {
-        MainMenu.addLoginAction((ActionEvent evt) -> {
+        mainMenu.addLoginAction((ActionEvent evt) -> {
 
-            LogView = new LoginView(LogControl);
-            MainFrame.getContentPane().removeAll();
-            MainFrame.add(LogView.getPanel());
-            MainFrame.revalidate();
-            MainFrame.repaint();
-            MainFrame.setSize((int) (2.0 / 5.0 * appwidth), (int) (4.0 / 5.0 * appheight));
-            MainFrame.setLocationRelativeTo(null);
-            MainMenu.addLoginAction((ActionEvent ae) -> {  // Next Time Register Btn is pressed following code will be executed.
-                MainFrame.getContentPane().removeAll();
-                MainFrame.add(LogView.getPanel());
-                MainFrame.revalidate();
-                MainFrame.repaint();
-                MainFrame.setSize((int) (2.0 / 3.0 * appwidth), (int) (2.0 / 3.0 * appheight));
-                MainFrame.setLocationRelativeTo(null);
+            logView = new LoginView(logControl);
+            mainFrame.getContentPane().removeAll();
+            mainFrame.add(logView.getPanel());
+            mainFrame.revalidate();
+            mainFrame.repaint();
+            mainFrame.setSize((int) (2.0 / 5.0 * appWidth), (int) (4.0 / 5.0 * appHeight));
+            mainFrame.setLocationRelativeTo(null);
+            mainMenu.addLoginAction((ActionEvent ae) -> {  // Next Time Register Btn is pressed following code will be executed.
+                mainFrame.getContentPane().removeAll();
+                mainFrame.add(logView.getPanel());
+                mainFrame.revalidate();
+                mainFrame.repaint();
+                mainFrame.setSize((int) (2.0 / 3.0 * appWidth), (int) (2.0 / 3.0 * appHeight));
+                mainFrame.setLocationRelativeTo(null);
             });
         });
     }
 
     private void showMainPanel() {
-        MainFrame.getContentPane().removeAll();
-        MainFrame.add(MainMenu.getPanel());
-        MainFrame.revalidate();
-        MainFrame.repaint();
-        MainFrame.setSize((int) (1.0 / 8.0 * appwidth), (int) (1.0 / 6.0 * appheight));
-        MainFrame.setLocationRelativeTo(null);
+        mainFrame.getContentPane().removeAll();
+        mainFrame.add(mainMenu.getPanel());
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 6.0 * appHeight));
+        mainFrame.setLocationRelativeTo(null);
     }
 
     @Override

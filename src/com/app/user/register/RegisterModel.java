@@ -14,12 +14,7 @@ import com.app.beans.AbstractModel;
 import com.app.io.ImageAccessException;
 import com.app.io.ImageModel;
 import com.app.user.status.ExceptionStatus;
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 /**
@@ -28,13 +23,13 @@ import javax.swing.SwingWorker;
  */
 public class RegisterModel extends AbstractModel {
 
-    private RegisterUser RegUser = null;
-    private final AuthenticationModel AuthenticateUser;
-    private final ImageModel ImageModel;
+    private RegisterUser regUser = null;
+    private final AuthenticationModel authenticateUser;
+    private final ImageModel imageModel;
 
     public RegisterModel(AuthenticationModel aum, ImageModel im) {
-        AuthenticateUser = aum;
-        ImageModel = im;
+        authenticateUser = aum;
+        imageModel = im;
     }
 
     public void createAccount(String Username, String P1Password) {
@@ -49,13 +44,13 @@ public class RegisterModel extends AbstractModel {
                 if (!ValidateData.equals(ValidationStatus.BOTH_OK)) {
                     return ValidateData;
                 }
-                if (AuthenticateUser.checkUsername(Username)) {
+                if (authenticateUser.checkUsername(Username)) {
                     return ValidationStatus.USERNAME_EXIST;
                 }
                 //Validate User End//
 
                 //Registration Process Start//
-                RegUser = new RegisterUser(Username, P1Password);
+                regUser = new RegisterUser(Username, P1Password);
                 return ValidationStatus.BOTH_OK;
                 // Registration Process End//
             }
@@ -65,7 +60,7 @@ public class RegisterModel extends AbstractModel {
                 try {
                     RegisterModel.this.firePropertyChange(CurrentProcess.toString(), null, get());
                 } catch (InterruptedException | ExecutionException ex) {
-                    RegUser = null;
+                    regUser = null;
                     RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
                 }
             }
@@ -81,19 +76,19 @@ public class RegisterModel extends AbstractModel {
             @Override
             protected Object doInBackground() throws AppSecurityException, Exception {
 
-                if (RegUser == null) { //Check if RegisterUser is created!
+                if (regUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
                     return ValidationStatus.NO_ACCOUNT;
                 }
 
                 //Start Adding Entry.//
                 CurrentProcess = ProcessStatus.RegisterStatus;
-                RegisterStatus regstatus = RegUser.addEntry(ImageName, GridNumber);
+                RegisterStatus regstatus = regUser.addEntry(ImageName, GridNumber);
                 switch (regstatus) {
                     case REGISTER_SUCCESS:
                         return completeRegistration();
                     case REGISTER_FAILED:
-                        RegUser = null;
+                        regUser = null;
                         return regstatus;
 
                     case ADDED:
@@ -131,7 +126,7 @@ public class RegisterModel extends AbstractModel {
             @Override
             protected Object doInBackground() throws AppSecurityException, Exception {
 
-                if (RegUser == null) { //Check if RegisterUser is created!
+                if (regUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
                     return ValidationStatus.NO_ACCOUNT;
                 }
@@ -165,17 +160,17 @@ public class RegisterModel extends AbstractModel {
                 switch (type) {
                     case "FULL_RESET":
                         CurrentProcess = ProcessStatus.RegisterStatus;
-                        RegUser = null;
+                        regUser = null;
                         return RegisterStatus.FULL_RESET;
 
                     case "P2_RESET":
                         CurrentProcess = ProcessStatus.RegisterStatus;
-                        RegUser.resetPhase2();
+                        regUser.resetPhase2();
                         return RegisterStatus.P2_RESET;
 
                     case "MAINMENU":
                         CurrentProcess = ProcessStatus.GoToMainMenu;
-                        RegUser = null;
+                        regUser = null;
                         return null;
                     default:
                         CurrentProcess = ProcessStatus.NoProperty;
@@ -205,7 +200,7 @@ public class RegisterModel extends AbstractModel {
             @Override
             protected Object doInBackground() throws Exception {
                 CurrentProcess = ProcessStatus.DisplayImage;
-                return ImageModel.getImage(ImageName);
+                return imageModel.getImage(ImageName);
             }
 
             @Override
@@ -223,11 +218,11 @@ public class RegisterModel extends AbstractModel {
     }
 
     private RegisterStatus completeRegistration() throws AppSecurityException {
-        if (AuthenticateUser.finalizeRegistration(RegUser)) {
-            RegUser = null;
+        if (authenticateUser.finalizeRegistration(regUser)) {
+            regUser = null;
             return RegisterStatus.REGISTER_SUCCESS;
         } else {
-            RegUser = null;
+            regUser = null;
             return RegisterStatus.REGISTER_FAILED;
         }
     }

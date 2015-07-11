@@ -18,24 +18,24 @@ import net.miginfocom.swing.MigLayout;
  */
 public class MainMenuView implements Viewable {
 
-    private JPanel MainPanel, CardPanel;
+    private JPanel mainPanel;
     private JButton LoginBtn, RegisterBtn;
 
     public MainMenuView() {
         initMainPanel();
-        initButtons(); 
+        initButtons();
     }
 
     private void initMainPanel() {
-        MainPanel = new JPanel();
-        MainPanel.setLayout(new MigLayout("center,gapy 20"));
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new MigLayout("center,gapy 20"));
     }
 
     private void initButtons() {
         LoginBtn = new JButton("Login");
         RegisterBtn = new JButton("Register");
-        MainPanel.add(LoginBtn, "span, split, center,wrap");
-        MainPanel.add(RegisterBtn, "span, split, center");
+        mainPanel.add(LoginBtn, "span, split, center,wrap");
+        mainPanel.add(RegisterBtn, "span, split, center");
     }
 
     public void addLoginAction(ActionListener al) {
@@ -45,10 +45,9 @@ public class MainMenuView implements Viewable {
     public void addRegisterAction(ActionListener al) {
         RegisterBtn.addActionListener(al);
     }
-    
-    
-    public JPanel getPanel(){
-        return MainPanel;
+
+    public JPanel getPanel() {
+        return mainPanel;
     }
 
     @Override

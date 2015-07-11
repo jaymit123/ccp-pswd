@@ -26,25 +26,28 @@ import javax.swing.Timer;
  */
 public class DisableUI extends LayerUI<JPanel> implements ActionListener {
 
-    private Timer FadeTimer = null;
+    private Timer fadeTimer = null;
     private boolean disableIsRunning = false;
     private boolean isFadingOut = false;
-    private int FadeCount, FadeLimit = 15;
+    private int fadeCount, fadeLimit = 15;
 
     public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         int w = c.getWidth();
         int h = c.getHeight();
+        disableComponent(g, w, h);
+    }
+
+    public void disableComponent(Graphics g, int w, int h) {
         if (!disableIsRunning) {
             return;
         }
         Graphics2D g2 = ((Graphics2D) g);
         Composite savedcomp = (Composite) g2.getComposite();
-        float fade = (float) FadeCount / (float) FadeLimit;
+        float fade = (float) fadeCount / (float) fadeLimit;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f * fade));
         g2.fillRect(0, 0, w, h);
         g2.dispose();
-
     }
 
     public void startDisableUI() {
@@ -53,7 +56,7 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
         }
         disableIsRunning = true;
         isFadingOut = false;
-        FadeCount = 0;
+        fadeCount = 0;
         initTimer();
     }
 
@@ -68,8 +71,8 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
     public void initTimer() {
         int fps = 25;
         int tick = 1000 / fps;
-        FadeTimer = new Timer(tick, this);
-        FadeTimer.start();
+        fadeTimer = new Timer(tick, this);
+        fadeTimer.start();
     }
 
     public void installUI(JComponent c) {
@@ -93,15 +96,15 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (disableIsRunning) {
             if (!isFadingOut) {
-                if (FadeCount < FadeLimit) {
-                   if(++FadeCount == FadeLimit) FadeTimer.stop();
+                if (fadeCount < fadeLimit) {
+                   if(++fadeCount == fadeLimit) fadeTimer.stop();
                 }
             } else {
-                --FadeCount;
-                if (FadeCount == 0) {
+                --fadeCount;
+                if (fadeCount == 0) {
                     disableIsRunning = false;
                     isFadingOut = false;
-                    FadeTimer.stop();
+                    fadeTimer.stop();
                 } else {
 
                 }

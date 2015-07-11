@@ -41,26 +41,26 @@ import javax.swing.event.ListSelectionEvent;
  */
 public class RegisterView implements Viewable {
 
-    private final RegisterController RegControl;
-    private JPanel MainPanel;                               //The Main Panel holding the entire Registration View
-    private FormView P1FormView;                           //Gives the Phase 1 Form.       
-    private JPanel P2MainPanel;                            // The Panel that holds all Phase2 Components
-    private JPanel SharedBtnPanel;                            // Holds Buttons
-    private JPanel P2SharedBtns;
-    private JPanel GlobalSharedBtns;
-    private GridView P2Grid;                           //Gives the Panel holding the grid.
-    private JButton P2Next, P2Finish, P2Reset, Restart, Close;
-    private ListView P2ListView;
-    private final List<String> DefaultImageList;
-    private DisableUI P2layerui;
-    private JLayer<JPanel> P2Layer;
-    private int GridSelected = -1;               // Determin which grid is selected.
-    private String ImageSelected = null;
+    private final RegisterController regControl;
+    private JPanel mainPanel;                               //The Main Panel holding the entire Registration View
+    private FormView p1FormView;                           //Gives the Phase 1 Form.       
+    private JPanel p2MainPanel;                            // The Panel that holds all Phase2 Components
+    private JPanel sharedBtnPanel;                            // Holds Buttons
+    private JPanel p2SharedBtns;
+    private JPanel globalSharedBtns;
+    private GridView p2Grid;                           //Gives the Panel holding the grid.
+    private JButton p2Next, p2Finish, p2Reset, restart, close;
+    private ListView p2ListView;
+    private final List<String> defaultImageList;
+    private DisableUI p2LayerUI;
+    private JLayer<JPanel> p2Layer;
+    private int gridSelected = -1;               // Determin which grid is selected.
+    private String imageSelected = null;
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
-        RegControl = regcontrol;
-        RegControl.setRegisterView(this);
-        DefaultImageList = list;
+        regControl = regcontrol;
+        regControl.setRegisterView(this);
+        defaultImageList = list;
         initMainPanel();
         initSharedBtns();
         initPhase1();
@@ -70,59 +70,59 @@ public class RegisterView implements Viewable {
     }
 
     private void initMainPanel() {
-        MainPanel = new JPanel();
-        MainPanel.setLayout(new MigLayout("fill"));
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new MigLayout("fill"));
     }
 
     private void addMainComponents() {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         double width = (2.0 / 3.0 * d.getWidth());
         double height = (2.0 / 3.0 * d.getHeight());
-        MainPanel.add(P1FormView.getComponent(), "width " + ((1.0 / 4.0 * width)));
-        MainPanel.add(SharedBtnPanel, " newline , width " + ((1.0 / 4.0 * width) + ",height " + (2.0 / 3.0 * height)));
-        MainPanel.add(P2Layer, "east,width " + ((3.0 / 4.0 * width)) + ",height " + height);
+        mainPanel.add(p1FormView.getComponent(), "width " + ((1.0 / 4.0 * width)));
+        mainPanel.add(sharedBtnPanel, " newline , width " + ((1.0 / 4.0 * width) + ",height " + (2.0 / 3.0 * height)));
+        mainPanel.add(p2Layer, "east,width " + ((3.0 / 4.0 * width)) + ",height " + height);
     }
 
     private void initSharedBtns() {
-        SharedBtnPanel = new JPanel(new MigLayout());
-        SharedBtnPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Control Panel", TitledBorder.LEFT, TitledBorder.TOP));
+        sharedBtnPanel = new JPanel(new MigLayout());
+        sharedBtnPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Control Panel", TitledBorder.LEFT, TitledBorder.TOP));
         initP2SharedBtns();
         initGlobalSharedBtns();
-        SharedBtnPanel.add(P2SharedBtns, "wrap,center,gaptop 20");
-        SharedBtnPanel.add(GlobalSharedBtns, "center,gaptop 20");
+        sharedBtnPanel.add(p2SharedBtns, "wrap,center,gaptop 20");
+        sharedBtnPanel.add(globalSharedBtns, "center,gaptop 20");
 
     }
 
     private void initP2SharedBtns() {
-        P2SharedBtns = new JPanel(new MigLayout());
-        P2Next = new JButton("Next");
-        P2Next.setEnabled(false);
-        P2Finish = new JButton("Finish");
-        P2Finish.setEnabled(false);
-        P2Reset = new JButton("Reset Phase2");
-        P2Reset.setEnabled(false);
-        P2SharedBtns.add(P2Next, "wrap");
-        P2SharedBtns.add(P2Finish, "wrap");
-        P2SharedBtns.add(P2Reset);
-        P2SharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase 2", TitledBorder.LEFT, TitledBorder.TOP));
+        p2SharedBtns = new JPanel(new MigLayout());
+        p2Next = new JButton("Next");
+        p2Next.setEnabled(false);
+        p2Finish = new JButton("Finish");
+        p2Finish.setEnabled(false);
+        p2Reset = new JButton("Reset Phase2");
+        p2Reset.setEnabled(false);
+        p2SharedBtns.add(p2Next, "wrap");
+        p2SharedBtns.add(p2Finish, "wrap");
+        p2SharedBtns.add(p2Reset);
+        p2SharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase 2", TitledBorder.LEFT, TitledBorder.TOP));
 
     }
 
     private void initGlobalSharedBtns() {
-        GlobalSharedBtns = new JPanel(new MigLayout());
-        Restart = new JButton("Restart");
-        Restart.setEnabled(false);
-        Close = new JButton("Close");
-        GlobalSharedBtns.add(Restart);
-        GlobalSharedBtns.add(Close);
-        GlobalSharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
+        globalSharedBtns = new JPanel(new MigLayout());
+        restart = new JButton("Restart");
+        restart.setEnabled(false);
+        close = new JButton("Close");
+        globalSharedBtns.add(restart);
+        globalSharedBtns.add(close);
+        globalSharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
     }
 
     private void initPhase1() {
-        P1FormView = new FormView("Sign Up");
-        P1FormView.addButtonAction((ActionEvent evt) -> {
-            String Details[] = P1FormView.getAllFields();
-            RegControl.registerUser(Details[0], Details[1]);
+        p1FormView = new FormView("Sign Up");
+        p1FormView.addButtonAction((ActionEvent evt) -> {
+            String Details[] = p1FormView.getAllFields();
+            regControl.registerUser(Details[0], Details[1]);
         });
     }
 
@@ -133,23 +133,23 @@ public class RegisterView implements Viewable {
     }
 
     private void initPhase2Panel() {
-        P2MainPanel = new JPanel();
-        P2MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
-        P2MainPanel.setLayout(new BorderLayout());
+        p2MainPanel = new JPanel();
+        p2MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
+        p2MainPanel.setLayout(new BorderLayout());
     }
 
     private void initP2Components() {
-        P2ListView = new ListView();
-        P2Grid = new GridView();
-        P2Grid.setGridBorder(true);
+        p2ListView = new ListView();
+        p2Grid = new GridView();
+        p2Grid.setGridBorder(true);
     }
 
     private void addP2Components() {
-        P2MainPanel.add(P2ListView.getLayer(), BorderLayout.EAST);
-        P2MainPanel.add(P2Grid.getComponent(), BorderLayout.CENTER);
-        P2layerui = new DisableUI();
-        P2Layer = new JLayer<>(P2MainPanel, P2layerui);
-        P2layerui.startDisableUI();
+        p2MainPanel.add(p2ListView.getLayer(), BorderLayout.EAST);
+        p2MainPanel.add(p2Grid.getComponent(), BorderLayout.CENTER);
+        p2LayerUI = new DisableUI();
+        p2Layer = new JLayer<>(p2MainPanel, p2LayerUI);
+        p2LayerUI.startDisableUI();
     }
 
     private void initAllActions() {
@@ -162,75 +162,75 @@ public class RegisterView implements Viewable {
     private void initP2BtnActions() {
 
         //Phase 2 Next Button
-        P2Next.addActionListener((ActionEvent evt) -> {
-            P2Next.setEnabled(false);
-            if (!P2Reset.isEnabled()) {
-                P2Reset.setEnabled(true);
+        p2Next.addActionListener((ActionEvent evt) -> {
+            p2Next.setEnabled(false);
+            if (!p2Reset.isEnabled()) {
+                p2Reset.setEnabled(true);
             }
-            RegControl.addUserEntry(ImageSelected, GridSelected);
-            P2Grid.disableUI();
-            P2ListView.removeImage(ImageSelected);
-            GridSelected = -1;
-            ImageSelected = null;
+            regControl.addUserEntry(imageSelected, gridSelected);
+            p2Grid.disableUI();
+            p2ListView.removeImage(imageSelected);
+            gridSelected = -1;
+            imageSelected = null;
         });
 
         //Phase 2 Reset Button
-        P2Reset.addActionListener((ActionEvent evt) -> {
-            RegControl.resetPhase2();
+        p2Reset.addActionListener((ActionEvent evt) -> {
+            regControl.resetPhase2();
 
         });
 
         //Phase 2 Finish Button
-        P2Finish.addActionListener((ActionEvent evt) -> {
-            RegControl.completeRegisteration();
+        p2Finish.addActionListener((ActionEvent evt) -> {
+            regControl.completeRegisteration();
         });
 
     }
 
     private void initGlobalBtnActions() {
-        Restart.addActionListener((ActionEvent evt) -> {
-            RegControl.restart();
+        restart.addActionListener((ActionEvent evt) -> {
+            regControl.restart();
         });
 
-        Close.addActionListener((ActionEvent evt) -> {
+        close.addActionListener((ActionEvent evt) -> {
             Restart();
-            P1FormView.enableUI();
-            RegControl.goBack();
+            p1FormView.enableUI();
+            regControl.goBack();
         });
 
     }
 
     private void Restart() {
-        Restart.setEnabled(false);
-        P2ListView.removeImage(null);
-        P2ListView.uninstallList();
-        P2layerui.startDisableUI();
-        P2Grid.setImage(null);
-        P2ListView.repaintList();
+        restart.setEnabled(false);
+        p2ListView.removeImage(null);
+        p2ListView.uninstallList();
+        p2LayerUI.startDisableUI();
+        p2Grid.setImage(null);
+        p2ListView.repaintList();
         disableP2Btns();
     }
 
     private void disableP2Btns() {
-        P2Next.setEnabled(false);
-        P2Finish.setEnabled(false);
-        P2Reset.setEnabled(false);
+        p2Next.setEnabled(false);
+        p2Finish.setEnabled(false);
+        p2Reset.setEnabled(false);
     }
 
     private void initP2Actions() {
 
-        P2ListView.setListSelectionListener((ListSelectionEvent evt) -> {
-            if (!P2ListView.isSelectionEmpty() && !P2ListView.getValueIsAdjusting()) {
-                ImageSelected = P2ListView.getSelectionValue();
-                RegControl.requestImage(ImageSelected);
+        p2ListView.setListSelectionListener((ListSelectionEvent evt) -> {
+            if (!p2ListView.isSelectionEmpty() && !p2ListView.getValueIsAdjusting()) {
+                imageSelected = p2ListView.getSelectionValue();
+                regControl.requestImage(imageSelected);
             }
         });
 
-        P2Grid.setGridActions(new MouseAdapter() {
+        p2Grid.setGridActions(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getSource() instanceof JLabel) {
-                    P2Next.setEnabled(true);
-                    GridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                    p2Next.setEnabled(true);
+                    gridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
                 }
             }
 
@@ -238,16 +238,16 @@ public class RegisterView implements Viewable {
     }
 
     public void loadList() {
-        Collections.shuffle(DefaultImageList);
-        P2ListView.installList(new ArrayList<String>(DefaultImageList));
+        Collections.shuffle(defaultImageList);
+        p2ListView.installList(new ArrayList<String>(defaultImageList));
     }
 
     public void unloadList() {
-        P2ListView.uninstallList();
+        p2ListView.uninstallList();
     }
 
     public JPanel getPanel() {
-        return MainPanel;
+        return mainPanel;
     }
 
     @Override
@@ -255,9 +255,9 @@ public class RegisterView implements Viewable {
 
         switch (pce.getPropertyName()) {
             case "DisplayImage":
-                P2Grid.setImage((Image) pce.getNewValue());
-                P2Grid.enableUI();
-                P2Next.setEnabled(false);
+                p2Grid.setImage((Image) pce.getNewValue());
+                p2Grid.enableUI();
+                p2Next.setEnabled(false);
                 break;
 
             case "RegisterStatus":
@@ -278,11 +278,11 @@ public class RegisterView implements Viewable {
     private void handleRegisterStatus(RegisterStatus regs) {
         switch (regs) {
             case ALERT:
-                int n = JOptionPane.showConfirmDialog(MainPanel, regs.getMessage(), "Alert", JOptionPane.YES_NO_OPTION);
+                int n = JOptionPane.showConfirmDialog(mainPanel, regs.getMessage(), "Alert", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
-                    RegControl.completeRegisteration();
+                    regControl.completeRegisteration();
                 } else if (n == JOptionPane.NO_OPTION) {
-                    P2Finish.setEnabled(true);
+                    p2Finish.setEnabled(true);
                 }
                 break;
 
@@ -291,28 +291,28 @@ public class RegisterView implements Viewable {
                 break;
 
             case P2_RESET:
-                P2ListView.removeImage(null);
+                p2ListView.removeImage(null);
                 unloadList();
-                P2Grid.disableUI();
-                P2Grid.setImage(null);
+                p2Grid.disableUI();
+                p2Grid.setImage(null);
                 disableP2Btns();
                 loadList();
-                P2ListView.repaintList();
-                JOptionPane.showMessageDialog(MainPanel, regs.getMessage(), "Phase2 Reset Success!", JOptionPane.DEFAULT_OPTION);
+                p2ListView.repaintList();
+                JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Phase2 Reset Success!", JOptionPane.DEFAULT_OPTION);
                 break;
 
             case FULL_RESET:
                 Restart();
-                P1FormView.enableUI();
-                JOptionPane.showMessageDialog(MainPanel, regs.getMessage(), "Reset Success!", JOptionPane.DEFAULT_OPTION);
+                p1FormView.enableUI();
+                JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Reset Success!", JOptionPane.DEFAULT_OPTION);
                 break;
 
             case REGISTER_SUCCESS:
-                JOptionPane.showMessageDialog(MainPanel, regs.getMessage(), "Registeration Success!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Registeration Success!", JOptionPane.INFORMATION_MESSAGE);
                 Restart();
                 break;
             case REGISTER_FAILED:
-                JOptionPane.showMessageDialog(MainPanel, regs.getMessage(), "Registeration Failed.", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Registeration Failed.", JOptionPane.ERROR_MESSAGE);
                 Restart();
                 break;
         }
@@ -321,30 +321,30 @@ public class RegisterView implements Viewable {
     private void handleValidationStatus(ValidationStatus vs) {
         switch (vs) {
             case USERNAME_FMT_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Username Error!", JOptionPane.ERROR_MESSAGE);
-                P1FormView.resetUI();
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Username Error!", JOptionPane.ERROR_MESSAGE);
+                p1FormView.resetUI();
                 break;
             case PASSWORD_FMT_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Password Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Password Error!", JOptionPane.ERROR_MESSAGE);
                 break;
             case USERNAME_EXIST:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Username Exist!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Username Exist!", JOptionPane.ERROR_MESSAGE);
                 break;
 
             case NO_ACCOUNT:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Account Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Account Error", JOptionPane.ERROR_MESSAGE);
                 Restart();
                 break;
 
             case BOTH_OK:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Success!", JOptionPane.INFORMATION_MESSAGE);
-                P1FormView.disableUI();
-                P2layerui.stopDisableUI();
-                P2Grid.disableUI();
-                Restart.setEnabled(true);
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Success!", JOptionPane.INFORMATION_MESSAGE);
+                p1FormView.disableUI();
+                p2LayerUI.stopDisableUI();
+                p2Grid.disableUI();
+                restart.setEnabled(true);
                 Timer refreshJList = new Timer(800, (ActionEvent evt) -> {
                     loadList();
-                    P2ListView.repaintList();
+                    p2ListView.repaintList();
                 });
                 refreshJList.setRepeats(false);
                 refreshJList.start();
@@ -358,14 +358,14 @@ public class RegisterView implements Viewable {
     private void handleExceptionMessage(ExceptionStatus es) {
         switch (es) {
             case FATAL_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
                 break;
 
             case USER_EXIST:
-                JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 Restart();
-                P1FormView.enableUI();
+                p1FormView.enableUI();
                 break;
         }
     }

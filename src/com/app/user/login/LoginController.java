@@ -5,11 +5,9 @@
  */
 package com.app.user.login;
 
-import com.app.user.register.*;
-import com.app.beans.AbstractModel;
+
 import com.app.beans.AbstractController;
 import com.app.beans.Viewable;
-import com.app.user.status.ProcessStatus;
 import java.beans.PropertyChangeEvent;
 
 /**
@@ -18,34 +16,33 @@ import java.beans.PropertyChangeEvent;
  */
 public class LoginController extends AbstractController {
 
-    private LoginModel LoginModel;
-    private LoginView LoginView;
-    protected Viewable MainView;
+    private LoginModel loginModel;
+    private LoginView loginView;
+    protected Viewable mainView;
 
     public void setLoginModel(LoginModel logmodel) {
-        LoginModel = logmodel;
-        LoginModel.addPropertyChangeListener(this);
+        loginModel = logmodel;
+        loginModel.addPropertyChangeListener(this);
     }
 
     public void setMainView(Viewable mv) {
-        MainView = mv;
+        mainView = mv;
     }
 
     public void setLoginView(LoginView logview) {
-        LoginView = logview;
+        loginView = logview;
     }
 
     public void loginUser(String Username, String P1Password) {
-        LoginModel.loginUser(Username, P1Password);
+        loginModel.loginUser(Username, P1Password);
     }
 
     public void authenticateUser(int Grid) {
-        LoginModel.authenticate(Grid);
+        loginModel.authenticate(Grid);
     }
 
     public void logOut() {
-        System.out.println("reset");
-        LoginModel.resetLogin();
+        loginModel.resetLogin();
     }
 
 
@@ -57,11 +54,11 @@ public class LoginController extends AbstractController {
             case "LoginStatus":
             case "ValidationStatus":
             case "ExceptionStatus":
-                LoginView.modelPropertyChange(evt);
+                loginView.modelPropertyChange(evt);
                 break;
 
             case "GoToMainMenu":
-                MainView.modelPropertyChange(evt);
+                mainView.modelPropertyChange(evt);
                 break;
         }
 

@@ -23,13 +23,13 @@ import javax.swing.border.TitledBorder;
  */
 public class FormView {
 
-    private JPanel MainPanel = null;
-    private JLabel UsernameLabel, PasswordLabel;
+    private JPanel mainPanel = null;
+    private JLabel usernameLabel, passwordLabel;
     private JButton Submit;
-    private JTextField UsernameField = null;
-    private JPasswordField PasswordField = null;
-    private DisableUI layerui;
-    private JLayer<JPanel> FormLayer;
+    private JTextField usernameField = null;
+    private JPasswordField passwordField = null;
+    private DisableUI layerUI;
+    private JLayer<JPanel> formLayer;
 
     public FormView(String button) {
         initPanel();
@@ -38,17 +38,17 @@ public class FormView {
     }
 
     private void initPanel() {
-        MainPanel = new JPanel();
-        MainPanel.setLayout(new MigLayout("center, gapy 20"));
-        layerui = new DisableUI();
-        FormLayer = new JLayer<JPanel>(MainPanel, layerui);
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new MigLayout("center, gapy 20"));
+        layerUI = new DisableUI();
+        formLayer = new JLayer<JPanel>(mainPanel, layerUI);
     }
 
     private void initOtherComponents(String button) {
-        UsernameField = new JTextField(8);
-        PasswordField = new JPasswordField(8);
-        UsernameLabel = new JLabel("Username");
-        PasswordLabel = new JLabel("Password");
+        usernameField = new JTextField(8);
+        passwordField = new JPasswordField(8);
+        usernameLabel = new JLabel("Username");
+        passwordLabel = new JLabel("Password");
         Submit = new JButton(button);
         Submit.setFocusPainted(false);
     }
@@ -58,42 +58,42 @@ public class FormView {
     }
 
     public void disableUI() {
-        layerui.startDisableUI();
+        layerUI.startDisableUI();
         Submit.setEnabled(false);
-        UsernameField.setEditable(false);
-        PasswordField.setEditable(false);
+        usernameField.setEditable(false);
+        passwordField.setEditable(false);
     }
 
     public void enableUI() {
-        layerui.stopDisableUI();
+        layerUI.stopDisableUI();
         resetUI();
-        UsernameField.setEditable(true);
-        PasswordField.setEditable(true);
+        usernameField.setEditable(true);
+        passwordField.setEditable(true);
         Submit.setEnabled(true);
     }
 
     public void resetUI() {
-        UsernameField.setText("");
-        PasswordField.setText("");
+        usernameField.setText("");
+        passwordField.setText("");
 
     }
 
     public String[] getAllFields() {
-        return new String[]{UsernameField.getText(), String.valueOf(PasswordField.getPassword())};
+        return new String[]{usernameField.getText(), String.valueOf(passwordField.getPassword())};
     }
 
     private void addComponents() {
-        MainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase1", TitledBorder.LEFT, TitledBorder.TOP));
-        MainPanel.add(UsernameLabel);
-        MainPanel.add(UsernameField, "wrap");
-        MainPanel.add(PasswordLabel);
-        MainPanel.add(PasswordField, "span");
-        MainPanel.add(Submit, "span, split, center");
-        FormLayer = new JLayer<JPanel>(MainPanel, layerui);
+        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase1", TitledBorder.LEFT, TitledBorder.TOP));
+        mainPanel.add(usernameLabel);
+        mainPanel.add(usernameField, "wrap");
+        mainPanel.add(passwordLabel);
+        mainPanel.add(passwordField, "span");
+        mainPanel.add(Submit, "span, split, center");
+        formLayer = new JLayer<JPanel>(mainPanel, layerUI);
 
     }
 
     public JLayer<JPanel> getComponent() {
-        return FormLayer;
+        return formLayer;
     }
 }

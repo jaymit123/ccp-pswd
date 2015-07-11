@@ -14,49 +14,49 @@ import java.beans.PropertyChangeEvent;
  */
 public class RegisterController extends AbstractController {
 
-    private RegisterModel RegModel;
-    private RegisterView RegView;
-    protected Viewable MainView;
+    private RegisterModel regModel;
+    private RegisterView regView;
+    protected Viewable mainView;
 
     public void setRegisterModel(RegisterModel regmodel) {
-        RegModel = regmodel;
-        RegModel.addPropertyChangeListener(this);
+        regModel = regmodel;
+        regModel.addPropertyChangeListener(this);
     }
 
     public void setMainView(Viewable mv) {
-        MainView = mv;
+        mainView = mv;
     }
 
     public void setRegisterView(RegisterView regview) {
-        RegView = regview;
+        regView = regview;
     }
 
     public void registerUser(String Username, String P1Password) {
-        RegModel.createAccount(Username, P1Password);
+        regModel.createAccount(Username, P1Password);
     }
 
     public void addUserEntry(String Image, int Grid) {
-        RegModel.addEntry(Image, Grid);
+        regModel.addEntry(Image, Grid);
     }
 
     public void completeRegisteration() {
-        RegModel.finalizeRegistration();
+        regModel.finalizeRegistration();
     }
 
     public void requestImage(String ImgName) {
-        RegModel.getImage(ImgName);
+        regModel.getImage(ImgName);
     }
 
     public void restart() {
-        RegModel.reset("FULL_RESET");
+        regModel.reset("FULL_RESET");
     }
 
     public void resetPhase2() {
-        RegModel.reset("P2_RESET");
+        regModel.reset("P2_RESET");
     }
 
     public void goBack() {
-        RegModel.reset("MAINMENU");
+        regModel.reset("MAINMENU");
 
     }
 
@@ -67,11 +67,11 @@ public class RegisterController extends AbstractController {
             case "RegisterStatus":
             case "ValidationStatus":
             case "ExceptionStatus":
-                RegView.modelPropertyChange(evt);
+                regView.modelPropertyChange(evt);
                 break;
 
             case "GoToMainMenu":
-                MainView.modelPropertyChange(evt);
+                mainView.modelPropertyChange(evt);
                 break;
         }
 

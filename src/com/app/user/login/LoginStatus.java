@@ -15,7 +15,7 @@ public enum LoginStatus {
 
     INIT("First Image"), CONTINUE("Continue with Next Image!"), SUCCESS("Login Sucessfull!"), FAILURE("Failed to Login!"), ERROR("Sorry an error has occured!\n Please mail me at jaymit_123@gmail.com"), LOGOUT("Logout Successful");
     private String Message;
-    private Image img = null;
+    private Image Image = null;
 
     private LoginStatus(String msg) {
         Message = msg;
@@ -26,11 +26,11 @@ public enum LoginStatus {
     }
 
     public void setImage(Image im) {
-        img = im;
+        Image = im;
     }
 
     public Image getImage() {
-        return img;
+        return Image;
     }
 
     public String getMessage() {

@@ -21,49 +21,49 @@ import javax.imageio.ImageIO;
  */
 public class ImageModel {
 
-    private List<String> ImagesList;
-    private List<String> ThumbnailsList;
-    private String ThumbnailsPath;
-    private String ImagesPath;
-    private int ImageWidth = 500, ImageHeight = 600;  //Default Values
+    private List<String> imagesList;
+    private List<String> thumbnailsList;
+    private String thumbnailsPath;
+    private String imagesPath;
+    private int imageWidth = 500, imageHeight = 600;  //Default Values
 
     public ImageModel(String path) throws ImageAccessException {
-        ImagesPath = path + "/Images/";
-        ThumbnailsPath = path + "/Thumbnails/";
-        initImagesList(new File(ImagesPath));
-        initThumbnailsList(new File(ThumbnailsPath));
+        imagesPath = path + "/Images/";
+        thumbnailsPath = path + "/Thumbnails/";
+        initImagesList(new File(imagesPath));
+        initThumbnailsList(new File(thumbnailsPath));
         compareImageList();
     }
 
     private void initImagesList(File iml) throws ImageAccessException {
-        ImagesList = new LinkedList<>();
+        imagesList = new LinkedList<>();
         String Images[] = iml.list(); 
          if(Images == null) throw new ImageAccessException("No Images Found.\n Please check Images Folder");      
-        ImagesList.addAll(Arrays.asList(Images));
+        imagesList.addAll(Arrays.asList(Images));
     }
 
     private void initThumbnailsList(File tml) throws ImageAccessException {
-        ThumbnailsList = new LinkedList<>();
+        thumbnailsList = new LinkedList<>();
         String Images[] = tml.list();
        if(Images == null) throw new ImageAccessException("No Images Found.\n Please check Thumbnails Folder");
-        ThumbnailsList.addAll(Arrays.asList(Images));
+        thumbnailsList.addAll(Arrays.asList(Images));
     }
 
     private void compareImageList() throws ImageAccessException {
-        if (ImagesList.retainAll(ThumbnailsList)) {
+        if (imagesList.retainAll(thumbnailsList)) {
             throw new ImageAccessException("No Images Found.\n Please check both folders.");
-        }else if(ImagesList.size() < 10){
+        }else if(imagesList.size() < 10){
             throw new ImageAccessException("Minimum 10 images required.\n Please check both folders.");
         }
     }
 
     public List<String> getImageList() {
-        return ImagesList;
+        return imagesList;
     }
 
     public Image getImage(String img) throws ImageAccessException {
         Image CurrentImage = null;
-        try (FileInputStream fis = new FileInputStream(ImagesPath + img)) {
+        try (FileInputStream fis = new FileInputStream(imagesPath + img)) {
             CurrentImage = ImageIO.read(fis);
         } catch (FileNotFoundException ex) {
             throw new ImageAccessException("An Error Occured while accessing the requested image.\nPlease restart the software or contact me at jaymit_123@hotmail.com", ex);
@@ -75,7 +75,7 @@ public class ImageModel {
 
     //Not Used
     public Image resizeImage(Image image) {
-        image = image.getScaledInstance(ImageWidth, ImageHeight, Image.SCALE_DEFAULT);
+        image = image.getScaledInstance(imageWidth, imageHeight, Image.SCALE_DEFAULT);
         image.flush();
         return image;
     }

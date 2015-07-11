@@ -14,28 +14,28 @@ import java.util.LinkedHashMap;
  */
 public class RegisterUser {
 
-    private String Username;
-    private String P1Password;
-    private Map<String, Integer> P2Password;
-    private int IteratorIndex = 0;
+    private String username;
+    private String p1Password;
+    private Map<String, Integer> p2Password;
+    private int iteratorIndex = 0;
 
-    public RegisterUser(String username, String p1password) {
-        Username = username;
-        P1Password = p1password;
-        P2Password = new LinkedHashMap<String, Integer>();
+    public RegisterUser(String uname, String p1password) {
+        username = uname;
+        p1Password = p1password;
+        p2Password = new LinkedHashMap<String, Integer>();
     }
 
     public RegisterStatus addEntry(String image, int GridNo) {
         RegisterStatus Status;
-        if (IteratorIndex < 5) {
-            P2Password.put(image, GridNo);
+        if (iteratorIndex < 5) {
+            p2Password.put(image, GridNo);
             Status = RegisterStatus.ADDED;
-            if (IteratorIndex == 2) {
+            if (iteratorIndex == 2) {
                 Status = RegisterStatus.ALERT;
-            } else if (IteratorIndex == 4) {
+            } else if (iteratorIndex == 4) {
                 Status = RegisterStatus.REGISTER_SUCCESS;
             }
-            ++IteratorIndex;
+            ++iteratorIndex;
         } else {
             Status = RegisterStatus.REGISTER_FAILED;
         }
@@ -45,16 +45,16 @@ public class RegisterUser {
 
 
     public String[] getUserRecord() {
-        String[] record = {Username, P1Password, convertPassword()};
+        String[] record = {username, p1Password, convertPassword()};
         destroy();
         return record;
     }
 
     private String convertPassword() {
         String result = null;
-        if (P2Password != null) {
+        if (p2Password != null) {
             StringBuilder Data = new StringBuilder();
-            for (Map.Entry addEntry : P2Password.entrySet()) {
+            for (Map.Entry addEntry : p2Password.entrySet()) {
                 Data.append("|" + addEntry.getKey() + "&" + addEntry.getValue());
             }
             result = Data.toString();
@@ -63,15 +63,15 @@ public class RegisterUser {
     }
 
     private void destroy() {
-        Username = null;
-        P1Password = null;
-        P2Password = null;
+        username = null;
+        p1Password = null;
+        p2Password = null;
     }
 
     public void resetPhase2() {
-        if (Username != null) {
-            P2Password = new LinkedHashMap<String, Integer>();
-            IteratorIndex = 0;
+        if (username != null) {
+            p2Password = new LinkedHashMap<String, Integer>();
+            iteratorIndex = 0;
         }
     }
 

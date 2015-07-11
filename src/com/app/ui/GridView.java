@@ -20,11 +20,11 @@ import javax.swing.JPanel;
  */
 public class GridView {
 
-    private DisableUI layerui = null;
-    private JLayer<JPanel> gridlayer = null;
-    private ImagePanel MainPanel = null;
-    private int GridNos = 9;
-    private JLabel GridLabel[] = new JLabel[GridNos * GridNos];
+    private DisableUI layerUi = null;
+    private JLayer<JPanel> gridLayer = null;
+    private ImagePanel mainPanel = null;
+    private int gridNos = 9;
+    private JLabel gridLabel[] = new JLabel[gridNos * gridNos];
 
     public GridView() {
         initPanel();
@@ -33,32 +33,32 @@ public class GridView {
     }
 
     private void initPanel() {
-        MainPanel = new ImagePanel();
-        MainPanel.setLayout(new GridLayout(GridNos, GridNos, 0, 0));                 //creates layout to place labels in grid form
-        layerui = new DisableUI();
-        gridlayer = new JLayer<>(MainPanel, layerui);
+        mainPanel = new ImagePanel();
+        mainPanel.setLayout(new GridLayout(gridNos, gridNos, 0, 0));                 //creates layout to place labels in grid form
+        layerUi = new DisableUI();
+        gridLayer = new JLayer<>(mainPanel, layerUi);
     }
 
     private void initGrids() {
-        for (int i = 0; i < GridNos * GridNos; i++) {
-            GridLabel[i] = new JLabel();
-            GridLabel[i].setOpaque(false);
-            GridLabel[i].setName("" + (i + 1));         // Since for loop index is 0 to 80, we add 1 to the name to make it 1 to 81
-            MainPanel.add(GridLabel[i]);              //add it to MainPanel
+        for (int i = 0; i < gridNos * gridNos; i++) {
+            gridLabel[i] = new JLabel();
+            gridLabel[i].setOpaque(false);
+            gridLabel[i].setName("" + (i + 1));         // Since for loop index is 0 to 80, we add 1 to the name to make it 1 to 81
+            mainPanel.add(gridLabel[i]);              //add it to MainPanel
         }
     }
 
     public void setGridBorder(boolean isVisible) {
         if (isVisible) {
-            if (GridLabel[0].getBorder() == null) {// checks if Border of first grid is transparent or opaque
-                for (JLabel BorderLabel : GridLabel) {
+            if (gridLabel[0].getBorder() == null) {// checks if Border of first grid is transparent or opaque
+                for (JLabel BorderLabel : gridLabel) {
                     BorderLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 }
 
             }
         } else {
-            if (GridLabel[0].getBorder() != null) {
-                for (JLabel BorderLabel : GridLabel) {
+            if (gridLabel[0].getBorder() != null) {
+                for (JLabel BorderLabel : gridLabel) {
                     BorderLabel.setBorder(BorderFactory.createEmptyBorder());
                 }
             }
@@ -67,39 +67,39 @@ public class GridView {
 
     public void setPanelBorder(boolean visible) {
         if (visible) {
-            MainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         } else {
-            MainPanel.setBorder(BorderFactory.createEmptyBorder());
+            mainPanel.setBorder(BorderFactory.createEmptyBorder());
         }
     }
 
     public void setGridActions(MouseListener ml) {
-        for (JLabel AddAction : GridLabel) {
+        for (JLabel AddAction : gridLabel) {
             AddAction.addMouseListener(ml);
         }
     }
 
     public void setImage(Image img) {
-        if (MainPanel.isValuesEmpty()) {
-            MainPanel.setValues(GridLabel[0].getX(), GridLabel[0].getY(), GridLabel[0].getWidth() * (GridNos), GridLabel[0].getHeight() * (GridNos));
+        if (mainPanel.isValuesEmpty()) {
+            mainPanel.setValues(gridLabel[0].getX(), gridLabel[0].getY(), gridLabel[0].getWidth() * (gridNos), gridLabel[0].getHeight() * (gridNos));
         }
-        MainPanel.paintImage(img);
+        mainPanel.paintImage(img);
     }
 
     public void disableUI() {
-        layerui.startDisableUI();
+        layerUi.startDisableUI();
     }
 
     public void enableUI() {
-        layerui.stopDisableUI();
+        layerUi.stopDisableUI();
     }
 
     public void reset() {
-        MainPanel.paintImage(null);
+        mainPanel.paintImage(null);
     }
 
     public JLayer<JPanel> getComponent() {
-        return gridlayer;
+        return gridLayer;
     }
 
 }

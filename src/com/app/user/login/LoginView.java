@@ -8,21 +8,16 @@ package com.app.user.login;
 import com.app.beans.Viewable;
 import com.app.ui.FormView;
 import com.app.ui.GridView;
-import com.app.user.register.RegisterStatus;
 import com.app.user.security.ValidationStatus;
 import com.app.user.status.ExceptionStatus;
-import com.sun.glass.ui.Window;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,53 +30,53 @@ import net.miginfocom.swing.MigLayout;
  */
 public class LoginView implements Viewable {
 
-    private LoginController LoginControl;
-    private GridView P2Grid;
-    private JPanel P2GridPanel;
-    private JPanel P1TopPanel;
-    private JPanel MainPanel;
-    private FormView P1FormView;
-    private JPanel GlobalBtnsPanel;
-    private JButton Close, LogOut;
+    private LoginController loginControl;
+    private GridView p2Grid;
+    private JPanel p2GridPanel;
+    private JPanel p1TopPanel;
+    private JPanel mainPanel;
+    private FormView p1FormView;
+    private JPanel globalBtnsPanel;
+    private JButton Close, logOut;
 
     public LoginView(LoginController logincntrl) {
-        LoginControl = logincntrl;
-        LoginControl.setLoginView(this);
-        MainPanel = new JPanel(new BorderLayout());
+        loginControl = logincntrl;
+        loginControl.setLoginView(this);
+        mainPanel = new JPanel(new BorderLayout());
         initPhase1();
         initPhase2();
         initAllActions();
-        MainPanel.add(P1TopPanel, BorderLayout.NORTH);
-        MainPanel.add(P2GridPanel, BorderLayout.CENTER);
+        mainPanel.add(p1TopPanel, BorderLayout.NORTH);
+        mainPanel.add(p2GridPanel, BorderLayout.CENTER);
     }
 
     private void initPhase1() {
-        P1TopPanel = new JPanel(new BorderLayout());
-        P1FormView = new FormView("Log In");
+        p1TopPanel = new JPanel(new BorderLayout());
+        p1FormView = new FormView("Log In");
         initBtnsPanel();
-        P1TopPanel.add(P1FormView.getComponent(), BorderLayout.CENTER);
-        P1TopPanel.add(GlobalBtnsPanel, BorderLayout.EAST);
+        p1TopPanel.add(p1FormView.getComponent(), BorderLayout.CENTER);
+        p1TopPanel.add(globalBtnsPanel, BorderLayout.EAST);
     }
 
     private void initBtnsPanel() {
-        GlobalBtnsPanel = new JPanel(new MigLayout());
-        GlobalBtnsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
+        globalBtnsPanel = new JPanel(new MigLayout());
+        globalBtnsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
 
         Close = new JButton("Close");
-        LogOut = new JButton("Log Out");
-        LogOut.setEnabled(false);
-        GlobalBtnsPanel.add(Close, "center,wrap,gaptop 10");
-        GlobalBtnsPanel.add(LogOut, "center,gaptop 10");
+        logOut = new JButton("Log Out");
+        logOut.setEnabled(false);
+        globalBtnsPanel.add(Close, "center,wrap,gaptop 10");
+        globalBtnsPanel.add(logOut, "center,gaptop 10");
     }
 
     private void initPhase2() {
-        P2GridPanel = new JPanel(new BorderLayout());
-        P2GridPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
-        P2Grid = new GridView();
-        P2Grid.setGridBorder(false);
-        P2Grid.setPanelBorder(true);
-        P2GridPanel.add(P2Grid.getComponent(), BorderLayout.CENTER);
-        P2Grid.disableUI();
+        p2GridPanel = new JPanel(new BorderLayout());
+        p2GridPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
+        p2Grid = new GridView();
+        p2Grid.setGridBorder(false);
+        p2Grid.setPanelBorder(true);
+        p2GridPanel.add(p2Grid.getComponent(), BorderLayout.CENTER);
+        p2Grid.disableUI();
     }
 
     private void initAllActions() {
@@ -93,33 +88,33 @@ public class LoginView implements Viewable {
     private void initGlobalBtnActions() {
         Close.addActionListener((ActionEvent evt) -> {
             Restart();
-            LoginControl.logOut();
+            loginControl.logOut();
         });
 
-        LogOut.addActionListener((ActionEvent evt) -> {
+        logOut.addActionListener((ActionEvent evt) -> {
             Restart();
-            LoginControl.logOut();
+            loginControl.logOut();
         });
 
     }
 
     private void initPhase1Actions() {
-        P1FormView.addButtonAction((ActionEvent evt) -> {
-            String Details[] = P1FormView.getAllFields();
-            LoginControl.loginUser(Details[0], Details[1]);
+        p1FormView.addButtonAction((ActionEvent evt) -> {
+            String Details[] = p1FormView.getAllFields();
+            loginControl.loginUser(Details[0], Details[1]);
 
         });
 
     }
 
     private void initPhase2Actions() {
-        P2Grid.setGridActions(new MouseAdapter() {
+        p2Grid.setGridActions(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getSource() instanceof JLabel) {
                     int GridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
-                    LoginControl.authenticateUser(GridSelected);
+                    loginControl.authenticateUser(GridSelected);
                 }
             }
 
@@ -128,15 +123,15 @@ public class LoginView implements Viewable {
     }
 
     private void Restart() {
-        P1FormView.enableUI();
-        P1FormView.resetUI();
-        LogOut.setEnabled(false);
-        P2Grid.setImage(null);
-        P2Grid.disableUI();
+        p1FormView.enableUI();
+        p1FormView.resetUI();
+        logOut.setEnabled(false);
+        p2Grid.setImage(null);
+        p2Grid.disableUI();
     }
 
     public JPanel getPanel() {
-        return MainPanel;
+        return mainPanel;
     }
 
     @Override
@@ -160,13 +155,13 @@ public class LoginView implements Viewable {
         switch (vs) {
 
             case BOTH_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Login Error", JOptionPane.ERROR_MESSAGE);
-                P1FormView.resetUI();
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Login Error", JOptionPane.ERROR_MESSAGE);
+                p1FormView.resetUI();
                 break;
 
             case ACC_DOESNT_EXIST:
-                JOptionPane.showMessageDialog(MainPanel, vs.getValidationMsg(), "Login Error", JOptionPane.ERROR_MESSAGE);
-                P1FormView.resetUI();
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Login Error", JOptionPane.ERROR_MESSAGE);
+                p1FormView.resetUI();
                 break;
         }
     }
@@ -175,14 +170,14 @@ public class LoginView implements Viewable {
 
         switch (es) {
             case FATAL_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
                 break;
 
             case OTHER_ERROR:
-                JOptionPane.showMessageDialog(MainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                P1FormView.disableUI();
-                P1FormView.resetUI();
+                JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                p1FormView.disableUI();
+                p1FormView.resetUI();
                 break;
         }
     }
@@ -190,28 +185,28 @@ public class LoginView implements Viewable {
     private void handleLoginStatus(LoginStatus ls) {
         switch (ls) {
             case INIT:
-                P1FormView.disableUI();
-                P2Grid.setImage(ls.getImage());
-                P2Grid.enableUI();
+                p1FormView.disableUI();
+                p2Grid.setImage(ls.getImage());
+                p2Grid.enableUI();
                 break;
             case CONTINUE:
-                P2Grid.setImage(ls.getImage());
+                p2Grid.setImage(ls.getImage());
                 break;
             case SUCCESS:
-                JOptionPane.showMessageDialog(MainPanel, ls.getMessage(), "Login Success", JOptionPane.INFORMATION_MESSAGE);
-                LogOut.setEnabled(true);
+                JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Success", JOptionPane.INFORMATION_MESSAGE);
+                logOut.setEnabled(true);
                 Close.setEnabled(false);
-                P2Grid.disableUI();
-                P2Grid.setImage(null);
+                p2Grid.disableUI();
+                p2Grid.setImage(null);
                 break;
 
             case FAILURE:
-                JOptionPane.showMessageDialog(MainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
                 Restart();
                 break;
 
             case ERROR:
-                JOptionPane.showMessageDialog(MainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
                 Restart();
                 break;
         }

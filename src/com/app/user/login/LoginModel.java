@@ -22,38 +22,38 @@ import javax.swing.SwingWorker;
  */
 public class LoginModel extends AbstractModel {
 
-    private LoginUser CurrentUser = null;
-    private final AuthenticationModel AuthenticateUser;
-    private final ImageModel ImageModel;
+    private LoginUser currentUser = null;
+    private final AuthenticationModel authenticateUser;
+    private final ImageModel imageModel;
 
     public LoginModel(AuthenticationModel aum, ImageModel im) {
-        AuthenticateUser = aum;
-        ImageModel = im;
+        authenticateUser = aum;
+        imageModel = im;
     }
 
     public void loginUser(String Username, String P1Password) {
         SwingWorker<Object, Void> LoginSW = new SwingWorker<Object, Void>() {
-            private ProcessStatus Property = ProcessStatus.NoProperty;
+            private ProcessStatus property = ProcessStatus.NoProperty;
 
             @Override
             protected Object doInBackground() throws Exception {
-                Property = ProcessStatus.ValidationStatus;
+                property = ProcessStatus.ValidationStatus;
                 if (!ValidationModel.validateUser(Username, P1Password).equals(ValidationStatus.BOTH_OK)) {
                     return ValidationStatus.BOTH_ERROR;
                 }
-                if (!AuthenticateUser.checkUsername(Username)) {
+                if (!authenticateUser.checkUsername(Username)) {
                     return ValidationStatus.ACC_DOESNT_EXIST;
                 }
-                if ((CurrentUser = AuthenticateUser.processAccount(Username, P1Password)) == null) {
+                if ((currentUser = authenticateUser.processAccount(Username, P1Password)) == null) {
                     return ValidationStatus.BOTH_ERROR;
                 } else {
-                    LoginStatus loginstatus = CurrentUser.authenticateGrid(-1);
+                    LoginStatus loginstatus = currentUser.authenticateGrid(-1);
                     if (loginstatus.equals(LoginStatus.INIT)) {
-                        Property = ProcessStatus.LoginStatus;
-                        loginstatus.setImage(ImageModel.getImage(loginstatus.getMessage()));
+                        property = ProcessStatus.LoginStatus;
+                        loginstatus.setImage(imageModel.getImage(loginstatus.getMessage()));
                         return loginstatus;
                     } else {
-                        CurrentUser = null;
+                        currentUser = null;
                         return ValidationStatus.BOTH_ERROR;
                     }
                 }
@@ -63,7 +63,7 @@ public class LoginModel extends AbstractModel {
             @Override
             protected void done() {
                 try {
-                    LoginModel.this.firePropertyChange(Property.toString(), null, get());
+                    LoginModel.this.firePropertyChange(property.toString(), null, get());
                 } catch (InterruptedException ex) {
                     LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
                 } catch (ExecutionException ex) {
@@ -77,18 +77,18 @@ public class LoginModel extends AbstractModel {
 
     public void authenticate(int GridNo) {
         SwingWorker<Object, Void> AuthSW = new SwingWorker<Object, Void>() {
-            private ProcessStatus Property = ProcessStatus.NoProperty;
+            private ProcessStatus property = ProcessStatus.NoProperty;
 
             @Override
             protected Object doInBackground() throws Exception {
-                Property = ProcessStatus.LoginStatus;
-                if (CurrentUser == null) {
+                property = ProcessStatus.LoginStatus;
+                if (currentUser == null) {
                     return LoginStatus.ERROR;
                 } else {
-                    LoginStatus loginstatus = CurrentUser.authenticateGrid(GridNo);
+                    LoginStatus loginstatus = currentUser.authenticateGrid(GridNo);
                     switch (loginstatus) {
                         case CONTINUE:
-                            loginstatus.setImage(ImageModel.getImage(loginstatus.getMessage()));
+                            loginstatus.setImage(imageModel.getImage(loginstatus.getMessage()));
                             return loginstatus;
 
                         case SUCCESS:
@@ -96,7 +96,7 @@ public class LoginModel extends AbstractModel {
                         case FAILURE:
                         case ERROR:
                         default:
-                            CurrentUser = null;
+                            currentUser = null;
                             return loginstatus;
 
                     }
@@ -107,7 +107,7 @@ public class LoginModel extends AbstractModel {
             @Override
             protected void done() {
                 try {
-                    LoginModel.this.firePropertyChange(Property.toString(), null, get());
+                    LoginModel.this.firePropertyChange(property.toString(), null, get());
                 } catch (InterruptedException ex) {
                     LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
                 } catch (ExecutionException ex) {
@@ -121,19 +121,19 @@ public class LoginModel extends AbstractModel {
 
     public void resetLogin() {
         SwingWorker<Object, Void> ResetSW = new SwingWorker<Object, Void>() {
-            private ProcessStatus Property = ProcessStatus.NoProperty;
+            private ProcessStatus property = ProcessStatus.NoProperty;
 
             @Override
             protected Object doInBackground() throws Exception {
-                Property = ProcessStatus.GoToMainMenu;
-                CurrentUser = null;
+                property = ProcessStatus.GoToMainMenu;
+                currentUser = null;
                 return null;
             }
 
             @Override
             protected void done() {
                 try {
-                    LoginModel.this.firePropertyChange(Property.toString(), null, get());
+                    LoginModel.this.firePropertyChange(property.toString(), null, get());
                 } catch (InterruptedException ex) {
                     LoginModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
                 } catch (ExecutionException ex) {

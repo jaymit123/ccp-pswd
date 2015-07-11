@@ -15,7 +15,7 @@ import java.awt.Image;
  */
 public class ImagePanel extends JPanel {
 
-    private Image DisplayImage = null;
+    private Image displayImage = null;
     private int x, y, w, h;
 
     public void setValues(int x, int y, int w, int h) {
@@ -26,22 +26,18 @@ public class ImagePanel extends JPanel {
     }
 
     public boolean isValuesEmpty() {
-        if (w == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return w == 0;
     }
 
     public void paintImage(Image bi) {
-        DisplayImage = bi;
+        displayImage = bi;
         repaint();                                                // repaint calls paintComponent method internally
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(DisplayImage, x, y, w, h, this);   // To Paint the image on the panel
+        g.drawImage(displayImage, x, y, w, h, this);   // To Paint the image on the panel
 
     }
 }
