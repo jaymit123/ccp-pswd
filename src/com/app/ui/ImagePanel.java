@@ -16,21 +16,16 @@ import java.awt.image.BufferedImage;
 public class ImagePanel extends JPanel {
 
     private BufferedImage DisplayImage = null;
-    private int x, y, w, h;
+    private int x = -1;
+    private int y = -1;
 
-    public void setValues(int x, int y, int w, int h) {
+    public void setValues(int x, int y) {
         this.x = x;
         this.y = y;
-        this.w = w;
-        this.h = h;
     }
 
     public boolean isValuesEmpty() {
-        if (w == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return x == -1 || y == -1;
     }
 
     public void paintImage(BufferedImage bi) {
@@ -41,7 +36,6 @@ public class ImagePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(DisplayImage, x, y,w,h, this);   // To Paint the image on the panel
-
+        g.drawImage(DisplayImage, x, y, this);   // To Paint the image on the panel
     }
 }

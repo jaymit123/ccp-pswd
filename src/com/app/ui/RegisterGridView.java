@@ -13,28 +13,35 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.JPanel;
+import org.imgscalr.Scalr;
 
 /**
  *
  * @author VJ
  */
-public class GridView {
+public class RegisterGridView {
 
-    private DisableUI layerUi = null;
-    private JLayer<JPanel> gridLayer = null;
-    private ImagePanel mainPanel = null;
-    private int gridNos = 9;
-    private JLabel gridLabel[][] = new JLabel[gridNos][gridNos];
+    protected DisableUI layerUi = null;
+    protected JLayer<JPanel> gridLayer = null;
+    protected ImagePanel mainPanel = null;
+    protected int gridNos = 9;
+    protected JLabel gridLabel[][] = new JLabel[gridNos][gridNos];
+    protected int gridX = -1, gridY = -1, gridWidth = -1, gridHeight = -1;
+    protected boolean isGridEmpty = false;
 
-    public GridView() {
+    public RegisterGridView() {
         initPanel();
         initGrids();
-
+        initLayer();
     }
 
     private void initPanel() {
         mainPanel = new ImagePanel();
         mainPanel.setLayout(new GridLayout(gridNos, gridNos, 0, 0));                 //creates layout to place labels in grid form
+
+    }
+
+    protected void initLayer() {
         layerUi = new DisableUI();
         gridLayer = new JLayer<>(mainPanel, layerUi);
     }
@@ -73,6 +80,26 @@ public class GridView {
         }
     }
 
+    protected void setupGridView() {
+        gridX = gridLabel[0][0].getX();
+        gridY = gridLabel[0][0].getY();
+        gridWidth = gridLabel[0][0].getWidth();
+        gridHeight = gridLabel[0][0].getHeight();
+        mainPanel.setValues(gridX, gridY);
+    }
+
+    protected BufferedImage processImage(BufferedImage img) {
+        if (!isGridEmpty) {
+            setupGridView();
+        }
+        return Scalr.resize(img, Scalr.Mode.FIT_EXACT, gridWidth * gridNos, gridHeight * gridNos, Scalr.OP_ANTIALIAS);
+    }
+
+    public void setImage(BufferedImage img) {
+        img = processImage(img);
+        mainPanel.paintImage(img);
+    }
+
     public void setPanelBorder(boolean visible) {
         if (visible) {
             mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -87,13 +114,6 @@ public class GridView {
                 gridLabel[i][j].addMouseListener(ml);
             }
         }
-    }
-
-    public void setImage(BufferedImage img) {
-        if (mainPanel.isValuesEmpty()) {
-            mainPanel.setValues(gridLabel[0][0].getX(), gridLabel[0][0].getY(), gridLabel[0][0].getWidth() * (gridNos), gridLabel[0][0].getHeight() * (gridNos));
-        }
-        mainPanel.paintImage(img);
     }
 
     public void disableUI() {
