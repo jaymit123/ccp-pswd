@@ -19,7 +19,7 @@ import org.imgscalr.Scalr;
  *
  * @author VJ
  */
-public class RegisterGridView {
+public class GridView {
 
     protected DisableUI layerUi = null;
     protected JLayer<JPanel> gridLayer = null;
@@ -29,7 +29,7 @@ public class RegisterGridView {
     protected int gridX = -1, gridY = -1, gridWidth = -1, gridHeight = -1;
     protected boolean isGridEmpty = false;
 
-    public RegisterGridView() {
+    public GridView() {
         initPanel();
         initGrids();
         initLayer();

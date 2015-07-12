@@ -7,7 +7,7 @@ package com.app.user.login;
 
 import com.app.beans.Viewable;
 import com.app.ui.FormView;
-import com.app.ui.RegisterGridView;
+import com.app.ui.GridView;
 import com.app.user.security.ValidationStatus;
 import com.app.user.status.ExceptionStatus;
 import java.awt.BorderLayout;
@@ -31,7 +31,7 @@ import net.miginfocom.swing.MigLayout;
 public class LoginView implements Viewable {
 
     private LoginController loginControl;
-    private RegisterGridView p2Grid;
+    private GridView p2Grid;
     private JPanel p2GridPanel;
     private JPanel p1TopPanel;
     private JPanel mainPanel;
@@ -72,7 +72,7 @@ public class LoginView implements Viewable {
     private void initPhase2() {
         p2GridPanel = new JPanel(new BorderLayout());
         p2GridPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
-        p2Grid = new RegisterGridView();
+        p2Grid = new GridView();
         p2Grid.setGridBorder(false);
         p2Grid.setPanelBorder(true);
         p2GridPanel.add(p2Grid.getComponent(), BorderLayout.CENTER);

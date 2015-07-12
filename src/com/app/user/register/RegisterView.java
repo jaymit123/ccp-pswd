@@ -5,7 +5,7 @@
  */
 package com.app.user.register;
 
-import com.app.ui.RegisterGridView;
+import com.app.ui.GridView;
 import com.app.ui.FormView;
 import com.app.beans.Viewable;
 import com.app.ui.DisableUI;
@@ -49,7 +49,7 @@ public class RegisterView implements Viewable {
     private JPanel sharedBtnPanel;                            // Holds Buttons
     private JPanel p2SharedBtns;
     private JPanel globalSharedBtns;
-    private RegisterGridView p2Grid;                           //Gives the Panel holding the grid.
+    private GridView p2Grid;                           //Gives the Panel holding the grid.
     private JButton p2Next, p2Finish, p2Reset, restart, close;
     private ListView p2ListView;
     private final List<String> defaultImageList;
@@ -141,7 +141,7 @@ public class RegisterView implements Viewable {
 
     private void initP2Components() {
         p2ListView = new ListView();
-        p2Grid = new RegisterGridView();
+        p2Grid = new GridView();
         p2Grid.setGridBorder(true);
     }
 
