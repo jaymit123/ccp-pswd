@@ -7,7 +7,7 @@ package com.app.ui;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,7 +15,7 @@ import java.awt.Image;
  */
 public class ImagePanel extends JPanel {
 
-    private Image DisplayImage = null;
+    private BufferedImage DisplayImage = null;
     private int x, y, w, h;
 
     public void setValues(int x, int y, int w, int h) {
@@ -33,7 +33,7 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    public void paintImage(Image bi) {
+    public void paintImage(BufferedImage bi) {
         DisplayImage = bi;
         repaint();                                                // repaint calls paintComponent method internally
     }
@@ -41,7 +41,7 @@ public class ImagePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(DisplayImage, x, y, this);   // To Paint the image on the panel
+        g.drawImage(DisplayImage, x, y,w,h, this);   // To Paint the image on the panel
 
     }
 }

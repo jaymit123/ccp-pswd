@@ -6,6 +6,7 @@
 package com.app.io;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
@@ -61,8 +62,8 @@ public class ImageModel {
         return imagesList;
     }
 
-    public Image getImage(String img) throws ImageAccessException {
-        Image CurrentImage = null;
+    public BufferedImage getImage(String img) throws ImageAccessException {
+        BufferedImage CurrentImage = null;
         try (FileInputStream fis = new FileInputStream(imagesPath + img)) {
             CurrentImage = ImageIO.read(fis);
         } catch (FileNotFoundException ex) {

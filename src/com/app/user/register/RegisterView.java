@@ -20,6 +20,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -255,7 +256,7 @@ public class RegisterView implements Viewable {
 
         switch (pce.getPropertyName()) {
             case "DisplayImage":
-                p2Grid.setImage((Image) pce.getNewValue());
+                p2Grid.setImage((BufferedImage)pce.getNewValue());
                 p2Grid.enableUI();
                 p2Next.setEnabled(false);
                 break;

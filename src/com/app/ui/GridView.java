@@ -7,8 +7,8 @@ package com.app.ui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
@@ -89,7 +89,7 @@ public class GridView {
         }
     }
 
-    public void setImage(Image img) {
+    public void setImage(BufferedImage img) {
         if (mainPanel.isValuesEmpty()) {
             mainPanel.setValues(gridLabel[0][0].getX(), gridLabel[0][0].getY(), gridLabel[0][0].getWidth() * (gridNos), gridLabel[0][0].getHeight() * (gridNos));
         }
