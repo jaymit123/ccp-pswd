@@ -126,7 +126,7 @@ public class LoginView implements Viewable {
         p1FormView.enableUI();
         p1FormView.resetUI();
         logOut.setEnabled(false);
-        p2Grid.setImage(null);
+        p2Grid.resetImage();
         p2Grid.disableUI();
     }
 
@@ -197,7 +197,7 @@ public class LoginView implements Viewable {
                 logOut.setEnabled(true);
                 Close.setEnabled(false);
                 p2Grid.disableUI();
-                p2Grid.setImage(null);
+                p2Grid.resetImage();
                 break;
 
             case FAILURE:

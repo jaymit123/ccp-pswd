@@ -205,7 +205,7 @@ public class RegisterView implements Viewable {
         p2ListView.removeImage(null);
         p2ListView.uninstallList();
         p2LayerUI.startDisableUI();
-        p2Grid.setImage(null);
+        p2Grid.resetImage();
         p2ListView.repaintList();
         disableP2Btns();
     }
@@ -294,7 +294,7 @@ public class RegisterView implements Viewable {
                 p2ListView.removeImage(null);
                 unloadList();
                 p2Grid.disableUI();
-                p2Grid.setImage(null);
+                p2Grid.resetImage();
                 disableP2Btns();
                 loadList();
                 p2ListView.repaintList();

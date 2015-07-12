@@ -104,7 +104,7 @@ public class GridView {
         layerUi.stopDisableUI();
     }
 
-    public void reset() {
+    public void resetImage() {
         mainPanel.paintImage(null);
     }
 
