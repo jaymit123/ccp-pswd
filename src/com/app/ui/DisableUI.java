@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -27,7 +27,7 @@ import javax.swing.Timer;
 public class DisableUI extends LayerUI<JPanel> implements ActionListener {
 
     private Timer fadeTimer = null;
-    private boolean disableIsRunning = false;
+    protected boolean disableIsRunning = false;
     private boolean isFadingOut = false;
     private int fadeCount, fadeLimit = 15;
 
@@ -38,7 +38,7 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
         disableComponent(g, w, h);
     }
 
-    public void disableComponent(Graphics g, int w, int h) {
+    protected void disableComponent(Graphics g, int w, int h) {
         if (!disableIsRunning) {
             return;
         }
@@ -97,7 +97,9 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
         if (disableIsRunning) {
             if (!isFadingOut) {
                 if (fadeCount < fadeLimit) {
-                   if(++fadeCount == fadeLimit) fadeTimer.stop();
+                    if (++fadeCount == fadeLimit) {
+                        fadeTimer.stop();
+                    }
                 }
             } else {
                 --fadeCount;

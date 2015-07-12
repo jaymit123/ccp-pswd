@@ -24,7 +24,7 @@ public class GridView {
     private JLayer<JPanel> gridLayer = null;
     private ImagePanel mainPanel = null;
     private int gridNos = 9;
-    private JLabel gridLabel[] = new JLabel[gridNos * gridNos];
+    private JLabel gridLabel[][] = new JLabel[gridNos][gridNos];
 
     public GridView() {
         initPanel();
@@ -40,26 +40,34 @@ public class GridView {
     }
 
     private void initGrids() {
-        for (int i = 0; i < gridNos * gridNos; i++) {
-            gridLabel[i] = new JLabel();
-            gridLabel[i].setOpaque(false);
-            gridLabel[i].setName("" + (i + 1));         // Since for loop index is 0 to 80, we add 1 to the name to make it 1 to 81
-            mainPanel.add(gridLabel[i]);              //add it to MainPanel
+        int number = 1;                       //assign number from 1 to (gridNo*gridNo)
+        for (int i = 0; i < gridNos; i++) {
+            for (int j = 0; j < gridNos; j++) {
+                gridLabel[i][j] = new JLabel();
+                gridLabel[i][j].setOpaque(false);
+                gridLabel[i][j].setName("" + (number));         // Since for loop index is 0 to 80, we add 1 to the name to make it 1 to 81
+                mainPanel.add(gridLabel[i][j]);              //add it to MainPanel
+                ++number;
+            }
         }
     }
 
     public void setGridBorder(boolean isVisible) {
         if (isVisible) {
-            if (gridLabel[0].getBorder() == null) {// checks if Border of first grid is transparent or opaque
-                for (JLabel BorderLabel : gridLabel) {
-                    BorderLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            if (gridLabel[0][0].getBorder() == null) {// checks if Border of first grid is transparent or opaque
+                for (int i = 0; i < gridNos; i++) {
+                    for (int j = 0; j < gridNos; j++) {
+                        gridLabel[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    }
                 }
 
             }
         } else {
-            if (gridLabel[0].getBorder() != null) {
-                for (JLabel BorderLabel : gridLabel) {
-                    BorderLabel.setBorder(BorderFactory.createEmptyBorder());
+            if (gridLabel[0][0].getBorder() != null) {
+                for (int i = 0; i < gridNos; i++) {
+                    for (int j = 0; j < gridNos; j++) {
+                        gridLabel[i][j].setBorder(BorderFactory.createEmptyBorder());
+                    }
                 }
             }
         }
@@ -74,14 +82,16 @@ public class GridView {
     }
 
     public void setGridActions(MouseListener ml) {
-        for (JLabel AddAction : gridLabel) {
-            AddAction.addMouseListener(ml);
+        for (int i = 0; i < gridNos; i++) {
+            for (int j = 0; j < gridNos; j++) {
+                gridLabel[i][j].addMouseListener(ml);
+            }
         }
     }
 
     public void setImage(Image img) {
         if (mainPanel.isValuesEmpty()) {
-            mainPanel.setValues(gridLabel[0].getX(), gridLabel[0].getY(), gridLabel[0].getWidth() * (gridNos), gridLabel[0].getHeight() * (gridNos));
+            mainPanel.setValues(gridLabel[0][0].getX(), gridLabel[0][0].getY(), gridLabel[0][0].getWidth() * (gridNos), gridLabel[0][0].getHeight() * (gridNos));
         }
         mainPanel.paintImage(img);
     }

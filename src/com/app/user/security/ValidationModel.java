@@ -13,7 +13,7 @@ public class ValidationModel {
 
     private final static String Username_Regex = "[\\S]{3,10}";
     private final static String P1_Password_Regex = "((?=\\S*\\w+)(?=\\S*[+-.,!@#$%^&*();\\\\/|<>\"'\\d]+)(\\S{5,10}))";
-    private final static String P2_Password_Regex = "(\\|[^/?<>\\\\:*|]+\\.[a-zA-Z0-9]{3,5}\\&[\\d]{1,2}){3,5}";
+    private final static String P2_Password_Regex = "(\\|[^/?<>\\\\:*|]+\\.[a-zA-Z0-9]{3,5}\\&[\\d]{1,3}){3,5}";
  
     public static ValidationStatus validateUsername(String username) {
         if (username.matches(Username_Regex)) {
