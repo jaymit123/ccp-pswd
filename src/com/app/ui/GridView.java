@@ -20,17 +20,13 @@ import org.imgscalr.Scalr;
  * @author VJ
  */
 public class GridView {
-static{
-System.out.println("hi1"); 
-
-}
     protected DisableUI layerUi = null;
-    protected JLayer<JPanel> gridLayer = null;
+    protected JLayer<JPanel> mainLayer = null;
     protected ImagePanel mainPanel = null;
     protected int gridNos = 9;
     protected JLabel gridLabel[][] = new JLabel[gridNos][gridNos];
     protected int gridX = -1, gridY = -1, gridWidth = -1, gridHeight = -1;
-    protected boolean isGridEmpty = false;
+    protected boolean isGridInitialized = false;
 
     public GridView() {
         initPanel();
@@ -44,10 +40,9 @@ System.out.println("hi1");
 
     }
 
-    protected void initLayer() {
-        System.out.println("h1");
+    private void initLayer() {
         layerUi = new DisableUI();
-        gridLayer = new JLayer<>(mainPanel, layerUi);
+        mainLayer = new JLayer<>(mainPanel, layerUi);
     }
 
     private void initGrids() {
@@ -93,8 +88,9 @@ System.out.println("hi1");
     }
 
     protected BufferedImage processImage(BufferedImage img) {
-        if (!isGridEmpty) {
+        if (!isGridInitialized) {
             setupGridView();
+            isGridInitialized = true;
         }
         return Scalr.resize(img, Scalr.Mode.FIT_EXACT, gridWidth * gridNos, gridHeight * gridNos, Scalr.OP_ANTIALIAS);
     }
@@ -133,7 +129,7 @@ System.out.println("hi1");
     }
 
     public JLayer<JPanel> getComponent() {
-        return gridLayer;
+        return mainLayer;
     }
 
 }

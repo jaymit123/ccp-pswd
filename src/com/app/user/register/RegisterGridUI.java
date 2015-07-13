@@ -52,7 +52,7 @@ public class RegisterGridUI extends DisableUI {
     @Override
     public void startDisableUI() {
         if (shuffleIsRunning) {
-            shuffleIsRunning = false;
+            removeViewPort();
         }
         super.startDisableUI(); //To change body of generated methods, choose Tools | Templates.
 
@@ -101,8 +101,6 @@ public class RegisterGridUI extends DisableUI {
         }
         viewX = 0;
         viewY = 0;
-        viewWidth = 0;
-        viewHeight = 0;
         shuffleIsRunning = false;
         viewportImage = null;
         firePropertyChange("shuffleui", 0, 1);

@@ -5,7 +5,6 @@
  */
 package com.app.user.register;
 
-import com.app.ui.GridView;
 import com.app.ui.FormView;
 import com.app.beans.Viewable;
 import com.app.ui.DisableUI;
@@ -54,7 +53,7 @@ public class RegisterView implements Viewable {
     private JPanel p2SharedBtns;
     private JPanel globalSharedBtns;
     private RegisterGridView p2Grid;                           //Gives the Panel holding the grid.
-    private JButton p2Finish, p2Reset, restart, close;
+    private JButton p2Finish, p2Reset, p2Shuffle, restart, close;
     private ListView p2ListView;
     private final List<String> defaultImageList;
     private DisableUI p2LayerUI;
@@ -64,7 +63,6 @@ public class RegisterView implements Viewable {
     private RegisterMode regMode;
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
-        regMode = RegisterMode.NormalCCP;
         regControl = regcontrol;
         regControl.setRegisterView(this);
         defaultImageList = list;
@@ -106,8 +104,11 @@ public class RegisterView implements Viewable {
         p2Finish.setEnabled(false);
         p2Reset = new JButton("Reset Phase2");
         p2Reset.setEnabled(false);
+        p2Shuffle = new JButton("Shuffle");
+        p2Shuffle.setEnabled(false);
         p2SharedBtns.add(p2Finish, "wrap");
-        p2SharedBtns.add(p2Reset);
+        p2SharedBtns.add(p2Reset, "wrap");
+        p2SharedBtns.add(p2Shuffle);
         p2SharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase 2", TitledBorder.LEFT, TitledBorder.TOP));
 
     }
@@ -145,7 +146,6 @@ public class RegisterView implements Viewable {
     private void initP2Components() {
         p2ListView = new ListView();
         p2Grid = new RegisterGridView();
-        p2Grid.setGridBorder(true);
     }
 
     private void addP2Components() {
@@ -197,12 +197,15 @@ public class RegisterView implements Viewable {
         p2ListView.uninstallList();
         p2LayerUI.startDisableUI();
         p2Grid.resetImage();
+        if (regMode != null && regMode.equals(RegisterMode.PersuasiveCCP)) {
+            p2Grid.stopShuffle();
+        }
         p2ListView.repaintList();
         disableP2Btns();
     }
 
     private void disableP2Btns() {
-//add shuffle
+        p2Shuffle.setEnabled(false);
         p2Finish.setEnabled(false);
         p2Reset.setEnabled(false);
     }
@@ -232,6 +235,10 @@ public class RegisterView implements Viewable {
                 }
             }
 
+        });
+
+        p2Shuffle.addActionListener((ActionEvent evt) -> {
+            p2Grid.startShuffle();
         });
     }
 
@@ -278,11 +285,11 @@ public class RegisterView implements Viewable {
                 p2Grid.setImage(bi);
                 p2Grid.enableUI();
                 break;
-                
+
             case PersuasiveCCP:
                 p2Grid.setPCCPImage(bi);
                 p2Grid.startShuffle();
-                // shuffle.setEnabled(true);
+                p2Shuffle.setEnabled(true);
 
                 break;
         }
@@ -310,6 +317,7 @@ public class RegisterView implements Viewable {
                 p2Grid.disableUI();
                 p2Grid.resetImage();
                 disableP2Btns();
+                displayCCPOption();
                 loadList();
                 p2ListView.repaintList();
                 JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Phase2 Reset Success!", JOptionPane.DEFAULT_OPTION);
@@ -352,6 +360,7 @@ public class RegisterView implements Viewable {
 
             case BOTH_OK:
                 JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Success!", JOptionPane.INFORMATION_MESSAGE);
+                displayCCPOption();
                 p1FormView.disableUI();
                 p2LayerUI.stopDisableUI();
                 p2Grid.disableUI();
@@ -367,6 +376,26 @@ public class RegisterView implements Viewable {
             default:
                 break;
         }
+    }
+
+    private void displayCCPOption() {
+        Object options[] = {"Normal Mode", "Persuasive Mode"};
+
+        int ans = JOptionPane.showOptionDialog(mainPanel, "Select Mode", "Mode Selection:", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        switch (ans) {
+            case JOptionPane.NO_OPTION:
+                p2Grid.setGridBorder(false);
+                regMode = RegisterMode.PersuasiveCCP;
+                break;
+
+            case JOptionPane.YES_OPTION:
+            default:
+                p2Grid.setGridBorder(true);
+                regMode = RegisterMode.NormalCCP;
+                break;
+        }
+
     }
 
     private void handleExceptionMessage(ExceptionStatus es) {

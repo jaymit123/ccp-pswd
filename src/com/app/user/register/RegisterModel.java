@@ -181,7 +181,7 @@ public class RegisterModel extends AbstractModel {
 
             protected void done() {
                 try {
-                    RegisterModel.this.firePropertyChange(CurrentProcess.toString(), null, get());
+                RegisterModel.this.firePropertyChange(CurrentProcess.toString(), null, get());
                 } catch (InterruptedException | ExecutionException ex) {
                     RegisterModel.this.firePropertyChange(ProcessStatus.ExceptionStatus.toString(), null, ExceptionStatus.FATAL_ERROR);
 
