@@ -21,7 +21,6 @@ public class SwingUncaughtException implements Thread.UncaughtExceptionHandler {
     
     
     public void handleException(Throwable e){
-        System.out.println("Uncaught Exception:"+e.getMessage());
         JOptionPane.showMessageDialog(null, "Oh No. Something went wrong!\n Please contact me @ jaymit_123@hotmail.com", "Error", JOptionPane.ERROR_MESSAGE);
    
         System.exit(0);

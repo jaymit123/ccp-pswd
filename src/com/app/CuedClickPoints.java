@@ -29,10 +29,10 @@ import javax.swing.SwingUtilities;
 public class CuedClickPoints {
 
     public static void main(String[] args) throws AppSecurityException, DatabaseException, ImageAccessException {
-        SwingUncaughtException.registerExceptionHandler();
+   //     SwingUncaughtException.registerExceptionHandler();
         try {
-            DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
-            //  DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "ss", "CCP_User_Table");
+            //DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
+             DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
             UserDAO udao = new UserDAO(dbmodel);
             ImageModel im = new ImageModel(System.getProperty("user.home") + "/Desktop/resources/");
             AuthenticationModel aum = new AuthenticationModel(udao, im.getImageList());
@@ -46,13 +46,12 @@ public class CuedClickPoints {
             //Runs program in EDT
             SwingUtilities.invokeLater(() -> {
 
-                SwingUncaughtException.registerExceptionHandler();
+               // SwingUncaughtException.registerExceptionHandler();
                 HyperView hp = new HyperView(lg, rg, im.getImageList());
             });
 
         } catch (DatabaseException de) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured while contacting the database.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
-
         } catch (AppSecurityException | ImageAccessException | InterruptedException se) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
         }

@@ -20,7 +20,10 @@ import org.imgscalr.Scalr;
  * @author VJ
  */
 public class GridView {
+static{
+System.out.println("hi1"); 
 
+}
     protected DisableUI layerUi = null;
     protected JLayer<JPanel> gridLayer = null;
     protected ImagePanel mainPanel = null;
@@ -42,6 +45,7 @@ public class GridView {
     }
 
     protected void initLayer() {
+        System.out.println("h1");
         layerUi = new DisableUI();
         gridLayer = new JLayer<>(mainPanel, layerUi);
     }
