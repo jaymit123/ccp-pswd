@@ -58,8 +58,6 @@ public class RegisterView implements Viewable {
     private final List<String> defaultImageList;
     private DisableUI p2LayerUI;
     private JLayer<JPanel> p2Layer;
-    private int gridSelected = -1;               // Determin which grid is selected.
-    private String imageSelected = null;
     private RegisterMode regMode;
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
@@ -102,10 +100,13 @@ public class RegisterView implements Viewable {
         p2SharedBtns = new JPanel(new MigLayout());
         p2Finish = new JButton("Finish");
         p2Finish.setEnabled(false);
+        p2Finish.setFocusPainted(false);
         p2Reset = new JButton("Reset Phase2");
         p2Reset.setEnabled(false);
+        p2Reset.setFocusPainted(false);
         p2Shuffle = new JButton("Shuffle");
         p2Shuffle.setEnabled(false);
+        p2Shuffle.setFocusPainted(false);
         p2SharedBtns.add(p2Finish, "wrap");
         p2SharedBtns.add(p2Reset, "wrap");
         p2SharedBtns.add(p2Shuffle);
@@ -117,7 +118,9 @@ public class RegisterView implements Viewable {
         globalSharedBtns = new JPanel(new MigLayout());
         restart = new JButton("Restart");
         restart.setEnabled(false);
+        restart.setFocusPainted(false);
         close = new JButton("Close");
+        close.setFocusPainted(false);
         globalSharedBtns.add(restart);
         globalSharedBtns.add(close);
         globalSharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
@@ -146,6 +149,7 @@ public class RegisterView implements Viewable {
     private void initP2Components() {
         p2ListView = new ListView();
         p2Grid = new RegisterGridView();
+        p2Grid.setGridBorder(true);
     }
 
     private void addP2Components() {
@@ -214,8 +218,7 @@ public class RegisterView implements Viewable {
 
         p2ListView.setListSelectionListener((ListSelectionEvent evt) -> {
             if (!p2ListView.isSelectionEmpty() && !p2ListView.getValueIsAdjusting()) {
-                imageSelected = p2ListView.getSelectionValue();
-                regControl.requestImage(imageSelected);
+                regControl.requestImage(p2ListView.getSelectionValue());
             }
         });
 
@@ -223,15 +226,14 @@ public class RegisterView implements Viewable {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getSource() instanceof JLabel) {
-                    gridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                    int gridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                    String imageSelected = p2ListView.getSelectionValue();
                     if (!p2Reset.isEnabled()) {
                         p2Reset.setEnabled(true);
                     }
                     regControl.addUserEntry(imageSelected, gridSelected);
                     p2Grid.disableUI();
                     p2ListView.removeImage(imageSelected);
-                    gridSelected = -1;
-                    imageSelected = null;
                 }
             }
 
@@ -307,10 +309,6 @@ public class RegisterView implements Viewable {
                 }
                 break;
 
-            case ADDED:
-
-                break;
-
             case P2_RESET:
                 p2ListView.removeImage(null);
                 unloadList();
@@ -336,6 +334,10 @@ public class RegisterView implements Viewable {
             case REGISTER_FAILED:
                 JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Registeration Failed.", JOptionPane.ERROR_MESSAGE);
                 Restart();
+                break;
+
+            case ADDED:
+            default:
                 break;
         }
     }
@@ -381,7 +383,7 @@ public class RegisterView implements Viewable {
     private void displayCCPOption() {
         Object options[] = {"Normal Mode", "Persuasive Mode"};
 
-        int ans = JOptionPane.showOptionDialog(mainPanel, "Select Mode", "Mode Selection:", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+        int ans = JOptionPane.showOptionDialog(mainPanel, "Select Mode:", "Mode Selection", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
 
         switch (ans) {
             case JOptionPane.NO_OPTION:

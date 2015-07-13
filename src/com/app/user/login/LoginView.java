@@ -37,7 +37,7 @@ public class LoginView implements Viewable {
     private JPanel mainPanel;
     private FormView p1FormView;
     private JPanel globalBtnsPanel;
-    private JButton Close, logOut;
+    private JButton close, logOut;
 
     public LoginView(LoginController logincntrl) {
         loginControl = logincntrl;
@@ -62,10 +62,10 @@ public class LoginView implements Viewable {
         globalBtnsPanel = new JPanel(new MigLayout());
         globalBtnsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
 
-        Close = new JButton("Close");
+        close = new JButton("Close");
         logOut = new JButton("Log Out");
         logOut.setEnabled(false);
-        globalBtnsPanel.add(Close, "center,wrap,gaptop 10");
+        globalBtnsPanel.add(close, "center,wrap,gaptop 10");
         globalBtnsPanel.add(logOut, "center,gaptop 10");
     }
 
@@ -73,7 +73,6 @@ public class LoginView implements Viewable {
         p2GridPanel = new JPanel(new BorderLayout());
         p2GridPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase2", TitledBorder.LEFT, TitledBorder.TOP));
         p2Grid = new GridView();
-        p2Grid.setGridBorder(false);
         p2Grid.setPanelBorder(true);
         p2GridPanel.add(p2Grid.getComponent(), BorderLayout.CENTER);
         p2Grid.disableUI();
@@ -86,7 +85,7 @@ public class LoginView implements Viewable {
     }
 
     private void initGlobalBtnActions() {
-        Close.addActionListener((ActionEvent evt) -> {
+        close.addActionListener((ActionEvent evt) -> {
             Restart();
             loginControl.logOut();
         });
@@ -195,7 +194,7 @@ public class LoginView implements Viewable {
             case SUCCESS:
                 JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Success", JOptionPane.INFORMATION_MESSAGE);
                 logOut.setEnabled(true);
-                Close.setEnabled(false);
+                close.setEnabled(false);
                 p2Grid.disableUI();
                 p2Grid.resetImage();
                 break;

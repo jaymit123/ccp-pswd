@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import org.imgscalr.Scalr;
 
 /**
@@ -23,7 +24,7 @@ public class GridView {
     protected DisableUI layerUi = null;
     protected JLayer<JPanel> mainLayer = null;
     protected ImagePanel mainPanel = null;
-    protected int gridNos = 9;
+    protected int gridNos = 16;
     protected JLabel gridLabel[][] = new JLabel[gridNos][gridNos];
     protected int gridX = -1, gridY = -1, gridWidth = -1, gridHeight = -1;
     protected boolean isGridInitialized = false;
@@ -60,19 +61,21 @@ public class GridView {
 
     public void setGridBorder(boolean isVisible) {
         if (isVisible) {
-            if (gridLabel[0][0].getBorder() == null) {// checks if Border of first grid is transparent or opaque
+            if (gridLabel[0][0].getBorder() == null || !(gridLabel[0][0].getBorder().equals(BorderFactory.createLineBorder(Color.BLACK)))) {// checks if Border of first grid is transparent or opaque
+               Border setBlackBorder = BorderFactory.createLineBorder(Color.BLACK);
                 for (int i = 0; i < gridNos; i++) {
                     for (int j = 0; j < gridNos; j++) {
-                        gridLabel[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        gridLabel[i][j].setBorder(setBlackBorder);
                     }
                 }
 
             }
         } else {
-            if (gridLabel[0][0].getBorder() != null) {
+            if (gridLabel[0][0].getBorder() != null || !gridLabel[0][0].getBorder().equals(BorderFactory.createEmptyBorder())) {
+                Border setEmptyBorder = BorderFactory.createEmptyBorder();
                 for (int i = 0; i < gridNos; i++) {
                     for (int j = 0; j < gridNos; j++) {
-                        gridLabel[i][j].setBorder(BorderFactory.createEmptyBorder());
+                        gridLabel[i][j].setBorder(setEmptyBorder);
                     }
                 }
             }

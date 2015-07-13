@@ -51,11 +51,11 @@ public class RegisterGridUI extends DisableUI {
 
     @Override
     public void startDisableUI() {
+
+        super.startDisableUI(); //To change body of generated methods, choose Tools | Templates.
         if (shuffleIsRunning) {
             removeViewPort();
         }
-        super.startDisableUI(); //To change body of generated methods, choose Tools | Templates.
-
     }
 
     public void setViewportImage(BufferedImage img) {

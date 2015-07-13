@@ -17,7 +17,7 @@ import javax.swing.JLayer;
 public class RegisterGridView extends GridView {
 
     private RegisterGridUI regGridUI;
-    private final int viewportDimensions = 2;  //number of rows / cols in viewport
+    private final int viewportDimensions = 4;  //number of rows / cols in viewport
     private final int digit[] = new int[2];
     private final int gridsInViewport[] = new int[viewportDimensions * viewportDimensions]; //Total number of grids in viewport
     private Random shuffleRandom;
@@ -35,7 +35,7 @@ public class RegisterGridView extends GridView {
 
     private void shuffleNumberGen() {
         for (int i = 0; i < digit.length; i++) {
-            digit[i] = shuffleRandom.nextInt(gridNos -2);
+            digit[i] = shuffleRandom.nextInt(gridNos - viewportDimensions);
         }
     }
 

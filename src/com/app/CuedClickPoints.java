@@ -29,30 +29,35 @@ import javax.swing.SwingUtilities;
 public class CuedClickPoints {
 
     public static void main(String[] args) {
-      SwingUncaughtException.registerExceptionHandler();
+        SwingUncaughtException.registerExceptionHandler();
         try {
-           DatabaseModel dbmodel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
-            // DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
-            UserDAO udao = new UserDAO(dbmodel);
-            ImageModel im = new ImageModel(System.getProperty("user.home") + "/Desktop/resources/");
-            AuthenticationModel aum = new AuthenticationModel(udao, im.getImageList());
-            RegisterController rg = new RegisterController();
-            LoginController lg = new LoginController();
-            RegisterModel rm = new RegisterModel(aum, im);
-            LoginModel lm = new LoginModel(aum, im);
-            rg.setRegisterModel(rm);
-            lg.setLoginModel(lm);
-            Thread.sleep(1000);
-            //Runs program in EDT
-            SwingUtilities.invokeLater(() -> {
 
-               SwingUncaughtException.registerExceptionHandler();
-                HyperView hp = new HyperView(lg, rg, im.getImageList());
+            // 1. Load Database
+            DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
+            // DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
+            UserDAO userDao = new UserDAO(dbModel);
+
+            //2. Load List of Images
+            ImageModel imageModel = new ImageModel(System.getProperty("user.home") + "/Desktop/resources/");
+
+            //3. Init Objects
+            AuthenticationModel authenticationModel = new AuthenticationModel(userDao, imageModel.getImageList());
+            RegisterController registerCntrl = new RegisterController();
+            LoginController loginCntrl = new LoginController();
+            RegisterModel registerModel = new RegisterModel(authenticationModel, imageModel);
+            LoginModel loginModel = new LoginModel(authenticationModel, imageModel);
+            registerCntrl.setRegisterModel(registerModel);
+            loginCntrl.setLoginModel(loginModel);
+
+            SwingUtilities.invokeLater(() -> { //Runs GUI in EDT
+
+                SwingUncaughtException.registerExceptionHandler();
+                HyperView hp = new HyperView(loginCntrl, registerCntrl, imageModel.getImageList());
             });
 
         } catch (DatabaseException de) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured while contacting the database.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
-        } catch (AppSecurityException | ImageAccessException | InterruptedException se) {
+        } catch (AppSecurityException | ImageAccessException e) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
         }
     }
