@@ -42,7 +42,7 @@ public class AuthenticationModel {
             };
             userdao.stopCommunication();
         } catch (DAOException ex) {
-            throw new AppSecurityException(SecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);
+            throw new AppSecurityException(AppSecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);
         }
     }
 
@@ -61,9 +61,9 @@ public class AuthenticationModel {
             userdao.stopCommunication();
         } catch (DAOException ex) {
             if (ex.getErrorReason().equals(DAOExReason.REG_ERROR_USER_EXIST)) {
-                throw new AppSecurityException(SecurityExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
+                throw new AppSecurityException(AppSecurityExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
             } else {
-                throw new AppSecurityException(SecurityExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
+                throw new AppSecurityException(AppSecurityExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
             }
         }
         return result;
@@ -79,7 +79,7 @@ public class AuthenticationModel {
                 user = new LoginUser(username, p2password, ImageList);
             }
         } catch (DAOException ex) {
-            throw new AppSecurityException(SecurityExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
+            throw new AppSecurityException(AppSecurityExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
         }
         return user;
     }

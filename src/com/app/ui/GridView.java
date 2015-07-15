@@ -21,7 +21,7 @@ import org.imgscalr.Scalr;
  * @author VJ
  */
 public class GridView {
-    protected DisableUI layerUi = null;
+    protected DisableUI layerUI = null;
     protected JLayer<JPanel> mainLayer = null;
     protected ImagePanel mainPanel = null;
     protected int gridNos = 16;
@@ -42,8 +42,8 @@ public class GridView {
     }
 
     private void initLayer() {
-        layerUi = new DisableUI();
-        mainLayer = new JLayer<>(mainPanel, layerUi);
+        layerUI = new DisableUI();
+        mainLayer = new JLayer<>(mainPanel, layerUI);
     }
 
     private void initGrids() {
@@ -120,11 +120,11 @@ public class GridView {
     }
 
     public void disableUI() {
-        layerUi.startDisableUI();
+        layerUI.startDisableUI();
     }
 
     public void enableUI() {
-        layerUi.stopDisableUI();
+        layerUI.stopDisableUI();
     }
 
     public void resetImage() {

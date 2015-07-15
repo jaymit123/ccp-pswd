@@ -11,7 +11,7 @@ package com.app.user.status;
  */
 public enum ProcessStatus {
 
-    ValidationStatus("ValidationStatus"),LoginStatus("LoginStatus") ,RegisterStatus("RegisterStatus"), ExceptionStatus("Exception"), NoProperty("NoProperty"), DisplayImage("Display Image"),
+    ValidationStatus("ValidationStatus"), LoginStatus("LoginStatus"), RegisterStatus("RegisterStatus"), ExceptionStatus("Exception"), NoProperty("NoProperty"), DisplayImage("Display Image"),
     GoToMainMenu("Go To MainMenu");
     private String Property;
 

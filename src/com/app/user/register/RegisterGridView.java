@@ -23,9 +23,9 @@ public class RegisterGridView extends GridView {
     private Random shuffleRandom;
 
     public RegisterGridView() {
-        layerUi = new RegisterGridUI();
-        mainLayer = new JLayer<>(mainPanel, layerUi);
-        regGridUI = (RegisterGridUI) layerUi;
+        layerUI = new RegisterGridUI();
+        mainLayer = new JLayer<>(mainPanel, layerUI);
+        regGridUI = (RegisterGridUI) layerUI;
         shuffleRandom = new Random();
     }
 
