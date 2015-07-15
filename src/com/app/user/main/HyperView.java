@@ -50,7 +50,7 @@ public class HyperView implements Viewable {
         Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
         appWidth = ScreenSize.getWidth();
         appHeight = ScreenSize.getHeight();
-        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 6.0 * appHeight));
+        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 4.0 * appHeight));
         mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, Event.WINDOW_DESTROY));
         mainFrame.setResizable(false);
@@ -110,7 +110,7 @@ public class HyperView implements Viewable {
         mainFrame.add(mainMenu.getPanel());
         mainFrame.revalidate();
         mainFrame.repaint();
-        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 6.0 * appHeight));
+        mainFrame.setSize((int) (1.0 / 8.0 * appWidth), (int) (1.0 / 4.0 * appHeight));
         mainFrame.setLocationRelativeTo(null);
     }
 
