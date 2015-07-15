@@ -11,20 +11,20 @@ package com.app.user.security;
  */
 public class AppSecurityException extends Exception {
 
-    private SecurityExReason reason;
+    private AppSecurityExReason reason;
 
-    public AppSecurityException(SecurityExReason rsn, String string) {
+    public AppSecurityException(AppSecurityExReason rsn, String string) {
         super(string);
         reason = rsn;
     }
 
-    public AppSecurityException(SecurityExReason rsn, String string, Throwable thrwbl) {
+    public AppSecurityException(AppSecurityExReason rsn, String string, Throwable thrwbl) {
         super(string, thrwbl);
         reason = rsn;
 
     }
 
-    public SecurityExReason getErroReason() {
+    public AppSecurityExReason getErroReason() {
         return reason;
     }
 

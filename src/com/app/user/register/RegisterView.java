@@ -5,7 +5,6 @@
  */
 package com.app.user.register;
 
-import com.app.ui.GridView;
 import com.app.ui.FormView;
 import com.app.beans.Viewable;
 import com.app.ui.DisableUI;
@@ -15,11 +14,11 @@ import com.app.user.status.ExceptionStatus;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +40,11 @@ import javax.swing.event.ListSelectionEvent;
  */
 public class RegisterView implements Viewable {
 
+    private enum RegisterMode {
+
+        NormalCCP, PersuasiveCCP
+    };
+
     private final RegisterController regControl;
     private JPanel mainPanel;                               //The Main Panel holding the entire Registration View
     private FormView p1FormView;                           //Gives the Phase 1 Form.       
@@ -48,14 +52,13 @@ public class RegisterView implements Viewable {
     private JPanel sharedBtnPanel;                            // Holds Buttons
     private JPanel p2SharedBtns;
     private JPanel globalSharedBtns;
-    private GridView p2Grid;                           //Gives the Panel holding the grid.
-    private JButton p2Next, p2Finish, p2Reset, restart, close;
+    private RegisterGridView p2Grid;                           //Gives the Panel holding the grid.
+    private JButton p2Finish, p2Reset, p2Shuffle, restart, close;
     private ListView p2ListView;
     private final List<String> defaultImageList;
     private DisableUI p2LayerUI;
     private JLayer<JPanel> p2Layer;
-    private int gridSelected = -1;               // Determin which grid is selected.
-    private String imageSelected = null;
+    private RegisterMode regMode;
 
     public RegisterView(RegisterController regcontrol, List<String> list) {
         regControl = regcontrol;
@@ -95,15 +98,18 @@ public class RegisterView implements Viewable {
 
     private void initP2SharedBtns() {
         p2SharedBtns = new JPanel(new MigLayout());
-        p2Next = new JButton("Next");
-        p2Next.setEnabled(false);
         p2Finish = new JButton("Finish");
         p2Finish.setEnabled(false);
+        p2Finish.setFocusPainted(false);
         p2Reset = new JButton("Reset Phase2");
         p2Reset.setEnabled(false);
-        p2SharedBtns.add(p2Next, "wrap");
+        p2Reset.setFocusPainted(false);
+        p2Shuffle = new JButton("Shuffle");
+        p2Shuffle.setEnabled(false);
+        p2Shuffle.setFocusPainted(false);
         p2SharedBtns.add(p2Finish, "wrap");
-        p2SharedBtns.add(p2Reset);
+        p2SharedBtns.add(p2Reset, "wrap");
+        p2SharedBtns.add(p2Shuffle);
         p2SharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Phase 2", TitledBorder.LEFT, TitledBorder.TOP));
 
     }
@@ -112,7 +118,9 @@ public class RegisterView implements Viewable {
         globalSharedBtns = new JPanel(new MigLayout());
         restart = new JButton("Restart");
         restart.setEnabled(false);
+        restart.setFocusPainted(false);
         close = new JButton("Close");
+        close.setFocusPainted(false);
         globalSharedBtns.add(restart);
         globalSharedBtns.add(close);
         globalSharedBtns.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Global", TitledBorder.LEFT, TitledBorder.TOP));
@@ -140,7 +148,7 @@ public class RegisterView implements Viewable {
 
     private void initP2Components() {
         p2ListView = new ListView();
-        p2Grid = new GridView();
+        p2Grid = new RegisterGridView();
         p2Grid.setGridBorder(true);
     }
 
@@ -160,19 +168,6 @@ public class RegisterView implements Viewable {
     }
 
     private void initP2BtnActions() {
-
-        //Phase 2 Next Button
-        p2Next.addActionListener((ActionEvent evt) -> {
-            p2Next.setEnabled(false);
-            if (!p2Reset.isEnabled()) {
-                p2Reset.setEnabled(true);
-            }
-            regControl.addUserEntry(imageSelected, gridSelected);
-            p2Grid.disableUI();
-            p2ListView.removeImage(imageSelected);
-            gridSelected = -1;
-            imageSelected = null;
-        });
 
         //Phase 2 Reset Button
         p2Reset.addActionListener((ActionEvent evt) -> {
@@ -205,13 +200,16 @@ public class RegisterView implements Viewable {
         p2ListView.removeImage(null);
         p2ListView.uninstallList();
         p2LayerUI.startDisableUI();
-        p2Grid.setImage(null);
+        p2Grid.resetImage();
+        if (regMode != null && regMode.equals(RegisterMode.PersuasiveCCP)) {
+            p2Grid.stopShuffle();
+        }
         p2ListView.repaintList();
         disableP2Btns();
     }
 
     private void disableP2Btns() {
-        p2Next.setEnabled(false);
+        p2Shuffle.setEnabled(false);
         p2Finish.setEnabled(false);
         p2Reset.setEnabled(false);
     }
@@ -220,8 +218,7 @@ public class RegisterView implements Viewable {
 
         p2ListView.setListSelectionListener((ListSelectionEvent evt) -> {
             if (!p2ListView.isSelectionEmpty() && !p2ListView.getValueIsAdjusting()) {
-                imageSelected = p2ListView.getSelectionValue();
-                regControl.requestImage(imageSelected);
+                regControl.requestImage(p2ListView.getSelectionValue());
             }
         });
 
@@ -229,11 +226,21 @@ public class RegisterView implements Viewable {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getSource() instanceof JLabel) {
-                    p2Next.setEnabled(true);
-                    gridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                    int gridSelected = Integer.parseInt(((JLabel) me.getSource()).getName());
+                    String imageSelected = p2ListView.getSelectionValue();
+                    if (!p2Reset.isEnabled()) {
+                        p2Reset.setEnabled(true);
+                    }
+                    regControl.addUserEntry(imageSelected, gridSelected);
+                    p2Grid.disableUI();
+                    p2ListView.removeImage(imageSelected);
                 }
             }
 
+        });
+
+        p2Shuffle.addActionListener((ActionEvent evt) -> {
+            p2Grid.startShuffle();
         });
     }
 
@@ -255,9 +262,9 @@ public class RegisterView implements Viewable {
 
         switch (pce.getPropertyName()) {
             case "DisplayImage":
-                p2Grid.setImage((Image) pce.getNewValue());
-                p2Grid.enableUI();
-                p2Next.setEnabled(false);
+                if (pce.getNewValue() != null) {
+                    handleDisplayImage((BufferedImage) pce.getNewValue());
+                }
                 break;
 
             case "RegisterStatus":
@@ -274,6 +281,22 @@ public class RegisterView implements Viewable {
         }
     }
 
+    private void handleDisplayImage(BufferedImage bi) {
+        switch (regMode) {
+            case NormalCCP:
+                p2Grid.setImage(bi);
+                p2Grid.enableUI();
+                break;
+
+            case PersuasiveCCP:
+                p2Grid.setPCCPImage(bi);
+                p2Grid.startShuffle();
+                p2Shuffle.setEnabled(true);
+
+                break;
+        }
+    }
+
     // model Property Change Methods.
     private void handleRegisterStatus(RegisterStatus regs) {
         switch (regs) {
@@ -286,16 +309,13 @@ public class RegisterView implements Viewable {
                 }
                 break;
 
-            case ADDED:
-
-                break;
-
             case P2_RESET:
                 p2ListView.removeImage(null);
                 unloadList();
                 p2Grid.disableUI();
-                p2Grid.setImage(null);
+                p2Grid.resetImage();
                 disableP2Btns();
+                displayCCPOption();
                 loadList();
                 p2ListView.repaintList();
                 JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Phase2 Reset Success!", JOptionPane.DEFAULT_OPTION);
@@ -314,6 +334,10 @@ public class RegisterView implements Viewable {
             case REGISTER_FAILED:
                 JOptionPane.showMessageDialog(mainPanel, regs.getMessage(), "Registeration Failed.", JOptionPane.ERROR_MESSAGE);
                 Restart();
+                break;
+
+            case ADDED:
+            default:
                 break;
         }
     }
@@ -338,6 +362,7 @@ public class RegisterView implements Viewable {
 
             case BOTH_OK:
                 JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Success!", JOptionPane.INFORMATION_MESSAGE);
+                displayCCPOption();
                 p1FormView.disableUI();
                 p2LayerUI.stopDisableUI();
                 p2Grid.disableUI();
@@ -353,6 +378,26 @@ public class RegisterView implements Viewable {
             default:
                 break;
         }
+    }
+
+    private void displayCCPOption() {
+        Object options[] = {"Normal Mode", "Persuasive Mode"};
+
+        int ans = JOptionPane.showOptionDialog(mainPanel, "Select Mode:", "Mode Selection", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        switch (ans) {
+            case JOptionPane.NO_OPTION:
+                p2Grid.setGridBorder(false);
+                regMode = RegisterMode.PersuasiveCCP;
+                break;
+
+            case JOptionPane.YES_OPTION:
+            default:
+                p2Grid.setGridBorder(true);
+                regMode = RegisterMode.NormalCCP;
+                break;
+        }
+
     }
 
     private void handleExceptionMessage(ExceptionStatus es) {

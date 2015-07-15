@@ -8,8 +8,17 @@ package com.app.user.main;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import com.app.beans.Viewable;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -19,11 +28,13 @@ import net.miginfocom.swing.MigLayout;
 public class MainMenuView implements Viewable {
 
     private JPanel mainPanel;
-    private JButton LoginBtn, RegisterBtn;
+    private JButton loginBtn, registerBtn;
+    private JLabel aboutLabel;
 
     public MainMenuView() {
         initMainPanel();
         initButtons();
+        initAboutLabel();
     }
 
     private void initMainPanel() {
@@ -32,18 +43,44 @@ public class MainMenuView implements Viewable {
     }
 
     private void initButtons() {
-        LoginBtn = new JButton("Login");
-        RegisterBtn = new JButton("Register");
-        mainPanel.add(LoginBtn, "span, split, center,wrap");
-        mainPanel.add(RegisterBtn, "span, split, center");
+        loginBtn = new JButton("Login");
+        loginBtn.setFocusPainted(false);
+        registerBtn = new JButton("Register");
+        loginBtn.setFocusPainted(false);
+        mainPanel.add(loginBtn, "span, split, center,wrap");
+        mainPanel.add(registerBtn, "span, split, center,wrap");
+    }
+
+    private void initAboutLabel() {
+        aboutLabel = new JLabel();
+        aboutLabel.setToolTipText("Click for more information");
+        try{
+        Image im = ImageIO.read(MainMenuView.class.getResource("abouticon.png"));
+        aboutLabel.setIcon(new ImageIcon(im));
+        }catch(IOException ex){
+            aboutLabel.setText("About");
+        }
+        initAboutAction();
+        mainPanel.add(aboutLabel, "center");
+    }
+
+    private void initAboutAction() {
+        aboutLabel.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                JOptionPane.showMessageDialog(mainPanel, "Created by Jaymit Desai\n email id: jaymitd123@gmail.com", "About Me", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
     }
 
     public void addLoginAction(ActionListener al) {
-        LoginBtn.addActionListener(al);
+        loginBtn.addActionListener(al);
     }
 
     public void addRegisterAction(ActionListener al) {
-        RegisterBtn.addActionListener(al);
+        registerBtn.addActionListener(al);
     }
 
     public JPanel getPanel() {

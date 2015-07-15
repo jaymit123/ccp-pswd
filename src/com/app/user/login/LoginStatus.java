@@ -5,7 +5,7 @@
  */
 package com.app.user.login;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -13,28 +13,28 @@ import java.awt.Image;
  */
 public enum LoginStatus {
 
-    INIT("First Image"), CONTINUE("Continue with Next Image!"), SUCCESS("Login Sucessfull!"), FAILURE("Failed to Login!"), ERROR("Sorry an error has occured!\n Please mail me at jaymit_123@gmail.com"), LOGOUT("Logout Successful");
-    private String Message;
-    private Image Image = null;
+    INIT("First BufferedImage"), CONTINUE("Continue with Next BufferedImage!"), SUCCESS("Login Sucessfull!"), FAILURE("Failed to Login!"), ERROR("Sorry an error has occured!\n Please mail me at jaymit_123@gmail.com"), LOGOUT("Logout Successful");
+    private String message;
+    private BufferedImage image = null;
 
     private LoginStatus(String msg) {
-        Message = msg;
+        message = msg;
     }
 
     public void setMessage(String msg) {
-        Message = msg;
+        message = msg;
     }
 
-    public void setImage(Image im) {
-        Image = im;
+    public void setImage(BufferedImage im) {
+        image = im;
     }
 
-    public Image getImage() {
-        return Image;
+    public BufferedImage getImage() {
+        return image;
     }
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
 }

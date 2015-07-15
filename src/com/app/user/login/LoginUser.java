@@ -5,7 +5,7 @@
  */
 package com.app.user.login;
 
-import com.app.user.security.SecurityExReason;
+import com.app.user.security.AppSecurityExReason;
 import com.app.user.security.AppSecurityException;
 import com.app.user.security.ValidationModel;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class LoginUser {
                 p2Password.put(ImageName, GridNo);             // Add Entry into p2password
             }
         } else {
-            throw new AppSecurityException(SecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
+            throw new AppSecurityException(AppSecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
         }
     }
 
@@ -61,7 +61,7 @@ public class LoginUser {
         Set<String> p2Set = p2Password.keySet();
         otherImages = new ArrayList<>(ImageList);
         if (!otherImages.containsAll(p2Set)) {
-            throw new AppSecurityException(SecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
+            throw new AppSecurityException(AppSecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
         }
         otherImages.removeAll(p2Set);
         Collections.shuffle(otherImages);
