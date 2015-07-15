@@ -19,7 +19,7 @@ import net.miginfocom.swing.MigLayout;
 public class MainMenuView implements Viewable {
 
     private JPanel mainPanel;
-    private JButton LoginBtn, RegisterBtn;
+    private JButton loginBtn, registerBtn;
 
     public MainMenuView() {
         initMainPanel();
@@ -32,18 +32,20 @@ public class MainMenuView implements Viewable {
     }
 
     private void initButtons() {
-        LoginBtn = new JButton("Login");
-        RegisterBtn = new JButton("Register");
-        mainPanel.add(LoginBtn, "span, split, center,wrap");
-        mainPanel.add(RegisterBtn, "span, split, center");
+        loginBtn = new JButton("Login");
+        loginBtn.setFocusPainted(false);
+        registerBtn = new JButton("Register");
+        loginBtn.setFocusPainted(false);
+        mainPanel.add(loginBtn, "span, split, center,wrap");
+        mainPanel.add(registerBtn, "span, split, center");
     }
 
     public void addLoginAction(ActionListener al) {
-        LoginBtn.addActionListener(al);
+        loginBtn.addActionListener(al);
     }
 
     public void addRegisterAction(ActionListener al) {
-        RegisterBtn.addActionListener(al);
+        registerBtn.addActionListener(al);
     }
 
     public JPanel getPanel() {

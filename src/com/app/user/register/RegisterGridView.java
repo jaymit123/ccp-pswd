@@ -17,16 +17,12 @@ import javax.swing.JLayer;
 public class RegisterGridView extends GridView {
 
     private RegisterGridUI regGridUI;
-    private final int viewportDimensions = 4;  //number of rows / cols in viewport
+    private final int viewportDimensions = 2;  //number of rows or cols in viewport
     private final int digit[] = new int[2];
     private final int gridsInViewport[] = new int[viewportDimensions * viewportDimensions]; //Total number of grids in viewport
     private Random shuffleRandom;
 
     public RegisterGridView() {
-        initLayer();
-    }
-
-    private void initLayer() {
         layerUi = new RegisterGridUI();
         mainLayer = new JLayer<>(mainPanel, layerUi);
         regGridUI = (RegisterGridUI) layerUi;
@@ -34,9 +30,8 @@ public class RegisterGridView extends GridView {
     }
 
     private void shuffleNumberGen() {
-        for (int i = 0; i < digit.length; i++) {
-            digit[i] = shuffleRandom.nextInt(gridNos - viewportDimensions);
-        }
+       digit[0] = shuffleRandom.nextInt(gridNos - viewportDimensions);
+       digit[1] = shuffleRandom.nextInt(gridNos - viewportDimensions);
     }
 
     public void startShuffle() {
@@ -64,7 +59,7 @@ public class RegisterGridView extends GridView {
     @Override
     protected void setupGridView() {
         super.setupGridView(); //To change body of generated methods, choose Tools | Templates.
-        regGridUI.setViewSize(gridWidth*viewportDimensions, gridHeight*viewportDimensions);
+        regGridUI.setViewSize(gridWidth * viewportDimensions, gridHeight * viewportDimensions);
     }
 
     public void setPCCPImage(BufferedImage img) {
