@@ -14,7 +14,7 @@ public class ValidationModel {
     private final static String Username_Regex = "[\\S]{3,10}";
     private final static String P1_Password_Regex = "((?=\\S*\\w+)(?=\\S*[+-.,!@#$%^&*();\\\\/|<>\"'\\d]+)(\\S{5,10}))";
     private final static String P2_Password_Regex = "(\\|[^/?<>\\\\:*|]+\\.[a-zA-Z0-9]{3,5}\\&[\\d]{1,3}){3,5}";
- 
+
     public static ValidationStatus validateUsername(String username) {
         if (username.matches(Username_Regex)) {
             return ValidationStatus.USERNAME_OK;
@@ -36,11 +36,13 @@ public class ValidationModel {
     }
 
     public static ValidationStatus validateUser(String Username, String Password) {
-        ValidationStatus result = null;
-        if ((result = validateUsername(Username)).equals(ValidationStatus.USERNAME_FMT_ERROR)) {
-            return result;
-        } else if ((result = validateP1Password(Password)).equals(ValidationStatus.PASSWORD_FMT_ERROR)) {
-            return result;
+
+        if (Username.equals(Password)) {
+            return ValidationStatus.BOTH_SAME_ERROR;
+        } else if (validateUsername(Username) == ValidationStatus.USERNAME_FMT_ERROR) {
+            return ValidationStatus.USERNAME_FMT_ERROR;
+        } else if (validateP1Password(Password) == ValidationStatus.PASSWORD_FMT_ERROR) {
+            return ValidationStatus.PASSWORD_FMT_ERROR;
         }
         return ValidationStatus.BOTH_OK;
     }

@@ -30,7 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
@@ -201,7 +200,7 @@ public class RegisterView implements Viewable {
         p2ListView.uninstallList();
         p2LayerUI.startDisableUI();
         p2Grid.resetImage();
-        if (regMode != null && regMode.equals(RegisterMode.PersuasiveCCP)) {
+        if (regMode != null && regMode == RegisterMode.PersuasiveCCP) {
             p2Grid.stopShuffle();
         }
         p2ListView.repaintList();
@@ -344,15 +343,13 @@ public class RegisterView implements Viewable {
 
     private void handleValidationStatus(ValidationStatus vs) {
         switch (vs) {
-            case USERNAME_FMT_ERROR:
-                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Username Error!", JOptionPane.ERROR_MESSAGE);
-                p1FormView.resetUI();
-                break;
+
             case PASSWORD_FMT_ERROR:
-                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Password Error!", JOptionPane.ERROR_MESSAGE);
-                break;
             case USERNAME_EXIST:
-                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Username Exist!", JOptionPane.ERROR_MESSAGE);
+            case USERNAME_FMT_ERROR:
+            case BOTH_SAME_ERROR:
+                JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Error!", JOptionPane.ERROR_MESSAGE);
+                p1FormView.resetUI();
                 break;
 
             case NO_ACCOUNT:
@@ -362,17 +359,13 @@ public class RegisterView implements Viewable {
 
             case BOTH_OK:
                 JOptionPane.showMessageDialog(mainPanel, vs.getValidationMsg(), "Success!", JOptionPane.INFORMATION_MESSAGE);
+                loadList();
+                p2ListView.repaintList();
                 displayCCPOption();
                 p1FormView.disableUI();
                 p2LayerUI.stopDisableUI();
                 p2Grid.disableUI();
                 restart.setEnabled(true);
-                Timer refreshJList = new Timer(800, (ActionEvent evt) -> {
-                    loadList();
-                    p2ListView.repaintList();
-                });
-                refreshJList.setRepeats(false);
-                refreshJList.start();
                 break;
 
             default:

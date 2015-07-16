@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/main/MainMenuView.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/login/LoginModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/security/AuthenticationModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterUser.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterModel.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/register/RegisterView.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/security/ValidationStatus.java</file>
+            <file>file:/C:/Users/VJ/Documents/GitHub/ccp-pswd/src/com/app/user/security/ValidationModel.java</file>
         </group>
     </open-files>
 </project-private>

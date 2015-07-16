@@ -38,7 +38,7 @@ public class LoginModel extends AbstractModel {
             @Override
             protected Object doInBackground() throws Exception {
                 property = ProcessStatus.ValidationStatus;
-                if (!ValidationModel.validateUser(Username, P1Password).equals(ValidationStatus.BOTH_OK)) {
+                if (!(ValidationModel.validateUser(Username, P1Password) == ValidationStatus.BOTH_OK)) {
                     return ValidationStatus.BOTH_ERROR;
                 }
                 if (!authenticateUser.checkUsername(Username)) {
@@ -48,7 +48,7 @@ public class LoginModel extends AbstractModel {
                     return ValidationStatus.BOTH_ERROR;
                 } else {
                     LoginStatus loginstatus = currentUser.authenticateGrid(-1);
-                    if (loginstatus.equals(LoginStatus.INIT)) {
+                    if (loginstatus == LoginStatus.INIT) {
                         property = ProcessStatus.LoginStatus;
                         loginstatus.setImage(imageModel.getImage(loginstatus.getMessage()));
                         return loginstatus;
@@ -146,8 +146,8 @@ public class LoginModel extends AbstractModel {
     }
 
     private void handleExecutionException(ExecutionException ex) {
-        if (ex.getCause() instanceof com.app.user.security.AppSecurityException) {
-            com.app.user.security.AppSecurityException se = ((com.app.user.security.AppSecurityException) ex.getCause());
+        if (ex.getCause() instanceof com.app.user.security.AuthenticationException) {
+            com.app.user.security.AuthenticationException se = ((com.app.user.security.AuthenticationException) ex.getCause());
             switch (se.getErroReason()) {
                 case PASS_REGEX_CHECK_ERROR:
                 case ACC_IMG_NOT_FOUND:

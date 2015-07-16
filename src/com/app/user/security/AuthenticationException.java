@@ -9,22 +9,22 @@ package com.app.user.security;
  *
  * @author VJ
  */
-public class AppSecurityException extends Exception {
+public class AuthenticationException extends Exception {
 
-    private AppSecurityExReason reason;
+    private AuthenticationExReason reason;
 
-    public AppSecurityException(AppSecurityExReason rsn, String string) {
+    public AuthenticationException(AuthenticationExReason rsn, String string) {
         super(string);
         reason = rsn;
     }
 
-    public AppSecurityException(AppSecurityExReason rsn, String string, Throwable thrwbl) {
+    public AuthenticationException(AuthenticationExReason rsn, String string, Throwable thrwbl) {
         super(string, thrwbl);
         reason = rsn;
 
     }
 
-    public AppSecurityExReason getErroReason() {
+    public AuthenticationExReason getErroReason() {
         return reason;
     }
 

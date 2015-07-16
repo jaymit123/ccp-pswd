@@ -30,12 +30,11 @@ public class RegisterGridView extends GridView {
     }
 
     private void shuffleNumberGen() {
-       digit[0] = shuffleRandom.nextInt(gridNos - viewportDimensions);
-       digit[1] = shuffleRandom.nextInt(gridNos - viewportDimensions);
+        digit[0] = shuffleRandom.nextInt(gridNos - viewportDimensions);
+        digit[1] = shuffleRandom.nextInt(gridNos - viewportDimensions);
     }
 
-    public void startShuffle() {
-        shuffleNumberGen();
+    private void determineGridsInViewport() {
 
         int index = 0;
         for (int i = 0; i < viewportDimensions; i++) {
@@ -44,10 +43,13 @@ public class RegisterGridView extends GridView {
                 ++index;
             }
         }
+    }
 
+    public void startShuffle() {
+        shuffleNumberGen();
+        determineGridsInViewport();
         int x = gridLabel[digit[0]][digit[1]].getX();
         int y = gridLabel[digit[0]][digit[1]].getY();
-
         regGridUI.setViewPosition(x, y, gridsInViewport);
         regGridUI.placeViewport();
     }

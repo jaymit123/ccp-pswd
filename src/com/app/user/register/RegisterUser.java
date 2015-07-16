@@ -7,6 +7,8 @@ package com.app.user.register;
 
 import java.util.Map;
 import java.util.LinkedHashMap;
+import com.app.user.security.AESCipher;
+import com.app.user.security.AESCipherException;
 
 /**
  *
@@ -41,12 +43,13 @@ public class RegisterUser {
         }
         return Status;
     }
-    
 
-
-    public String[] getUserRecord() {
-        String[] record = {username, p1Password, convertPassword()};
+    public String[] getUserRecord() throws AESCipherException {
+        String record[] = null;
+        String encryptedPswd = new AESCipher().encryptPassword(username, p1Password, convertPassword());
+        record = new String[]{username, encryptedPswd};
         destroy();
+
         return record;
     }
 

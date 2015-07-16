@@ -11,7 +11,7 @@ import com.app.user.database.DatabaseType;
 import com.app.user.dao.UserDAO;
 import com.app.user.database.DatabaseException;
 import com.app.io.ImageAccessException;
-import com.app.user.security.AppSecurityException;
+import com.app.user.security.AuthenticationException;
 import com.app.io.ImageModel;
 import com.app.user.login.LoginController;
 import com.app.user.login.LoginModel;
@@ -33,15 +33,16 @@ public class CuedClickPoints {
         try {
 
             // 1. Load Database
-            DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
-            // DatabaseModel dbmodel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
-            UserDAO userDao = new UserDAO(dbModel);
+           // DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
+            //DatabaseModel dbModel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
+             DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/test", "root", "", "CCP_User_Table");
+            UserDAO userDAO = new UserDAO(dbModel);
 
             //2. Load List of Images
             ImageModel imageModel = new ImageModel(System.getProperty("user.home") + "/Desktop/resources/");
 
             //3. Init Objects
-            AuthenticationModel authenticationModel = new AuthenticationModel(userDao, imageModel.getImageList());
+            AuthenticationModel authenticationModel = new AuthenticationModel(userDAO, imageModel.getImageList());
             RegisterController registerCntrl = new RegisterController();
             LoginController loginCntrl = new LoginController();
             RegisterModel registerModel = new RegisterModel(authenticationModel, imageModel);
@@ -57,7 +58,7 @@ public class CuedClickPoints {
 
         } catch (DatabaseException de) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured while contacting the database.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
-        } catch (AppSecurityException | ImageAccessException e) {
+        } catch (AuthenticationException | ImageAccessException e) {
             JOptionPane.showMessageDialog(null, "Sorry, An Error Occured.\ncontact me at jaymit_123@hotmail.com", "Error.", JOptionPane.ERROR_MESSAGE);
         }
     }

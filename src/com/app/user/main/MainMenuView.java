@@ -8,7 +8,6 @@ package com.app.user.main;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import com.app.beans.Viewable;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;

@@ -5,8 +5,8 @@
  */
 package com.app.user.login;
 
-import com.app.user.security.AppSecurityExReason;
-import com.app.user.security.AppSecurityException;
+import com.app.user.security.AuthenticationExReason;
+import com.app.user.security.AuthenticationException;
 import com.app.user.security.ValidationModel;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class LoginUser {
 
-    private String username;
+    private String userName;
     private Map<String, Integer> p2Password;
     private final String split_Password_Regex = "[&|]";
     private List<String> otherImages;                            //List of Images other than those that are present in Users P2Password.
@@ -33,8 +33,8 @@ public class LoginUser {
     private Map.Entry<String, Integer> currentEntry;           //Current Image + Grid Combination from P2Password that is being authenticated.
     private int imageIndex = 0;                               //Helps in determining position of P2Iteraotr.
 
-    public LoginUser(String uname, String p2password, List<String> imglist) throws AppSecurityException {
-        username = uname;
+    public LoginUser(String uname, String p2password, List<String> imglist) throws AuthenticationException {
+        userName = uname;
         p2Password = new LinkedHashMap<>();
         initPhase2(p2password);
         initOtherImages(imglist);
@@ -42,7 +42,7 @@ public class LoginUser {
         Status = InnerStatus.ENTER;
     }
 
-    private void initPhase2(String password) throws AppSecurityException {
+    private void initPhase2(String password) throws AuthenticationException {
         if (ValidationModel.validateP2Passowrd(password)) {       // checks if P2Passowrd retrieved from DB is valid or not else throw exception
             Scanner sc = new Scanner(password);
             sc.useDelimiter(split_Password_Regex);               // Use to Split the Password into Images and GridNumbers.
@@ -52,16 +52,16 @@ public class LoginUser {
                 p2Password.put(ImageName, GridNo);             // Add Entry into p2password
             }
         } else {
-            throw new AppSecurityException(AppSecurityExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
+            throw new AuthenticationException(AuthenticationExReason.PASS_REGEX_CHECK_ERROR, "Password retireved from database doesnt pass the regex check!");
         }
     }
 
     //Takes the Image List having all Images i.e OtherImages , remove all Images that are present in P2Password List.
-    private void initOtherImages(List<String> ImageList) throws AppSecurityException {
+    private void initOtherImages(List<String> ImageList) throws AuthenticationException {
         Set<String> p2Set = p2Password.keySet();
         otherImages = new ArrayList<>(ImageList);
         if (!otherImages.containsAll(p2Set)) {
-            throw new AppSecurityException(AppSecurityExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
+            throw new AuthenticationException(AuthenticationExReason.ACC_IMG_NOT_FOUND, "Sorry Images are missing!");
         }
         otherImages.removeAll(p2Set);
         Collections.shuffle(otherImages);
@@ -113,12 +113,12 @@ public class LoginUser {
                 } else {
                     Status = InnerStatus.EXIT;
                     result = LoginStatus.FAILURE;
+                    destroy();
                 }
                 break;
 
             case EXIT:
                 result = LoginStatus.ERROR;
-                destroy();
                 break;
 
         }
@@ -126,7 +126,7 @@ public class LoginUser {
     }
 
     private void destroy() {
-        username = null;
+        userName = null;
         p2Password = null;
         otherImages = null;
         p2Iterator = null;

@@ -7,7 +7,7 @@ package com.app.user.register;
 
 import com.app.user.security.AuthenticationModel;
 import com.app.user.security.ValidationModel;
-import com.app.user.security.AppSecurityException;
+import com.app.user.security.AuthenticationException;
 import com.app.user.security.ValidationStatus;
 import com.app.user.status.ProcessStatus;
 import com.app.beans.AbstractModel;
@@ -41,7 +41,7 @@ public class RegisterModel extends AbstractModel {
                 //Validate User Start//
                 CurrentProcess = ProcessStatus.ValidationStatus;
                 ValidationStatus ValidateData = ValidationModel.validateUser(Username, P1Password);
-                if (!ValidateData.equals(ValidationStatus.BOTH_OK)) {
+                if (!(ValidateData == ValidationStatus.BOTH_OK)) {
                     return ValidateData;
                 }
                 if (authenticateUser.checkUsername(Username)) {
@@ -74,7 +74,7 @@ public class RegisterModel extends AbstractModel {
             private ProcessStatus CurrentProcess;
 
             @Override
-            protected Object doInBackground() throws AppSecurityException, Exception {
+            protected Object doInBackground() throws AuthenticationException, Exception {
 
                 if (regUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
@@ -124,7 +124,7 @@ public class RegisterModel extends AbstractModel {
             private ProcessStatus CurrentProcess;
 
             @Override
-            protected Object doInBackground() throws AppSecurityException, Exception {
+            protected Object doInBackground() throws AuthenticationException, Exception {
 
                 if (regUser == null) { //Check if RegisterUser is created!
                     CurrentProcess = ProcessStatus.ValidationStatus;
@@ -217,7 +217,7 @@ public class RegisterModel extends AbstractModel {
         GetImageSW.execute();
     }
 
-    private RegisterStatus completeRegistration() throws AppSecurityException {
+    private RegisterStatus completeRegistration() throws AuthenticationException {
         if (authenticateUser.finalizeRegistration(regUser)) {
             regUser = null;
             return RegisterStatus.REGISTER_SUCCESS;
@@ -228,8 +228,8 @@ public class RegisterModel extends AbstractModel {
     }
 
     private void handleExecutionException(ExecutionException ex) {
-        if (ex.getCause() instanceof AppSecurityException) {
-            AppSecurityException se = ((AppSecurityException) ex.getCause());
+        if (ex.getCause() instanceof AuthenticationException) {
+            AuthenticationException se = ((AuthenticationException) ex.getCause());
             switch (se.getErroReason()) {
                 case FIN_REG_USER_EXIST:
                     ExceptionStatus es = ExceptionStatus.USER_EXIST;

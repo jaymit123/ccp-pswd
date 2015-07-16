@@ -10,10 +10,6 @@ import com.app.beans.AbstractController;
 import com.app.beans.Viewable;
 import java.beans.PropertyChangeEvent;
 
-/**
- *
- * @author VJ
- */
 public class LoginController extends AbstractController {
 
     private LoginModel loginModel;
@@ -44,9 +40,6 @@ public class LoginController extends AbstractController {
     public void logOut() {
         loginModel.resetLogin();
     }
-
-
-
 
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));

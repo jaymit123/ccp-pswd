@@ -16,18 +16,18 @@ import java.util.List;
  */
 public class UserDAO{
 
-    private DatabaseModel DBModel = null;
+    private DatabaseModel dbModel = null;
 
 
     public UserDAO(DatabaseModel dbm){
-            DBModel = dbm; 
+            dbModel = dbm; 
     }
 
 
     public List<String> getUserList() throws DAOException {
          List<String> UserList = null;
         try {
-         UserList  = DBModel.getUserList();
+         UserList  = dbModel.getUserList();
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.GET_USER_LIST_ERROR,"Error while synchronizing User Information", ex);
         }
@@ -36,11 +36,11 @@ public class UserDAO{
 
     public boolean registerUser(String[] UserRecord) throws DAOException {
         boolean isRegistered = false;
-        if (UserRecord.length == 3) {
+        if (UserRecord.length == 2) {
             try {
-                isRegistered = (DBModel.registerUser(UserRecord[0], UserRecord[1], UserRecord[2]));
+                isRegistered = (dbModel.registerUser(UserRecord[0], UserRecord[1]));
             } catch (DatabaseException ex) {
-                 if (ex.getErrorReason().equals(DatabaseExReason.DB_USER_EXIST)) {
+                 if (ex.getErrorReason() == DatabaseExReason.DB_USER_EXIST) {
              throw new DAOException(DAOExReason.REG_ERROR_USER_EXIST,ex.getMessage(), ex);
         } else {
            throw new DAOException(DAOExReason.REG_ERROR_OTHER,"Error while registering UserRecord", ex);
@@ -52,9 +52,9 @@ public class UserDAO{
         return isRegistered;
     }
 
-    public String loginUser(String Username, String P1Password) throws DAOException {
+    public String loginUser(String Username) throws DAOException {
         try {
-            return DBModel.loginUser(Username, P1Password);
+            return dbModel.loginUser(Username);
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.LOGIN_ERROR,"Error while performing User Login", ex);
         }
@@ -62,7 +62,7 @@ public class UserDAO{
 
     public void startCommunication() throws DAOException {
         try {
-            DBModel.createConnection();
+            dbModel.createConnection();
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.START_COM_ERROR,"Error while starting Communication", ex);
         }
@@ -70,7 +70,7 @@ public class UserDAO{
 
     public void stopCommunication() throws DAOException {
         try {
-            DBModel.closeConnection();
+            dbModel.closeConnection();
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.STOP_COM_ERROR,"Error while stopping Communication", ex);
         }

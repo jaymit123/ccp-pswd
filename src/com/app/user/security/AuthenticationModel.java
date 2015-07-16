@@ -21,8 +21,9 @@ public class AuthenticationModel {
 
     private UserDAO userdao;
     private List<String> ImageList, UserList;
+    private AESCipher aesCipher;
 
-    public AuthenticationModel(UserDAO dao, List<String> imagelist) throws AppSecurityException {
+    public AuthenticationModel(UserDAO dao, List<String> imagelist) throws AuthenticationException {
         try {
             userdao = dao;
             ImageList = imagelist;
@@ -41,8 +42,9 @@ public class AuthenticationModel {
 
             };
             userdao.stopCommunication();
+            aesCipher = new AESCipher();
         } catch (DAOException ex) {
-            throw new AppSecurityException(AppSecurityExReason.INIT_TIES, "Error in finalizeRegistration method of Authentication Model", ex);
+            throw new AuthenticationException(AuthenticationExReason.INIT_DBCON_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
         }
     }
 
@@ -50,38 +52,49 @@ public class AuthenticationModel {
         return UserList.contains(username);
     }
 
-    public boolean finalizeRegistration(RegisterUser record) throws AppSecurityException {
-        boolean result = false;
+    public boolean finalizeRegistration(RegisterUser record) throws AuthenticationException {
+
         try {
+            boolean isRegistered = false;
             userdao.startCommunication();
-            result = userdao.registerUser(record.getUserRecord());
-            if (result) {
+            isRegistered = userdao.registerUser(record.getUserRecord());
+            if (isRegistered) {
                 UserList = userdao.getUserList();
             }
             userdao.stopCommunication();
+            return isRegistered;
         } catch (DAOException ex) {
-            if (ex.getErrorReason().equals(DAOExReason.REG_ERROR_USER_EXIST)) {
-                throw new AppSecurityException(AppSecurityExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
+            if (ex.getErrorReason() == DAOExReason.REG_ERROR_USER_EXIST) {
+                throw new AuthenticationException(AuthenticationExReason.FIN_REG_USER_EXIST, ex.getMessage(), ex);
             } else {
-                throw new AppSecurityException(AppSecurityExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
+                throw new AuthenticationException(AuthenticationExReason.FIN_REG_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
             }
+
+        } catch (AESCipherException ex) {
+            throw new AuthenticationException(AuthenticationExReason.ENCRYPT_ERROR, "Error in finalizeRegistration method of Authentication Model", ex);
         }
-        return result;
     }
 
-    public LoginUser processAccount(String username, String p1password) throws AppSecurityException {
+    public LoginUser processAccount(String username, String p1password) throws AuthenticationException {
         LoginUser user = null;
         try {
             userdao.startCommunication();
-            String p2password = userdao.loginUser(username, p1password);
+            String p2password = userdao.loginUser(username);
             userdao.stopCommunication();
             if (p2password != null) {
-                user = new LoginUser(username, p2password, ImageList);
+                String decryptedPswd = aesCipher.decryptPassword(username, p1password, p2password);
+
+                if (ValidationModel.validateP2Passowrd(decryptedPswd)) {
+                    user = new LoginUser(username, decryptedPswd, ImageList);
+                }
             }
+            return user;
         } catch (DAOException ex) {
-            throw new AppSecurityException(AppSecurityExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
+            throw new AuthenticationException(AuthenticationExReason.LOGIN_ERROR, "Error in processAccount method of Authentication Model", ex);
+        } catch (AESCipherException ex) {
+            throw new AuthenticationException(AuthenticationExReason.DECRYPT_ERROR, "Error in processAccount method of Authentication Model", ex);
         }
-        return user;
+
     }
 
 }
