@@ -61,7 +61,7 @@ public class RegisterController extends AbstractController {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
+        //System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
         switch (evt.getPropertyName()) {
             case "DisplayImage":
             case "RegisterStatus":

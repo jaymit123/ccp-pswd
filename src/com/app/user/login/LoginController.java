@@ -42,7 +42,7 @@ public class LoginController extends AbstractController {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
+       // System.out.println(evt.getPropertyName() + " : " + (evt.getNewValue()));
         switch (evt.getPropertyName()) {
             case "LoginStatus":
             case "ValidationStatus":

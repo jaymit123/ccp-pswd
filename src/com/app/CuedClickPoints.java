@@ -34,8 +34,8 @@ public class CuedClickPoints {
 
             // 1. Load Database
            // DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/db", "root", "", "CCP_User_Table");
-            //DatabaseModel dbModel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
-             DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/test", "root", "", "CCP_User_Table");
+            DatabaseModel dbModel = new DatabaseModel(DatabaseType.H2, "", "root", "", "CCP_User_Table");
+             ///DatabaseModel dbModel = new DatabaseModel(DatabaseType.MYSQL, "//localhost/test", "root", "", "CCP_User_Table");
             UserDAO userDAO = new UserDAO(dbModel);
 
             //2. Load List of Images
