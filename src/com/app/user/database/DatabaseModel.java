@@ -43,7 +43,7 @@ public class DatabaseModel {
         }
     }
 
-    public void createConnection() throws DatabaseException {
+    private void createConnection() throws DatabaseException {
         try {
             databaseConnection = DriverManager.getConnection(selected.getAddress() + dbPath, dbUsername, dbPassword);
         } catch (SQLException ex) {

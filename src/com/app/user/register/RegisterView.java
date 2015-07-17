@@ -27,9 +27,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayer;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
@@ -275,7 +277,7 @@ public class RegisterView implements Viewable {
                 break;
 
             case "ExceptionStatus":
-                handleExceptionMessage((ExceptionStatus) pce.getNewValue());
+                handleExceptionStatus((ExceptionStatus) pce.getNewValue());
                 break;
         }
     }
@@ -393,11 +395,11 @@ public class RegisterView implements Viewable {
 
     }
 
-    private void handleExceptionMessage(ExceptionStatus es) {
+    private void handleExceptionStatus(ExceptionStatus es) {
         switch (es) {
             case FATAL_ERROR:
                 JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
+                ((JFrame) (SwingUtilities.getWindowAncestor(mainPanel))).dispose();
                 break;
 
             case USER_EXIST:

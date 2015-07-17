@@ -18,9 +18,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -145,7 +147,7 @@ public class LoginView implements Viewable {
                 break;
 
             case "ExceptionStatus":
-                handleExceptionMessage((ExceptionStatus) pce.getNewValue());
+                handleExceptionStatus((ExceptionStatus) pce.getNewValue());
                 break;
         }
     }
@@ -165,12 +167,13 @@ public class LoginView implements Viewable {
         }
     }
 
-    private void handleExceptionMessage(ExceptionStatus es) {
+    private void handleExceptionStatus(ExceptionStatus es) {
 
         switch (es) {
             case FATAL_ERROR:
                 JOptionPane.showMessageDialog(mainPanel, es.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
+                ((JFrame) (SwingUtilities.getWindowAncestor(mainPanel))).dispose();
+
                 break;
 
             case OTHER_ERROR:
@@ -200,14 +203,11 @@ public class LoginView implements Viewable {
                 break;
 
             case FAILURE:
-                JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
-                Restart();
-                break;
-
             case ERROR:
                 JOptionPane.showMessageDialog(mainPanel, ls.getMessage(), "Login Failed", JOptionPane.ERROR_MESSAGE);
                 Restart();
                 break;
+
         }
     }
 

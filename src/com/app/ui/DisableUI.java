@@ -69,7 +69,7 @@ public class DisableUI extends LayerUI<JPanel> implements ActionListener {
     }
 
     public void initTimer() {
-        int fps = 25;
+        int fps = 60;
         int tick = 1000 / fps;
         fadeTimer = new Timer(tick, this);
         fadeTimer.start();

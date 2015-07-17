@@ -79,10 +79,10 @@ public class AuthenticationModel {
         LoginUser user = null;
         try {
             userdao.startCommunication();
-            String p2password = userdao.loginUser(username);
+            String encryptedPswd = userdao.loginUser(username);
             userdao.stopCommunication();
-            if (p2password != null) {
-                String decryptedPswd = aesCipher.decryptPassword(username, p1password, p2password);
+            if (encryptedPswd != null) {
+                String decryptedPswd = aesCipher.decryptPassword(username, p1password, encryptedPswd);
 
                 if (ValidationModel.validateP2Passowrd(decryptedPswd)) {
                     user = new LoginUser(username, decryptedPswd, ImageList);

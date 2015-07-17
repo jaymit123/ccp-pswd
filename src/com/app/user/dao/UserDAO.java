@@ -34,11 +34,11 @@ public class UserDAO{
         return UserList;
     }
 
-    public boolean registerUser(String[] UserRecord) throws DAOException {
+    public boolean registerUser(String[] userRecord) throws DAOException {
         boolean isRegistered = false;
-        if (UserRecord.length == 2) {
+        if (userRecord.length == 2) {
             try {
-                isRegistered = (dbModel.registerUser(UserRecord[0], UserRecord[1]));
+                isRegistered = (dbModel.registerUser(userRecord[0], userRecord[1]));
             } catch (DatabaseException ex) {
                  if (ex.getErrorReason() == DatabaseExReason.DB_USER_EXIST) {
              throw new DAOException(DAOExReason.REG_ERROR_USER_EXIST,ex.getMessage(), ex);
@@ -52,9 +52,9 @@ public class UserDAO{
         return isRegistered;
     }
 
-    public String loginUser(String Username) throws DAOException {
+    public String loginUser(String username) throws DAOException {
         try {
-            return dbModel.loginUser(Username);
+            return dbModel.loginUser(username);
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.LOGIN_ERROR,"Error while performing User Login", ex);
         }
@@ -62,7 +62,7 @@ public class UserDAO{
 
     public void startCommunication() throws DAOException {
         try {
-            dbModel.createConnection();
+            dbModel.initConnection();
         } catch (DatabaseException ex) {
             throw new DAOException(DAOExReason.START_COM_ERROR,"Error while starting Communication", ex);
         }
